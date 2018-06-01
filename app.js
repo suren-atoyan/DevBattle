@@ -20,6 +20,8 @@ env.isDev() && app.use(cors({
 
 app.use(express.static(__dirname + '/public/'));
 
+app.use(express.static(__dirname + '/public/hackathon/build'));
+
 require('./routes')(app);
 
 const server = http.createServer(app);
