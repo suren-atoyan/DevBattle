@@ -4,7 +4,8 @@
   "description": "### Warning -> This is still in early development stage.",
   "main": "app.js",
   "scripts": {
-    "start-dev": "nodemon app"
+    "start-dev": "nodemon app",
+    "create-react-app": "cd ./public && create-react-app"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,10 @@
     "express": "^4.16.3",
     "figlet": "^1.2.0",
     "nconf": "^0.10.0",
-    "nodemon": "^1.17.5",
     "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "create-react-app": "^2.0.0-next.66cc7a90",
+    "nodemon": "^1.17.5"
   }
 }
