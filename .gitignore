@@ -3,4 +3,6 @@ data/
 .DS_Store
 media/
 
+.auth.json
+
 config/auth.json
