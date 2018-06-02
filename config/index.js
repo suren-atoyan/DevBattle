@@ -6,7 +6,7 @@ nconf
   .argv()
   .env()
   .file({
-    file: path.join(__dirname, `config${env.isProd() ? '.prod' : ''}.json`),
+    file: path.join(__dirname, `config${env.isProd ? '.prod' : ''}.json`),
   });
 
 module.exports = nconf;
