@@ -6,21 +6,25 @@ class Fetch {
       const options = {
         method,
         headers: {
-         'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
+        // TODO ::: Add check for removing this field in production
+        credentials: 'include',
       };
 
       if (method === 'POST') {
         options.body = JSON.stringify(data);
       }
 
-      const requestPromise = await fetch(url, options);
+      const response = await fetch(url, options);
 
-      if (requestPromise.status > 200 && requestPromise.status < 300) {
-        return await requestPromise.json();        
+      if (response.status >= 200 && response.status < 300) {
+        const result = await response.json();
+        // TODO ::: Use response.ok
+        return (result.success = true, result);
       } else {
         return {
-          status: requestPromise.status,
+          status: response.status,
           success: false,
         }
       }
