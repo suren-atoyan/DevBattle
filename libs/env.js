@@ -7,13 +7,14 @@ class Env {
 
     this.port = PORT;
 
-    this.isDev = this.env === 'development';
-
     this.isProd = this.env === 'production';
 
     this.isTest = this.env === 'test';
 
+    this.isDev = !this.isProd && !this.isTest;
+
     this.args = this.getArgs();
+
   }
 
   getArgs() {
