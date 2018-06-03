@@ -5,18 +5,21 @@ import Challenges from 'components/Challenges';
 import Admin from 'components/Admin';
 import NoMatch from 'components/NoMatch';
 
-const Content = ({ match }) => {
+import PrivateRoute from 'auth/PrivateRoute';
+import { withAuth } from 'auth';
+
+const Content = ({ match, authState: { isAdmin, isGuest, isTeamMember } }) => {
   return (
     <Switch>
-      <Route exact path='/' component={Monitoring} />
-      <Route path='/monitoring' component={Monitoring} />
-      <Route path='/challenges' component={Challenges} />
-      <Route path='/admin' component={Admin} />
-      <Route exact path='/404' component={NoMatch} />
+      <Route exact path="/" component={Monitoring} />
+      <Route path="/monitoring" component={Monitoring} />
+      <PrivateRoute path="/challenges" hasAccess={isAdmin || isGuest || isTeamMember} component={Challenges} />
+      <PrivateRoute path="/admin" hasAccess={isAdmin} component={Admin} />
+      <Route exact path="/404" component={NoMatch} />
 
-      <Redirect to='/404' />
+      <Redirect to="/404" />
     </Switch>
   );
 }
 
-export default Content;
+export default withAuth(Content);
