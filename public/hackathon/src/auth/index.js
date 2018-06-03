@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import Fetch from 'utils/fetch';
+import { omit } from 'utils';
 import { url } from 'config';
 import AuthMessage from './AuthMessage';
 
 const defaultAuthState = {
-  isAuth: false,
   isAdmin: false,
   isGuest: false,
-  isUser: false,
+  isTeamMember: false,
   isLoading: false,
 }
 
@@ -28,17 +28,26 @@ class AuthProvider extends Component {
     authMessage: {},
   };
 
-  async makeRequest(url, params, options) {
+  componentDidMount() {
+    this.makeRequest(`${url.base_url}${url.check_tocken}`, {}, {}, 'get');
+  }
+
+  async makeRequest(url, params, options = {}, method = 'post') {
     this.setState({ isLoading: true });
 
     let result = {};
 
     try {
-      const response = await Fetch.post(url, params);
+      const response = await Fetch[method](url, params);
 
-      const authMessageData = !response.success
-        ? { result, ...{ showAuthMessage: true, authMessage: response } }
-        : { result, ...{ showAuthMessage: false, authMessage: {} } };
+      const authMessageData = response.success
+        ? { result, ...{ showAuthMessage: false, authMessage: {} } }
+        : { result, ...{ showAuthMessage: true, authMessage: response } };
+
+      if (!Object.keys(options).length) {
+        // TODO ::: Move to pick mathod ( + implement pick method )
+        options = omit(response, ['success']);
+      }
 
       result = { ...options, ...authMessageData };
 
@@ -51,11 +60,11 @@ class AuthProvider extends Component {
     this.setState({ ...defaultAuthState, ...result });
   }
 
-  login = pass => this.makeRequest(`${url.base_url}${url.login}`, { pass }, { isAuth: true });
+  login = pass => this.makeRequest(`${url.base_url}${url.login}`, { pass });
 
-  logout = _ => this.makeRequest(`${url.base_url}${url.logout}`, {}, { isAuth: false });
+  logout = _ => this.makeRequest(`${url.base_url}${url.logout}`, {});
 
-  loginAsGuest = _ => this.makeRequest(`${url.base_url}${url.login}`, { isGuest: true }, { isGuest: true });
+  loginAsGuest = _ => this.makeRequest(`${url.base_url}${url.login}`, { isGuest: true });
 
   handleAuthMessageClose = _ => this.setState({ showAuthMessage: false });
 
@@ -72,11 +81,10 @@ class AuthProvider extends Component {
 
     return(
       <Fragment>
-        <AuthMessage
-          open={showAuthMessage}
+        {showAuthMessage && <AuthMessage
           authData={authMessage}
           handleClose={handleAuthMessageClose}
-        />
+        />}
         <AuthContext.Provider value={{
           ...state,
           login,
