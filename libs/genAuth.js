@@ -4,7 +4,7 @@ const path = require('path');
 const config = require('../config');
 const env = require('./env');
 
-const AUTH_JSON_PATH = path.join(__dirname, '../', config.get('auth_path'));
+const AUTH_JSON_PATH = path.join(__dirname, '../config/', config.get('auth_path'));
 const ADMIN_PASS_LENGTH = config.get('admin_pass_length');
 
 class GenAuth {
@@ -38,6 +38,7 @@ class GenAuth {
   genRandomCryptoString(len) {
     return crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len);
   }
+
 }
 
 module.exports = new GenAuth();
