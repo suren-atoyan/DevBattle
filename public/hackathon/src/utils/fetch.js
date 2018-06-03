@@ -1,5 +1,6 @@
 class Fetch {
-  static async request({ url, method = 'GET', data }) {    
+  static async request({ url, method = 'GET', data }) {
+
     try {
 
       const options = {
@@ -12,11 +13,24 @@ class Fetch {
       if (method === 'POST') {
         options.body = JSON.stringify(data);
       }
-      
+
       const requestPromise = await fetch(url, options);
-      return await requestPromise.json();
+
+      if (requestPromise.status > 200 && requestPromise.status < 300) {
+        return await requestPromise.json();        
+      } else {
+        return {
+          status: requestPromise.status,
+          success: false,
+        }
+      }
+
     } catch (error) {
       console.error(error); // TODO ::: Implement ErrorHandler
+      return {
+        error,
+        success: false,
+      }
     }
   }
 
