@@ -1,0 +1,3 @@
+@function gen-col-width($n, $m, $gutter) {
+    @return calc(#{$n} / #{$m} * (100% - ((#{$m} - #{$n}) / #{$n} ) * #{$gutter}));
+}
