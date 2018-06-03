@@ -62,7 +62,6 @@ class LoginDialog extends PureComponent {
                     <TextField
                       autoFocus
                       margin="dense"
-                      id="name"
                       label="Password"
                       type="password"
                       fullWidth
