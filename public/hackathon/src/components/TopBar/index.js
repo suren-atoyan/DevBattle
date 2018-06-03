@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import LoginDialog from 'components/LoginDialog';
+import RoleButton from 'components/RoleButton';
 
 import { withRouter } from 'react-router';
 import { getRouteTitle } from 'utils';
@@ -31,6 +32,25 @@ class ButtonAppBar extends Component {
 
   state = {
     isLoginDialogOpen: false,
+    isAuth: false,
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const { isTeamMember, isAdmin, isGuest } = props.authState;
+
+    const isAuth = isTeamMember || isAdmin || isGuest;
+
+    const changes = {};
+
+    if (isAuth !== state.isAuth) {
+      changes.isAuth = isAuth;
+    }
+
+    if (isAuth && state.isLoginDialogOpen) {
+      changes.isLoginDialogOpen = false;
+    }
+
+    return Object.keys(changes).length ? changes : null;
   }
 
   handleLoginDialogOpen = _ => this.setState({ isLoginDialogOpen: true });
@@ -42,11 +62,13 @@ class ButtonAppBar extends Component {
       classes,
       location: { pathname },
       authState: {
-        isAuth,
         isLoading,
         login,
         logout,
         loginAsGuest,
+        isAdmin,
+        isGuest,
+        isTeamMember,
       },
     } = this.props;
 
@@ -63,12 +85,22 @@ class ButtonAppBar extends Component {
               {title}
             </Typography>
 
+            {
+              this.state.isAuth && (
+                <RoleButton
+                  isAdmin={isAdmin}
+                  isGuest={isGuest}
+                  isTeamMember={isTeamMember}
+                />
+              )
+            }
+
             <Button
               color="inherit"
-              onClick={isAuth ? logout : this.handleLoginDialogOpen }
+              onClick={this.state.isAuth ? logout : this.handleLoginDialogOpen }
             >
               {
-                isAuth
+                this.state.isAuth
                   ? 'Logout'
                   : 'Logoin'
               }
