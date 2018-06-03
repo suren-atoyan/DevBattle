@@ -1,5 +1,9 @@
 {
   "port": 3000,
   "auth_path": "./.auth.json",
-  "admin_pass_length": 10
+  "admin_pass_length": 10,
+  "exclude_from_auth": [
+    "/login",
+    "/check_token"
+  ]
 }
