@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Fetch from 'utils/fetch';
 import { url } from 'config';
+import AuthMessage from './AuthMessage';
 
 const defaultAuthState = {
   isAuth: false,
@@ -21,7 +22,11 @@ const withAuth = Component => function WrappedComponent(props) {
 };
 
 class AuthProvider extends Component {
-  state = defaultAuthState;
+  state = {
+    ...defaultAuthState,
+    showAuthMessage: false,
+    authMessage: {},
+  };
 
   async makeRequest(url, params, options) {
     this.setState({ isLoading: true });
@@ -29,8 +34,14 @@ class AuthProvider extends Component {
     let result = {};
 
     try {
-      await Fetch.post(url, params);
-      result = { ...options };
+      const response = await Fetch.post(url, params);
+
+      const authMessageData = !response.success
+        ? { result, ...{ showAuthMessage: true, authMessage: response } }
+        : { result, ...{ showAuthMessage: false, authMessage: {} } };
+
+      result = { ...options, ...authMessageData };
+
     } catch(err) {
       console.log(err);
     }
@@ -42,23 +53,39 @@ class AuthProvider extends Component {
 
   login = pass => this.makeRequest(`${url.base_url}${url.login}`, { pass }, { isAuth: true });
 
-  logout = _ => this.makeRequest(`${url.base_url}${url.logout}`, null, { isAuth: false });
+  logout = _ => this.makeRequest(`${url.base_url}${url.logout}`, {}, { isAuth: false });
 
   loginAsGuest = _ => this.makeRequest(`${url.base_url}${url.login}`, { isGuest: true }, { isGuest: true });
 
+  handleAuthMessageClose = _ => this.setState({ showAuthMessage: false });
+
   render() {
 
-    const { state, login, logout, loginAsGuest } = this;
+    const {
+      state: { showAuthMessage, authMessage },
+      state,
+      login,
+      logout,
+      loginAsGuest,
+      handleAuthMessageClose,
+    } = this;
 
     return(
-      <AuthContext.Provider value={{
-        ...state,
-        login,
-        logout,
-        loginAsGuest,
-      }}>
-        {this.props.children}
-      </AuthContext.Provider>
+      <Fragment>
+        <AuthMessage
+          open={showAuthMessage}
+          authData={authMessage}
+          handleClose={handleAuthMessageClose}
+        />
+        <AuthContext.Provider value={{
+          ...state,
+          login,
+          logout,
+          loginAsGuest,
+        }}>
+          {this.props.children}
+        </AuthContext.Provider>
+      </Fragment>
     );
   }
 }
