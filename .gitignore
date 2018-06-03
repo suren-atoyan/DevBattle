@@ -4,5 +4,6 @@ data/
 media/
 
 .auth.json
+.secret.json
 
 config/auth.json
