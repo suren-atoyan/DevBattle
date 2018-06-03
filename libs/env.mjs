@@ -36,4 +36,4 @@ class Env {
   }
 }
 
-module.exports = new Env();
+export default new Env();

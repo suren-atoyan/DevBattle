@@ -1,12 +1,17 @@
-const http = require('http');
-const figlet = require('figlet');
-const bodyParser = require('body-parser');
-const config = require('./config');
-const cookieParser = require('cookie-parser');
-const express = require('express');
-const cors = require('cors');
-const env = require('./libs/env');
-const genAuth = require('./libs/genAuth');
+// TODO ::: It will be removed after Node 10 LTS verion.
+import __getDirname from './libs/__dirname';
+const __dirname = __getDirname(import.meta.url);
+
+import http from 'http';
+import figlet from 'figlet';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import express from 'express';
+
+import config from './config';
+import cors from 'cors';
+import env from './libs/env';
+import genAuth from './libs/genAuth';
 
 genAuth.run();
 
@@ -25,7 +30,9 @@ app.use(express.static(__dirname + '/public/'));
 
 app.use(express.static(__dirname + '/public/hackathon/build'));
 
-require('./routes')(app);
+import routes from './routes';
+
+routes(app);
 
 const server = http.createServer(app);
 

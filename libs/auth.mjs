@@ -1,8 +1,12 @@
-const jwt = require('jsonwebtoken');
-const path = require('path');
-const fs = require('fs');
-const config = require('../config');
-const SECRET = require('../config/.secret.json');
+import jwt from 'jsonwebtoken';
+import path from 'path';
+import fs from 'fs';
+import config from '../config';
+import SECRET from '../config/.secret.json';
+
+// TODO ::: It will be removed after Node 10 LTS verion.
+import __getDirname from './__dirname';
+const __dirname = __getDirname(import.meta.url);
 
 const AUTH_JSON_PATH = path.join(__dirname, '../config/', config.get('auth_path'));
 
@@ -54,4 +58,4 @@ class Auth {
   }
 }
 
-module.exports = new Auth();
+export default new Auth();

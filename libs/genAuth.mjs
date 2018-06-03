@@ -1,8 +1,12 @@
-const crypto = require('crypto');
-const fs = require('fs');
-const path = require('path');
-const config = require('../config');
-const env = require('./env');
+import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
+import config from '../config';
+import env from './env';
+
+// TODO ::: It will be removed after Node 10 LTS verion.
+import __getDirname from './__dirname';
+const __dirname = __getDirname(import.meta.url);
 
 const AUTH_JSON_PATH = path.join(__dirname, '../config/', config.get('auth_path'));
 const ADMIN_PASS_LENGTH = config.get('admin_pass_length');
@@ -36,9 +40,10 @@ class GenAuth {
   }
 
   genRandomCryptoString(len) {
+    // TODO ::: Replace crypto to tls.createSecureContext
     return crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len);
   }
 
 }
 
-module.exports = new GenAuth();
+export default new GenAuth();

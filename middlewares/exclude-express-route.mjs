@@ -21,4 +21,4 @@ const exclude = (exclude, middleware) => {
   }
 }
 
-module.exports = exclude;
+export default exclude;

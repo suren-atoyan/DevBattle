@@ -1,9 +1,14 @@
-const express = require('express');
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import config from '../../config';
+import auth from '../../libs/auth';
+
 const router = express.Router();
-const fs = require('fs');
-const path = require('path');
-const config = require('../../config');
-const auth = require('../../libs/auth');
+
+// TODO ::: It will be removed after Node 10 LTS verion.
+import __getDirname from '../../libs/__dirname';
+const __dirname = __getDirname(import.meta.url);
 
 // TODO ::: Please move getting auth.json functionality to libs/genAuth.js file 
 const AUTH_JSON_PATH = path.join(__dirname, '../../config/', config.get('auth_path'));
@@ -46,4 +51,4 @@ router.use('/', (req, res) => {
   res.send({});
 });
 
-module.exports = router;
+export default router;

@@ -4,7 +4,7 @@
   "description": "### Warning -> This is still in early development stage.",
   "main": "app.js",
   "scripts": {
-    "start-dev": "nodemon app",
+    "start-dev": "nodemon --experimental-modules app",
     "create-react-app": "cd ./public && create-react-app"
   },
   "repository": {

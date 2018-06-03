@@ -1,6 +1,6 @@
-const auth = require('../libs/auth');
+import auth from '../libs/auth';
 
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
     const { token } = req.cookies;
 
     if (!token) {
