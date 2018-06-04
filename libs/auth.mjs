@@ -101,7 +101,7 @@ class Auth {
   }
 
   async unsign(token) {
-    const activeTokens = await this.getActiveTockens();
+    let activeTokens = await this.getActiveTockens();
     activeTokens = activeTokens.filter(activeToken => activeToken !== token);
     return this.updateActiveTokens(activeTokens);
   }
