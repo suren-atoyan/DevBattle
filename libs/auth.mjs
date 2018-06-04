@@ -1,62 +1,115 @@
-import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+import fs from './promisify-fs';
 import path from 'path';
-import fs from 'fs';
 import config from '../config';
 import SECRET from '../config/.secret.json';
+import env from './env';
+import jwt from 'jsonwebtoken';
 
 // TODO ::: It will be removed after Node 10 LTS verion.
 import __getDirname from './__dirname';
 const __dirname = __getDirname(import.meta.url);
 
 const AUTH_JSON_PATH = path.join(__dirname, '../config/', config.get('auth_path'));
-
-// TODO ::: Fix getting auth.json
+const ADMIN_PASS_LENGTH = config.get('admin_pass_length');
 
 class Auth {
 
-  constructor() {
-    this.authObj = fs.existsSync(AUTH_JSON_PATH)
-      ? JSON.parse(fs.readFileSync(AUTH_JSON_PATH, 'utf-8'))
-      : {};
-
-    !this.authObj.activeTokens && (this.authObj.activeTokens = []);
+  static genRandomCryptoString(len) {
+    // TODO ::: Replace crypto to tls.createSecureContext
+    return crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len);
   }
 
-  sign(pass) {
-    // TODO ::: Change expiration time
+  static async reWritePassword(authJsonPath, authObj, adminPassLength) {
+    authObj.password = Auth.genRandomCryptoString(adminPassLength);
+    return Auth.saveAuthJson(authJsonPath, authJsonPath);
+  }
+
+  static async existsAuthJson(authJsonPath) {
+    return fs.stat(authJsonPath);
+  }
+
+  static async saveAuthJson(authJsonPath, authObj) {
+    return fs.writeFile(authJsonPath, JSON.stringify(authObj))
+  }
+
+  static async getAuthObj(authJsonPath) {
+    return JSON.parse(await fs.readFile(authJsonPath, 'utf8'));
+  }
+
+  constructor({ authJsonPath, adminPassLength, withNewPassword }) {
+    this.authJsonPath = authJsonPath;
+    this.adminPassLength = adminPassLength;
+    this.withNewPassword = withNewPassword;
+  }
+
+  async generateAuthJson() { // Check and Generate password
+
+    const { authJsonPath, withNewPassword, adminPassLength } = this;
+
+    const existsAuthJson = await Auth.existsAuthJson(authJsonPath);
+    const authObj = existsAuthJson
+      ? await Auth.getAuthObj(this.authJsonPath)
+      : {};
+
+    if (
+      withNewPassword ||
+      (!authObj.password || authObj.password.length !== adminPassLength)
+    ) {
+      return Auth.reWritePassword(authJsonPath, authObj, adminPassLength);
+    }
+  }
+
+  async getActiveTockens() {
+    const authObj = await Auth.getAuthObj(this.authJsonPath);
+    return authObj.activeTokens || [];
+  }
+
+  async getPassword() {
+    const authObj = await Auth.getAuthObj(this.authJsonPath);
+    return authObj.password;
+  }
+
+  async updateActiveTokens(activeTokens) {
+    const authObj = await Auth.getAuthObj(this.authJsonPath);
+    authObj.activeTokens = activeTokens;
+    Auth.saveAuthJson(this.authJsonPath, authObj);
+  }
+
+  async sign(pass) {
     const token = jwt.sign({ pass: pass, isAdmin: true }, SECRET, { expiresIn: '1h' });
-    if (!this.authObj.activeTokens.includes(token)) {
-      this.authObj.activeTokens.push(token);
-      this.updateActiveTokens();
+    const activeTokens = await this.getActiveTockens();
+    if (!activeTokens.includes(token)) {
+      activeTokens.push(token);
+      await this.updateActiveTokens(activeTokens);
     }
 
     return token;
   }
 
-  verify(token) {
-    if (this.authObj.activeTokens.includes(token)) {
-      
+  async verify(token) {
+    const activeTokens = await this.getActiveTockens();
+    if (activeTokens.includes(token)) {
       try {
         return jwt.verify(token, SECRET);
       } catch(err) {
-        this.unsign(token);
-        return;
+        await this.unsign(token);
+        return false;
       }
-
     }
-
-    return;
+    return false;
   }
 
-  unsign(token) {
-    this.authObj.activeTokens = this.authObj.activeTokens
-          .filter(activeToken => activeToken !== token);
-    this.updateActiveTokens();
+  async unsign(token) {
+    const activeTokens = await this.getActiveTockens();
+    activeTokens = activeTokens.filter(activeToken => activeToken !== token);
+    return this.updateActiveTokens(activeTokens);
   }
 
-  updateActiveTokens() {
-    fs.writeFileSync(AUTH_JSON_PATH, JSON.stringify(this.authObj));
-  }
 }
 
-export default new Auth();
+export default new Auth({
+  authJsonPath: AUTH_JSON_PATH,
+  adminPassLength: ADMIN_PASS_LENGTH,
+  withNewPassword: env.args.withNewPassword,
+});
