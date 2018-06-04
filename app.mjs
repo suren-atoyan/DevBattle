@@ -12,10 +12,10 @@ import config from './config';
 import cors from 'cors';
 import env from './libs/env';
 import routes from './routes';
-import genAuth from './libs/genAuth';
+import auth from './libs/auth';
 
 (async _ => {
-  await genAuth.run();
+  await auth.generateAuthJson();
 
   const app = express();
 
