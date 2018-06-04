@@ -11,34 +11,35 @@ import express from 'express';
 import config from './config';
 import cors from 'cors';
 import env from './libs/env';
+import routes from './routes';
 import genAuth from './libs/genAuth';
 
-genAuth.run();
+(async _ => {
+  await genAuth.run();
 
-const app = express();
+  const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(cookieParser());
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.use(cookieParser());
 
-env.isDev && app.use(cors({
-  credentials: true,
-  origin: true,
-}));
+  env.isDev && app.use(cors({
+    credentials: true,
+    origin: true,
+  }));
 
-app.use(express.static(__dirname + '/public/'));
+  app.use(express.static(__dirname + '/public/'));
 
-app.use(express.static(__dirname + '/public/hackathon/build'));
+  app.use(express.static(__dirname + '/public/hackathon/build'));
 
-import routes from './routes';
+  routes(app);
 
-routes(app);
+  const server = http.createServer(app);
 
-const server = http.createServer(app);
-
-server.listen(env.port || config.get('port'), _ => {
-  figlet.text('connect', (err, data) => {
-    if (err) return console.error(err); // TODO ::: Create ErrorHandler
-      console.log(data);
-    })
-});
+  server.listen(env.port || config.get('port'), _ => {
+    figlet.text('connect', (err, data) => {
+      if (err) return console.error(err); // TODO ::: Create ErrorHandler
+        console.log(data);
+      })
+  });
+})();

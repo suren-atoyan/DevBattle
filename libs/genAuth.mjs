@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import fs from 'fs';
+import fs from './promisify-fs';
 import path from 'path';
 import config from '../config';
 import env from './env';
@@ -13,30 +13,31 @@ const ADMIN_PASS_LENGTH = config.get('admin_pass_length');
 
 class GenAuth {
 
-  run() {
-    this.generate(AUTH_JSON_PATH, env.args.withNewPassword);
+  async run() {
+    return this.generate(AUTH_JSON_PATH, env.args.withNewPassword);
   }
 
-  generate(authJsonPath, withNewPassword) {
-    const authObj = this.existsAuthJson(authJsonPath)
-      ? JSON.parse(fs.readFileSync(authJsonPath, 'utf-8'))
+  async generate(authJsonPath, withNewPassword) {
+    const existsAuthJson = await this.existsAuthJson(authJsonPath);
+    const authObj = existsAuthJson
+      ? JSON.parse(await fs.readFile(authJsonPath, 'utf8'))
       : {};
 
     if (
       withNewPassword ||
       (!authObj.password || authObj.password.length !== ADMIN_PASS_LENGTH)
     ) {
-      this.reWritePassword(authJsonPath, authObj);
+      return this.reWritePassword(authJsonPath, authObj);
     }
   }
 
-  reWritePassword(authJsonPath, authObj) {
+  async reWritePassword(authJsonPath, authObj) {
     authObj.password = this.genRandomCryptoString(ADMIN_PASS_LENGTH);
-    fs.writeFileSync(authJsonPath, JSON.stringify(authObj));
+    return fs.writeFile(authJsonPath, JSON.stringify(authObj));
   }
 
-  existsAuthJson(authJsonPath) {
-    return fs.existsSync(authJsonPath);
+  async existsAuthJson(authJsonPath) {
+    return fs.stat(authJsonPath);
   }
 
   genRandomCryptoString(len) {

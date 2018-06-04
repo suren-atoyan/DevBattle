@@ -16,7 +16,8 @@ class Auth {
 
   constructor() {
     this.authObj = fs.existsSync(AUTH_JSON_PATH)
-      ? JSON.parse(fs.readFileSync(AUTH_JSON_PATH, 'utf-8')): {};
+      ? JSON.parse(fs.readFileSync(AUTH_JSON_PATH, 'utf-8'))
+      : {};
 
     !this.authObj.activeTokens && (this.authObj.activeTokens = []);
   }
