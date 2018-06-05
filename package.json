@@ -4,7 +4,9 @@
   "description": "### Warning -> This is still in early development stage.",
   "main": "app.js",
   "scripts": {
-    "start-dev": "nodemon --experimental-modules app",
+    "start-dev": "nodemon --experimental-modules --ignore '.db.json' --ignore './public' app",
+    "start-hackathon-client": "cd ./public/hackathon && npm start",
+    "start-dev-with-hackathon-client": "npm run start-dev & npm run start-hackathon-client",
     "create-react-app": "cd ./public && create-react-app"
   },
   "repository": {
@@ -24,6 +26,7 @@
     "express": "^4.16.3",
     "figlet": "^1.2.0",
     "jsonwebtoken": "^8.2.2",
+    "lowdb": "^1.0.0",
     "nconf": "^0.10.0",
     "serve-favicon": "^2.5.0"
   },
