@@ -4,7 +4,7 @@ const existingRoutes = {
 }
 
 const url = {
-  base_url: '/api/v1.0.0/',
+  base_url: 'http://localhost:8080/api/v1.0.0/',
   login: 'login',
   logout: 'logout',
   check_tocken: 'check_token',

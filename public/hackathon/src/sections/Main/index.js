@@ -1,10 +1,7 @@
 import React from 'react';
-import { Route, Redirect, Switch } from 'react-router-dom';
-import Monitoring from 'components/Monitoring';
-import Challenges from 'components/Challenges';
-import Admin from 'components/Admin';
+import { Route, Switch } from 'react-router-dom';
+import { Admin, Monitoring, Challenges } from 'pages';
 import NoMatch from 'components/NoMatch';
-
 import PrivateRoute from 'auth/PrivateRoute';
 import { withAuth } from 'auth';
 
@@ -15,9 +12,7 @@ const Content = ({ match, authState: { isAdmin, isGuest, isTeamMember } }) => {
       <Route path="/monitoring" component={Monitoring} />
       <PrivateRoute path="/challenges" hasAccess={isAdmin || isGuest || isTeamMember} component={Challenges} />
       <PrivateRoute path="/admin" hasAccess={isAdmin} component={Admin} />
-      <Route exact path="/404" component={NoMatch} />
-
-      <Redirect to="/404" />
+      <Route component={NoMatch} />
     </Switch>
   );
 }
