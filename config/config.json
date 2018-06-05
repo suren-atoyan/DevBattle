@@ -5,5 +5,10 @@
   "exclude_from_auth": [
     "/login",
     "/check_token"
-  ]
+  ],
+  "default_data": {
+    "hackathons": [],
+    "active_hackathon_id": null
+  },
+  "db_path": ".db.json"
 }
