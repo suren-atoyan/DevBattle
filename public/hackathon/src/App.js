@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import AuthProvider from 'auth';
+import { Header, Main } from 'sections';
 import './App.scss';
-
-import TopBar from 'components/TopBar';
-import Content from 'components/Content';
 
 class App extends Component {
   render() {
     return (
       <div className="app">
         <AuthProvider>
-          <TopBar />
-          <Content />
+          <Header />
+          <Main />
         </AuthProvider>
       </div>
     );
