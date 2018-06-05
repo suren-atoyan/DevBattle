@@ -49,8 +49,8 @@ class DB {
 
   async update(...args) {
     return await this.db
-               .update(...args)
-               .write()
+                     .update(...args)
+                     .write()
   }
 
 }
