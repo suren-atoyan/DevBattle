@@ -2,7 +2,6 @@ import crypto from 'crypto';
 import fs from './promisify-fs';
 import path from 'path';
 import config from '../config';
-import SECRET from '../config/.secret.json';
 import env from './env';
 import jwt from 'jsonwebtoken';
 
@@ -22,7 +21,7 @@ class Auth {
 
   static async reWritePassword(authJsonPath, authObj, adminPassLength) {
     authObj.password = Auth.genRandomCryptoString(adminPassLength);
-    return Auth.saveAuthJson(authJsonPath, authJsonPath);
+    return Auth.saveAuthJson(authJsonPath, authObj);
   }
 
   static async existsAuthJson(authJsonPath) {
@@ -43,7 +42,7 @@ class Auth {
     this.withNewPassword = withNewPassword;
   }
 
-  async generateAuthJson() { // Check and Generate password
+  async generateAuthJson() {
 
     const { authJsonPath, withNewPassword, adminPassLength } = this;
 
@@ -52,11 +51,19 @@ class Auth {
       ? await Auth.getAuthObj(this.authJsonPath)
       : {};
 
+    if (!authObj.secret) {
+      authObj.secret = Auth.genRandomCryptoString(10);
+    }
+
+    this.secret = authObj.secret;
+
     if (
       withNewPassword ||
       (!authObj.password || authObj.password.length !== adminPassLength)
     ) {
       return Auth.reWritePassword(authJsonPath, authObj, adminPassLength);
+    } else {
+      return Auth.saveAuthJson(authJsonPath, authObj);
     }
   }
 
@@ -77,7 +84,7 @@ class Auth {
   }
 
   async sign(pass) {
-    const token = jwt.sign({ pass: pass, isAdmin: true }, SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ pass: pass, isAdmin: true }, this.secret, { expiresIn: '1h' });
     const activeTokens = await this.getActiveTockens();
     if (!activeTokens.includes(token)) {
       activeTokens.push(token);
@@ -91,7 +98,7 @@ class Auth {
     const activeTokens = await this.getActiveTockens();
     if (activeTokens.includes(token)) {
       try {
-        return jwt.verify(token, SECRET);
+        return jwt.verify(token, this.secret);
       } catch(err) {
         await this.unsign(token);
         return false;
