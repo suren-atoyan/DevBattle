@@ -13,7 +13,17 @@
 const exclude = (exclude, middleware) => {
 
   return (req, res, next) => {
-    if (exclude.some(item => req.path.includes(item))) {
+
+    const excluded = exclude.some(item => {
+      const method = item.split(':')[1];
+      if (method && (req.method.toLowerCase() === method)) {
+        return true;
+      }
+
+      return item === req.path;
+    });
+
+    if (excluded) {
       return next();
     }
 
