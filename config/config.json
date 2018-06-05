@@ -4,7 +4,8 @@
   "admin_pass_length": 10,
   "exclude_from_auth": [
     "/login",
-    "/check_token"
+    "/check_token",
+    "/hackathons:get"
   ],
   "default_data": {
     "hackathons": [],
