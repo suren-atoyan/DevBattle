@@ -53,6 +53,15 @@ class DB {
                      .write()
   }
 
+  async updateActiveHackathonId(id) {
+    await this.set('active_hackathon_id', id);
+    return id;
+  }
+
+  async getActiveHackathon(id) {
+    const hackathons = await this.get('hackathons');
+    return hackathons.find(hackathon => hackathon._id === id);
+  }
 }
 
 export default new DB({

@@ -12,7 +12,7 @@ import cors from 'cors';
 import env from './libs/env';
 import routes from './routes';
 import auth from './libs/auth';
-import db from './libs/db';
+import db from './db';
 
 import connectMessage from './libs/utils';
 

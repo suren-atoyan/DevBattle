@@ -4,7 +4,7 @@ import path from 'path';
 import config from '../config';
 import env from './env';
 import jwt from 'jsonwebtoken';
-import db from './db';
+import db from '../db';
 
 // TODO ::: It will be removed after Node 10 LTS verion.
 import __getDirname from './__dirname';
@@ -86,7 +86,7 @@ class Auth {
 
   async sign(pass) {
     const role = await this.getRole(pass);
-    const token = jwt.sign(role, this.secret, { expiresIn: '1h' });
+    const token = jwt.sign({ pass, role}, this.secret, { expiresIn: '1h' });
     const activeTokens = await this.getActiveTockens();
     if (!activeTokens.includes(token)) {
       activeTokens.push(token);
@@ -106,6 +106,7 @@ class Auth {
         return false;
       }
     }
+
     return false;
   }
 
@@ -132,6 +133,12 @@ class Auth {
     }
 
     return Object.keys(role).length ? role : null;
+  }
+
+  async getRoleByToken(token) {
+    const { pass } = await this.verify(token);
+
+    return this.getRole(pass);
   }
 
   async isAdmin(pass) {
