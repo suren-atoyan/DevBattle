@@ -4,7 +4,7 @@ import Hackathon from '../../db/models/hackathon';
 import hackathons from '../../db/collections/hackathons';
 import db from '../../db';
 
-export default async (req, res) => {
+async function createHackathon(req, res) {
   const { cookies : { token }, body: { body } } = req;
 
   const role = await auth.getRoleByToken(token);
@@ -24,3 +24,9 @@ export default async (req, res) => {
     res.status(401).send({ message: 'Authentication failed.' });
   }
 }
+
+async function getHackathon(req, res) {
+  res.status(200).send(await db.getActiveHackathon());
+}
+
+export { createHackathon, getHackathon };
