@@ -4,6 +4,7 @@ import path from 'path';
 import config from '../config';
 import env from './env';
 import jwt from 'jsonwebtoken';
+import db from './db';
 
 // TODO ::: It will be removed after Node 10 LTS verion.
 import __getDirname from './__dirname';
@@ -84,7 +85,8 @@ class Auth {
   }
 
   async sign(pass) {
-    const token = jwt.sign({ pass: pass, isAdmin: true }, this.secret, { expiresIn: '1h' });
+    const role = await this.getRole(pass);
+    const token = jwt.sign(role, this.secret, { expiresIn: '1h' });
     const activeTokens = await this.getActiveTockens();
     if (!activeTokens.includes(token)) {
       activeTokens.push(token);
@@ -113,6 +115,65 @@ class Auth {
     return this.updateActiveTokens(activeTokens);
   }
 
+  async getRole(pass) {
+
+    const role = {};
+
+    if (await this.isGuest(pass)) {
+      role.isGuest = true;
+    }
+
+    if (await this.isTeamMember(pass)) {
+      role.isTeamMember = true;
+    }
+
+    if (await this.isAdmin(pass)) {
+      role.isAdmin = true;
+    }
+
+    return Object.keys(role).length ? role : null;
+  }
+
+  async isAdmin(pass) {
+    const authObj = await Auth.getAuthObj(this.authJsonPath);
+
+    return authObj.password === pass;
+  }
+
+  async isTeamMember(pass) {
+    const activeHackathon = await this.getActiveHackathon();
+
+    if (!activeHackathon) {
+      return false;
+    }
+
+    return activeHackathon.teams.some(team => team.members.find(member => member.pass === pass));
+  }
+
+  async isGuest(pass) {
+    const activeHackathon = await this.getActiveHackathon();
+
+    if (!activeHackathon) {
+      return false;
+    }
+
+    return activeHackathon.guests.find(guest => guest.pass === pass);
+  }
+
+  async getActiveHackathonID() {
+    const activeHackathonID = await db.get('active_hackathon_id');
+
+    return activeHackathonID;
+  }
+
+  async getActiveHackathon() {
+
+    const currentHackathonID = await this.getActiveHackathonID();
+
+    const hackathons = await db.get('hackathons');
+
+    return hackathons.find(hackathon => hackathon.id === currentHackathonID);
+  }
 }
 
 export default new Auth({

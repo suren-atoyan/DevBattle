@@ -1,14 +1,14 @@
 import auth from '../../libs/auth';
 
 export default async (req, res) => {
-  const { pass: reqPass } = req.body;
+  const { pass } = req.body;
 
-  const password = await auth.getPassword();
+  const role = await auth.getRole(pass);
 
-  if (reqPass && reqPass === password) {
-    const token = await auth.sign(password);
+  if (role) {
+    const token = await auth.sign(pass);
     res.setHeader('Set-Cookie', `token=${token}; HttpOnly`);
-    res.send({ isAdmin: true });
+    res.send(role);
   } else {
     res.status(401).send({ message: 'Authentication failed.' });
   }
