@@ -1,10 +1,11 @@
 import auth from '../../libs/auth';
+import { asyncWrapper } from '../../libs/utils';
 
 import Hackathon from '../../db/models/hackathon';
 import hackathons from '../../db/collections/hackathons';
 import db from '../../db';
 
-async function createHackathon(req, res) {
+async function _createHackathon(req, res) {
   const { cookies : { token }, body: { body } } = req;
 
   const role = await auth.getRoleByToken(token);
@@ -25,8 +26,10 @@ async function createHackathon(req, res) {
   }
 }
 
-async function getHackathon(req, res) {
+async function _getHackathon(req, res) {
   res.status(200).send(await db.getActiveHackathon());
 }
 
+const createHackathon = asyncWrapper(_createHackathon);
+const getHackathon = asyncWrapper(_getHackathon);
 export { createHackathon, getHackathon };

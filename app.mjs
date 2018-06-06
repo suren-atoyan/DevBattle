@@ -13,8 +13,9 @@ import env from './libs/env';
 import routes from './routes';
 import auth from './libs/auth';
 import db from './db';
+import errorHandler from './errorHandler';
 
-import connectMessage from './libs/utils';
+import { connectMessage } from './libs/utils';
 
 (async _ => {
   await db.connect();
@@ -37,6 +38,8 @@ import connectMessage from './libs/utils';
   app.use(express.static(__dirname + '/public/hackathon/build'));
 
   routes(app);
+
+  app.use(errorHandler);
 
   const server = http.createServer(app);
 
