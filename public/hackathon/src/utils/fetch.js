@@ -1,5 +1,5 @@
 class Fetch {
-  static async request({ url, method = 'GET', data }) {
+  static async request(url, method = 'GET', data) {
 
     try {
 
@@ -39,18 +39,18 @@ class Fetch {
   }
 
   static async get(url) {
-    return await Fetch.request({
+    return await Fetch.request(
       url,
-      method: 'GET',
-    });
+      'GET',
+    );
   }
 
   static async post(url, data) {
-    return await Fetch.request({
+    return await Fetch.request(
       url,
-      method: 'POST',
+      'POST',
       data,
-    });
+    );
   }
 }
 

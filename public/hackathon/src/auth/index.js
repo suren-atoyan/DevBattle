@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import Fetch from 'utils/fetch';
-import { omit } from 'utils';
+import { makeRequest } from 'utils';
 import { url } from 'config';
-import AuthMessage from './AuthMessage';
+import StatusMessage from 'components/StatusMessage';
 
 const defaultAuthState = {
   isAdmin: false,
@@ -24,54 +23,33 @@ const withAuth = Component => function WrappedComponent(props) {
 class AuthProvider extends Component {
   state = {
     ...defaultAuthState,
-    showAuthMessage: false,
+    showStatusMessage: false,
     authMessage: {},
   };
 
   componentDidMount() {
-    this.makeRequest(`${url.base_url}${url.check_tocken}`, {}, {}, 'get');
+    this.checkToken();
   }
 
-  async makeRequest(url, params, options = {}, method = 'post') {
-    this.setState({ isLoading: true });
-
-    let result = {};
-
-    try {
-      const response = await Fetch[method](url, params);
-
-      const authMessageData = response.success
-        ? { result, ...{ showAuthMessage: false, authMessage: {} } }
-        : { result, ...{ showAuthMessage: true, authMessage: response } };
-
-      if (!Object.keys(options).length) {
-        // TODO ::: Move to pick mathod ( + implement pick method )
-        options = omit(response, ['success']);
-      }
-
-      result = { ...options, ...authMessageData };
-
-    } catch(err) {
-      console.log(err);
-    }
-
-    result.isLoading = false;
-
-    this.setState({ ...defaultAuthState, ...result });
+  async makeRequest(url, method, data) {
+    const response = await makeRequest(url, method, data, defaultAuthState);
+    this.setState({ ...response });
   }
 
-  login = pass => this.makeRequest(`${url.base_url}${url.login}`, { pass });
+  login = pass => this.makeRequest(`${url.base_url}${url.login}`, 'POST', { pass });
 
-  logout = _ => this.makeRequest(`${url.base_url}${url.logout}`, {});
+  logout = _ => this.makeRequest(`${url.base_url}${url.logout}`, 'POST', {});
 
-  loginAsGuest = _ => this.makeRequest(`${url.base_url}${url.login}`, { isGuest: true });
+  loginAsGuest = _ => this.makeRequest(`${url.base_url}${url.login}`, 'POST', { isGuest: true });
 
-  handleAuthMessageClose = _ => this.setState({ showAuthMessage: false });
+  checkToken = _ => this.makeRequest(`${url.base_url}${url.check_tocken}`, 'GET');
+
+  handleAuthMessageClose = _ => this.setState({ showStatusMessage: false });
 
   render() {
 
     const {
-      state: { showAuthMessage, authMessage },
+      state: { showStatusMessage, statusMessage },
       state,
       login,
       logout,
@@ -81,8 +59,8 @@ class AuthProvider extends Component {
 
     return(
       <Fragment>
-        {showAuthMessage && <AuthMessage
-          authData={authMessage}
+        {showStatusMessage && <StatusMessage
+          statusData={statusMessage}
           handleClose={handleAuthMessageClose}
         />}
         <AuthContext.Provider value={{
