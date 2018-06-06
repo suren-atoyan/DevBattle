@@ -11,6 +11,12 @@ const url = {
   logout: '/logout',
   check_tocken: '/check_token',
   hackathons: '/hackathons',
+  monaco_loader: './monaco-editor/vs/loader.js',
+  monaco_base: './monaco-editor/vs',
 }
 
-export { existingRoutes, url, REACT_APP_LOCAL_SERVER_URL as localServerUrl };
+export {
+  existingRoutes,
+  url,
+  REACT_APP_LOCAL_SERVER_URL as localServerUrl,
+};
