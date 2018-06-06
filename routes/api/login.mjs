@@ -1,6 +1,7 @@
 import auth from '../../libs/auth';
+import { asyncWrapper } from '../../libs/utils';
 
-export default async (req, res) => {
+const login = async (req, res) => {
   const { pass } = req.body;
 
   const role = await auth.getRole(pass);
@@ -13,3 +14,5 @@ export default async (req, res) => {
     res.status(401).send({ message: 'Authentication failed.' });
   }
 }
+
+export default asyncWrapper(login);
