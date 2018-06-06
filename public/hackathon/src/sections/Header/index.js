@@ -15,6 +15,8 @@ import { withRouter } from 'react-router';
 import { getRouteTitle } from 'utils';
 import { withAuth } from 'auth';
 
+import { withStore } from 'store';
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -28,7 +30,7 @@ const styles = {
   },
 };
 
-class ButtonAppBar extends Component {
+class TopBar extends Component {
 
   state = {
     isLoginDialogOpen: false,
@@ -70,9 +72,15 @@ class ButtonAppBar extends Component {
         isGuest,
         isTeamMember,
       },
+      store: {
+        activeHackathon,
+      }
     } = this.props;
 
     const title = getRouteTitle(pathname);
+    const hackathonName = activeHackathon
+      ? activeHackathon.name
+      : 'no name';
 
     return (
       <div className={classes.root}>
@@ -82,6 +90,8 @@ class ButtonAppBar extends Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" className={classes.flex}>
+              {hackathonName}
+              -------
               {title}
             </Typography>
 
@@ -121,8 +131,8 @@ class ButtonAppBar extends Component {
   }
 }
 
-ButtonAppBar.propTypes = {
+TopBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withAuth(withRouter(withStyles(styles)(ButtonAppBar)));
+export default withStore(withAuth(withRouter(withStyles(styles)(TopBar))));
