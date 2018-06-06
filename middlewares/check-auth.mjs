@@ -9,7 +9,8 @@ export default async (req, res, next) => {
     const decoded = await auth.verify(token);
 
     // TODO ::: Fix or correct exparation time for tockens
-    if (!decoded || decoded.exp <= Date.now() / 1000) {
+    // ex. || decoded.exp <= Date.now() / 1000
+    if (!decoded) {
       res.clearCookie('token');
       res.status(401).send({ message: 'Authentication failed.' }); 
     } else {

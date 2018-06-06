@@ -86,7 +86,8 @@ class Auth {
 
   async sign(pass) {
     const role = await this.getRole(pass);
-    const token = jwt.sign({ pass, role}, this.secret, { expiresIn: '1h' });
+    // TODO ::: Implement expire time. ex. { expiresIn: '1h' }
+    const token = jwt.sign({ pass, role}, this.secret);
     const activeTokens = await this.getActiveTockens();
     if (!activeTokens.includes(token)) {
       activeTokens.push(token);
