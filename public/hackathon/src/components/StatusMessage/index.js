@@ -9,8 +9,8 @@ const getMessageBasedOnStatus = status => status === 401
 
 const defaultSnackbarPosition = { vertical: 'top', horizontal: 'right' };
 
-const AuthMessage = props => {
-  const message = getMessageBasedOnStatus(props.authData.status);
+const StatusMessage = props => {
+  const message = getMessageBasedOnStatus(props.statusData.status);
 
   return (
     <Snackbar
@@ -22,4 +22,4 @@ const AuthMessage = props => {
   );
 }
 
-export default AuthMessage;
+export default StatusMessage;
