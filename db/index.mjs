@@ -62,10 +62,13 @@ class DB {
     const hackathons = await this.get('hackathons');
     const activeHackathonId = await this.get('active_hackathon_id');
     const activeHackathon = hackathons.find(hackathon => hackathon._id === activeHackathonId);
-    return (
-      activeHackathon.teams = activeHackathon.teams.map(team => (delete team.password, team)),
-      activeHackathon
-    );
+
+    return activeHackathon
+      ? (
+          activeHackathon.teams = activeHackathon.teams.map(team => (delete team.password, team)),
+          activeHackathon
+        )
+      : {};
   }
 }
 
