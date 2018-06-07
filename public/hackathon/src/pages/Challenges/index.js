@@ -1,59 +1,18 @@
 import React, { PureComponent } from 'react';
 
-import Button from '@material-ui/core/Button';
+import Challenge from './Challenge/';
 
-import Editor from 'components/Editor';
+import Stepper from 'components/Stepper';
 
-// Example
-
-const sourceExample = `class Auth {
-  static genRandomCryptoString(len) {
-    return crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len);
-  }
-
-  // ...
-}
-`;
+import './index.scss';
 
 export default class Challenges extends PureComponent {
 
-  state = {
-    isEditorMounted: false,
-    theme: 'vs-dark',
-  }
-
-  editorDidMount = getEditorValue => {
-    this.getEditorValue = getEditorValue;
-
-    this.setState({ isEditorMounted: true });
-  }
-
-  sendResult = _ => {
-    // ...
-  }
-
-  toggleTheme = _ => this.setState({ theme: this.state.theme.endsWith('dark') ? 'vs' : 'vs-dark' });
-
   render() {
     return (
-      <div>
-        <Editor
-          value={sourceExample}
-          valueGetter={getEditorValue => (this.getEditorValue = getEditorValue)}
-          editorDidMount={this.editorDidMount}
-          theme={this.state.theme}
-        />
-        <Button
-          onClick={this.sendResult}
-          disabled={this.isEditorMounted}
-        >
-          Submit
-        </Button>
-        <Button
-          onClick={this.toggleTheme}
-        >
-          Toggle Theme
-        </Button>
+      <div className="challenges__wrapper">
+        <div className="challenge__wrapper"><Challenge /></div>
+        <div className="challenges__stepper"><Stepper /></div>
       </div>
     );
   }
