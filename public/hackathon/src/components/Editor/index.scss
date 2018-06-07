@@ -3,8 +3,7 @@
   &__wrapper {
     display: flex;
     width: 50%;
-    height: 85vh;
-    padding: 10px;
+    height: calc(100% - 40px);
     position: relative;
   }
 
@@ -16,10 +15,10 @@
   &__preloader {
     position: absolute;
     z-index: 10;
-    top: 10px;
-    left: 10px;
-    width: calc(100% - 20px);
-    height: calc(100% - 20px);
+    top: 0;
+    left: 0;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
     background-color: rgba(4, 3.5, 1, .8);
     display: flex;
     justify-content: center;
