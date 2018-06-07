@@ -49,7 +49,7 @@ class Monaco {
     const mainScript = this.createScript();
 
     mainScript.innerHTML = `
-      require.config({ paths: { 'vs': './monaco-editor/vs' }});
+      require.config({ paths: { 'vs': '/monaco-editor/vs' }});
       require(['vs/editor/editor.main'], function() {
         document.dispatchEvent(new Event('monaco_init'));
       });
