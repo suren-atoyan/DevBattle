@@ -1,5 +1,6 @@
 import Model from '.';
-import Teams from '../collections/Teams';
+import Teams from '../collections/teams';
+import Challenges from '../collections/challenges';
 
 const hackathonSchema = {
   name: {
@@ -21,6 +22,11 @@ const hackathonSchema = {
   duration: {
     required: true,
     type: Number, // Date
+  },
+
+  challenges: {
+    required: true,
+    type: Challenges,
   }
 };
 
