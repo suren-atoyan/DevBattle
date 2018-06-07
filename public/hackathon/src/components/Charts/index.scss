@@ -1,3 +1,7 @@
+.chart {
+  width: 100%;
+}
+
 .highcharts-title, .highcharts-subtitle {
   text-transform: uppercase;
 }
@@ -11,11 +15,11 @@
 }
 
 .highcharts-yaxis-grid {
-  stroke-width: 1px;
+  stroke-width: 0px;
 }
 
 .highcharts-axis-labels, .highcharts-axis-title {
-  fill: #E0E0E3;
+  fill: #899094;
 }
 
 .highcharts-navigator .highcharts-navigator-handle {
@@ -72,6 +76,7 @@
   -webkit-tap-highlight-color: transparent;
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
+  font-weight: 100;
 }
 
 .highcharts-root {
@@ -95,7 +100,7 @@
 }
 
 .highcharts-background {
-  fill: #2a2a2b;
+  fill: #192431;
 }
 
 .highcharts-plot-border, .highcharts-plot-background {
@@ -112,12 +117,13 @@
 
 /* Titles */
 .highcharts-title {
-  fill: #E0E0E3;
+  fill: #899094;
   font-size: 20px;
+  line-height: 50px;
 }
 
 .highcharts-subtitle {
-  fill: #E0E0E3;
+  fill: #899094;
 }
 
 /* Axes */
@@ -131,11 +137,11 @@
 }
 
 .highcharts-axis-title {
-  fill: #E0E0E3;
+  fill: #899094;
 }
 
 .highcharts-axis-labels {
-  fill: #E0E0E3;
+  fill: #899094;
   cursor: default;
   font-size: 0.9em;
 }
@@ -193,7 +199,7 @@
 }
 
 .highcharts-tooltip text {
-  fill: #E0E0E3;
+  fill: #fff;
 }
 
 .highcharts-tooltip .highcharts-header {
@@ -218,7 +224,7 @@
 
 .highcharts-graph {
   fill: none;
-  stroke-width: 2px;
+  stroke-width: 3px;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -254,7 +260,7 @@ g.highcharts-series,
 
 /* Series options */
 /* Default colors */
-.highcharts-color-0 {
+.highcharts-spline-series {
   fill: #2b908f;
   stroke: url(#linear);
 }
@@ -447,7 +453,7 @@ g.highcharts-series,
 }
 
 .highcharts-legend-item text {
-  fill: #E0E0E3;
+  fill: #899094;
   font-weight: bold;
   font-size: 1em;
   cursor: pointer;
@@ -481,7 +487,12 @@ g.highcharts-series,
 /* Loading */
 .highcharts-loading {
   position: absolute;
-  background-color: #2a2a2b;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#17232d+0,1a2738+40,1a2d40+100 */
+  background: #17232d; /* Old browsers */
+  background: -moz-linear-gradient(left, #17232d 0%, #1a2738 40%, #1a2d40 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, #17232d 0%,#1a2738 40%,#1a2d40 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, #17232d 0%,#1a2738 40%,#1a2d40 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#17232d', endColorstr='#1a2d40',GradientType=1 ); /* IE6-9 */
   opacity: 0.5;
   text-align: center;
   z-index: 10;
@@ -546,7 +557,7 @@ g.highcharts-series,
 }
 
 .highcharts-waterfall-series .highcharts-graph {
-  stroke: #E0E0E3;
+  stroke: #899094;
   stroke-dasharray: 1, 3;
 }
 
@@ -630,11 +641,11 @@ g.highcharts-series,
 }
 
 .highcharts-scrollbar-arrow {
-  fill: #E0E0E3;
+  fill: #899094;
 }
 
 .highcharts-scrollbar-rifles {
-  stroke: #E0E0E3;
+  stroke: #899094;
   stroke-width: 1px;
 }
 
@@ -668,7 +679,7 @@ g.highcharts-series,
 
 .highcharts-button-pressed {
   font-weight: bold;
-  fill: #000003;
+  fill: #899094;
   stroke: #606063;
 }
 
@@ -690,7 +701,7 @@ g.highcharts-series,
 }
 
 .highcharts-range-label text {
-  fill: #E0E0E3;
+  fill: #899094;
 }
 
 .highcharts-range-input rect {
@@ -814,7 +825,7 @@ input.highcharts-range-selector {
 }
 
 .highcharts-button-symbol {
-  stroke: #E0E0E3;
+  stroke: #899094;
   stroke-width: 3px;
 }
 
@@ -828,7 +839,7 @@ input.highcharts-range-selector {
 .highcharts-menu-item {
   padding: 0.5em 1em;
   background: none;
-  color: #E0E0E3;
+  color: #899094;
   cursor: pointer;
   transition: background 250ms, color 250ms;
 }
@@ -856,7 +867,7 @@ text.highcharts-drilldown-data-label,
 .highcharts-no-data text {
   font-weight: bold;
   font-size: 12px;
-  fill: #E0E0E3;
+  fill: #899094;
 }
 
 /* Drag-panes module */
@@ -874,12 +885,12 @@ text.highcharts-drilldown-data-label,
 /* Lineargauge type series */
 .highcharts-lineargauge-target {
   stroke-width: 1px;
-  stroke: #E0E0E3;
+  stroke: #899094;
 }
 
 .highcharts-lineargauge-target-line {
   stroke-width: 1px;
-  stroke: #E0E0E3;
+  stroke: #899094;
 }
 
 /* Annotations module */

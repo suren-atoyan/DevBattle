@@ -1,11 +1,15 @@
-import React, { PureComponent } from 'react';
+import React, {PureComponent} from 'react';
+import Typography from '@material-ui/core/Typography';
+import Charts from '../../components/Charts';
 
-export default class Monitoring extends PureComponent {  
-  render() {
-    return (
-      <div>
-        Monitoring
-      </div>
-    );
-  }
+import './index.scss';
+
+export default class Monitoring extends PureComponent {
+    render() {
+        return (
+            <div className='monitoring'>
+                <Charts />
+            </div>
+        );
+    }
 }
