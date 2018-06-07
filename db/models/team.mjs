@@ -18,6 +18,7 @@ const teamSchema = {
   },
 
   answersCount: {
+    require: false,
     type: Number,
     default: 0,
   },
