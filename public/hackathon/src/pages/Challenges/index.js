@@ -1,8 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import Challenge from './Challenge/';
 import Stepper from 'components/Stepper';
-import Typography from '@material-ui/core/Typography';
-import classNames from 'classnames';
+import NoActive from 'components/NoActive';
 
 import { withStore } from 'store';
 import { withRouter } from 'react-router-dom';
@@ -51,18 +50,12 @@ class Challenges extends PureComponent {
 
     return (
       <div
-        className={classNames('challenges__wrapper', {
-          centered: !hasActiveHackathon,
-        })}
+        className="challenges__wrapper"
       >
         {
           hasActiveHackathon
             ? this.getChallengesContent()
-            : (
-                <Typography variant="display3" align="center" className="challenges__noch">
-                  There is no active hackathons
-                </Typography>
-              )
+            : <NoActive />
         }
       </div>
     );
