@@ -5,10 +5,43 @@ import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 
 import { withStore } from 'store';
+import { withRouter } from 'react-router-dom';
 
 import './index.scss';
 
 class Challenges extends PureComponent {
+
+  componentDidMount() {
+    const { match, history } = this.props;
+
+    !match.params.id && history.push(`${match.url}/1`);
+  }
+
+  getChallengesContent() {
+
+    const { match: { params }, store: { activeHackathon : { challenges } } } = this.props;
+
+    if (!params.id) {
+      return null;
+    }
+
+    const { description, name, hasCodeEditor } = challenges[params.id - 1];
+
+    return (
+      <Fragment>
+        <div className="challenge__wrapper">
+          <Challenge
+            description={description}
+            name={name}
+            hasCodeEditor={hasCodeEditor}
+          />
+        </div>
+        <div className="challenges__stepper">
+          <Stepper steps={challenges.length} />
+        </div>
+      </Fragment>
+    );
+  }
 
   render() {
 
@@ -16,25 +49,18 @@ class Challenges extends PureComponent {
 
     const hasActiveHackathon = !!activeHackathon;
 
-    const hasChallenges = hasActiveHackathon && activeHackathon.challenges.length;
-
     return (
       <div
         className={classNames('challenges__wrapper', {
-          centered: !hasChallenges,
+          centered: !hasActiveHackathon,
         })}
       >
         {
-          hasActiveHackathon || hasChallenges
-            ? (
-                <Fragment>
-                  <div className="challenge__wrapper"><Challenge /></div>
-                  <div className="challenges__stepper"><Stepper /></div>
-                </Fragment>
-              )
+          hasActiveHackathon
+            ? this.getChallengesContent()
             : (
                 <Typography variant="display3" align="center" className="challenges__noch">
-                  {`There is no active ${!hasActiveHackathon ? 'hackathons' : 'challenges'}`}
+                  There is no active hackathons
                 </Typography>
               )
         }
@@ -43,4 +69,4 @@ class Challenges extends PureComponent {
   }
 }
 
-export default withStore(Challenges);
+export default withRouter(withStore(Challenges));
