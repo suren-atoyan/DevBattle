@@ -6,13 +6,11 @@ import hackathons from '../../db/collections/hackathons';
 import db from '../../db';
 
 async function _createHackathon(req, res) {
-  const { cookies : { token }, body: { body } } = req;
-
+  const { cookies : { token }, body } = req;
   const role = await auth.getRoleByToken(token);
 
   if (role && role.isAdmin) {
-
-    if (Hackathon.__isValid(body)) {
+    if (body && Hackathon.__isValid(body)) {
       const currentHackathon = new Hackathon(body);
       await hackathons.push(currentHackathon);
       await db.updateActiveHackathonId(currentHackathon._id);
