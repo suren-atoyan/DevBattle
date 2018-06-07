@@ -11,8 +11,8 @@ const url = {
   logout: '/logout',
   check_tocken: '/check_token',
   hackathons: '/hackathons',
-  monaco_loader: './monaco-editor/vs/loader.js',
-  monaco_base: './monaco-editor/vs',
+  monaco_loader: '/monaco-editor/vs/loader.js',
+  monaco_base: '/monaco-editor/vs',
 }
 
 export {
