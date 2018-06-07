@@ -68,7 +68,7 @@ class DB {
           activeHackathon.teams = activeHackathon.teams.map(team => (delete team.password, team)),
           activeHackathon
         )
-      : {};
+      : null;
   }
 }
 
