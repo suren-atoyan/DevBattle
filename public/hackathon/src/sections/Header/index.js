@@ -92,8 +92,7 @@ class TopBar extends Component {
               </IconButton>
             </Link>
             <Typography variant="title" color="inherit" className={classes.flex}>
-              {hackathonName}
-              {' - '}
+              {`${hackathonName} - `}
               {title}
             </Typography>
 
