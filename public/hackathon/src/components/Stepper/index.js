@@ -6,6 +6,8 @@ import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
+import { withRouter } from 'react-router-dom';
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -21,37 +23,35 @@ class DotsMobileStepper extends React.Component {
     activeStep: 0,
   };
 
-  handleNext = () => {
-    this.setState({
-      activeStep: this.state.activeStep + 1,
-    });
-  };
+  toStep = activeStep => {
+    const { history } = this.props;
 
-  handleBack = () => {
-    this.setState({
-      activeStep: this.state.activeStep - 1,
-    });
-  };
+    this.setState({ activeStep }, _ => history.push(`${this.state.activeStep + 1}`));
+  }
+
+  handleNext = _ => this.toStep(this.state.activeStep + 1);
+
+  handleBack = _ => this.toStep(this.state.activeStep - 1);
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes, steps } = this.props;
 
     return (
       <MobileStepper
         variant="dots"
-        steps={10}
+        steps={steps}
         position="bottom"
         activeStep={this.state.activeStep}
         classes={classes}
         nextButton={
-          <Button size="small" onClick={this.handleNext} disabled={this.state.activeStep === 5}>
+          <Button size="small" onClick={this.handleNext} disabled={this.state.activeStep === steps - 1}>
             Next
-            {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+            <KeyboardArrowRight />
           </Button>
         }
         backButton={
           <Button size="small" onClick={this.handleBack} disabled={this.state.activeStep === 0}>
-            {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+            <KeyboardArrowLeft />
             Back
           </Button>
         }
@@ -62,7 +62,6 @@ class DotsMobileStepper extends React.Component {
 
 DotsMobileStepper.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(DotsMobileStepper);
+export default withRouter(withStyles(styles)(DotsMobileStepper));
