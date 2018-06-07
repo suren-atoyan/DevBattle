@@ -30,7 +30,7 @@ class AppStateProvider extends Component {
 
   async makeRequest(url, method, data) {
     const response = await makeRequest(url, method, data, defaultState);
-    this.setState({ activeHackathon: response });
+    this.setState(response);
   }
 
   getActiveHackathon = _ =>
