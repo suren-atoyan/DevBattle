@@ -6,12 +6,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import ChartIcon from '@material-ui/icons/ShowChart';
 
 import LoginDialog from 'components/LoginDialog';
 import RoleButton from 'components/RoleButton';
 
-import { withRouter } from 'react-router';
+import { withRouter, Link } from 'react-router-dom';
 import { getRouteTitle } from 'utils';
 import { withAuth } from 'auth';
 
@@ -84,14 +84,16 @@ class TopBar extends Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar color="default" position="static">
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
+            <Link to="/monitoring" className="link">
+              <IconButton variant="fab" className={classes.menuButton} color="secondary" aria-label="charts">
+                <ChartIcon />
+              </IconButton>
+            </Link>
             <Typography variant="title" color="inherit" className={classes.flex}>
               {hackathonName}
-              -------
+              {' - '}
               {title}
             </Typography>
 
@@ -135,4 +137,4 @@ TopBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStore(withAuth(withRouter(withStyles(styles)(TopBar))));
+export default withRouter(withAuth(withStore(withStyles(styles)(TopBar))));
