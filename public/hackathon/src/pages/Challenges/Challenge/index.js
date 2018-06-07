@@ -1,10 +1,9 @@
-import React, { PureComponent, Fragment } from 'react';
-
+import React, { PureComponent } from 'react';
 import CodeEditor from '../CodeEditor/';
+import Description from './Description';
+import Grid from '@material-ui/core/Grid';
 
-import './index.scss';
-
-export default class Challenges extends PureComponent {
+class Challenge extends PureComponent {
 
   static defaultProps = {
     hasCodeEditor: true,
@@ -12,18 +11,26 @@ export default class Challenges extends PureComponent {
 
   render() {
 
-    const { hasCodeEditor } = this.props;
+    const { hasCodeEditor, description, name } = this.props;
 
     return (
-      <Fragment>
+      <Grid
+        container
+        spacing={16}
+        alignItems={hasCodeEditor ? 'stretch' : 'center'}
+      >
         {
-          hasCodeEditor && (
-            <div className="code-editor__wrapper">
-              <CodeEditor />
-            </div>
-          )
+          hasCodeEditor && <Grid item xs={6}><CodeEditor /></Grid>
         }
-      </Fragment>
+        <Grid item xs={hasCodeEditor ? 6 : 12}>
+          <Description
+            name={name}
+            description={description}
+          />
+        </Grid>
+      </Grid>
     );
   }
 }
+
+export default Challenge;
