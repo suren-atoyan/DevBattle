@@ -3,6 +3,7 @@
     position: relative;
     height: 100%;
     display: flex;
+
     &.centered {
       align-items: center;
       justify-content: center;
@@ -22,6 +23,6 @@
   &__wrapper {
     height: 90%;
     display: flex;
-    width: 50%;
+    width: 100%;
   }
 }
