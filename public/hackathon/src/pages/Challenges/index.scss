@@ -1,0 +1,18 @@
+.challenges {
+  &__wrapper {
+    position: relative;
+    height: 100%;
+  }
+}
+
+.challenge {
+  &__wrapper {
+    height: 90%;
+  }
+}
+
+.challenges {
+  &__stepper {
+    height: 10%;
+  }
+}
