@@ -4,7 +4,7 @@ import { url } from 'config';
 import StatusMessage from 'components/StatusMessage';
 
 const defaultState = {
-  active_hackathon: {},
+  activeHackathon: {},
   isLoading: false,
 }
 

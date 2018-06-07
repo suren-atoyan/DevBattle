@@ -27,7 +27,9 @@ async function _createHackathon(req, res) {
 }
 
 async function _getHackathon(req, res) {
-  res.status(200).send(await db.getActiveHackathon());
+  res.status(200).send({
+    activeHackathon: await db.getActiveHackathon(),
+  });
 }
 
 const createHackathon = asyncWrapper(_createHackathon);
