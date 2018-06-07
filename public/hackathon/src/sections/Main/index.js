@@ -15,7 +15,7 @@ const Content = ({ match, authState: { isAdmin, isGuest, isTeamMember } }) => {
         <Switch>
           <Route exact path="/" component={Monitoring} />
           <Route path="/monitoring" component={Monitoring} />
-          <PrivateRoute path="/challenges" hasAccess={isAdmin || isGuest || isTeamMember} component={Challenges} />
+          <PrivateRoute path="/challenges/:id?" hasAccess={isAdmin || isGuest || isTeamMember} component={Challenges} />
           <PrivateRoute path="/admin" hasAccess={isAdmin} component={Admin} />
           <Route exact path="/404" component={NoMatch} />
           <Redirect to="/404" />
