@@ -2,17 +2,26 @@
   &__wrapper {
     position: relative;
     height: 100%;
+    display: flex;
+    &.centered {
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &__stepper {
+    height: 10%;
+  }
+
+  &__noch {
+    opacity: 0.4;
   }
 }
 
 .challenge {
   &__wrapper {
     height: 90%;
-  }
-}
-
-.challenges {
-  &__stepper {
-    height: 10%;
+    display: flex;
+    width: 50%;
   }
 }
