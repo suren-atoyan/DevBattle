@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react';
 import { withStore } from 'store';
 import NoActive from 'components/NoActive';
+import Chart from 'components/Chart';
+
+import './index.scss';
 
 class Monitoring extends PureComponent {  
   render() {
@@ -8,10 +11,10 @@ class Monitoring extends PureComponent {
     const { store: { activeHackathon } } = this.props;
 
     return (
-      <div>
+      <div className="monitoring">
         {
-          !activeHackathon
-            ? 'Chart'
+          activeHackathon
+            ? <Chart />
             : <NoActive />
         }
       </div>
