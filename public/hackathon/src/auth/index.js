@@ -7,7 +7,7 @@ const defaultAuthState = {
   isAdmin: false,
   isGuest: false,
   isTeamMember: false,
-  isLoading: false,
+  isLoading: true,
 }
 
 const AuthContext = React.createContext(defaultAuthState);

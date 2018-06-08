@@ -8,15 +8,15 @@ import { withAuth } from 'auth';
 
 import './index.scss';
 
-const Content = ({ match, authState: { isAdmin, isGuest, isTeamMember } }) => {
+const Content = ({ match, authState: { isAdmin, isGuest, isTeamMember, isLoading } }) => {
   return (
     <div className="main__wrapper">
       <Paper className="main__wrapper--paper" elevation={8}>
         <Switch>
           <Route exact path="/" component={Monitoring} />
           <Route path="/monitoring" component={Monitoring} />
-          <PrivateRoute path="/challenges/:id?" hasAccess={isAdmin || isGuest || isTeamMember} component={Challenges} />
-          <PrivateRoute path="/admin" hasAccess={isAdmin} component={Admin} />
+          <PrivateRoute path="/challenges/:id?" isLoading={isLoading} hasAccess={isAdmin || isGuest || isTeamMember} component={Challenges} />
+          <PrivateRoute path="/admin" isLoading={isLoading} hasAccess={isAdmin} component={Admin} />
           <Route exact path="/404" component={NoMatch} />
           <Redirect to="/404" />
         </Switch>
