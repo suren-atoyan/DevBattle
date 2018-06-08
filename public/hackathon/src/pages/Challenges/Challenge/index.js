@@ -16,7 +16,7 @@ class Challenge extends PureComponent {
     return (
       <Grid
         container
-        spacing={16}
+        spacing={24}
         alignItems={hasCodeEditor ? 'stretch' : 'center'}
       >
         {
