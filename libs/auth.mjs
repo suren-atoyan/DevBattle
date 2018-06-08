@@ -5,6 +5,7 @@ import config from '../config';
 import env from './env';
 import jwt from 'jsonwebtoken';
 import db from '../db';
+import { readFile } from './utils';
 
 // TODO ::: It will be removed after Node 10 LTS verion.
 import __getDirname from './__dirname';
@@ -25,10 +26,6 @@ class Auth {
     return Auth.saveAuthJson(authJsonPath, authObj);
   }
 
-  static async existsAuthJson(authJsonPath) {
-    return fs.stat(authJsonPath);
-  }
-
   static async saveAuthJson(authJsonPath, authObj) {
     return fs.writeFile(authJsonPath, JSON.stringify(authObj))
   }
@@ -47,10 +44,7 @@ class Auth {
 
     const { authJsonPath, withNewPassword, adminPassLength } = this;
 
-    const existsAuthJson = await Auth.existsAuthJson(authJsonPath);
-    const authObj = existsAuthJson
-      ? await Auth.getAuthObj(this.authJsonPath)
-      : {};
+    const authObj = await readFile(authJsonPath, 'json');
 
     if (!authObj.secret) {
       authObj.secret = Auth.genRandomCryptoString(10);
