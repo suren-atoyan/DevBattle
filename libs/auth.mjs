@@ -62,7 +62,7 @@ class Auth {
     }
   }
 
-  async getActiveTockens() {
+  async getActiveTokens() {
     const authObj = await Auth.getAuthObj(this.authJsonPath);
     return authObj.activeTokens || [];
   }
@@ -79,10 +79,14 @@ class Auth {
   }
 
   async sign(pass) {
-    const role = await this.getRole(pass);
-    // TODO ::: Implement expire time. ex. { expiresIn: '1h' }
-    const token = jwt.sign({ pass, role}, this.secret);
-    const activeTokens = await this.getActiveTockens();
+
+    const signObject = pass
+      ? { role: await this.getRole(pass), pass }
+      : { role: { isGuest: true } };
+
+    const token = jwt.sign(signObject, this.secret);
+
+    const activeTokens = await this.getActiveTokens();
     if (!activeTokens.includes(token)) {
       activeTokens.push(token);
       await this.updateActiveTokens(activeTokens);
@@ -92,7 +96,7 @@ class Auth {
   }
 
   async verify(token) {
-    const activeTokens = await this.getActiveTockens();
+    const activeTokens = await this.getActiveTokens();
     if (activeTokens.includes(token)) {
       try {
         return jwt.verify(token, this.secret);
@@ -106,18 +110,13 @@ class Auth {
   }
 
   async unsign(token) {
-    let activeTokens = await this.getActiveTockens();
+    let activeTokens = await this.getActiveTokens();
     activeTokens = activeTokens.filter(activeToken => activeToken !== token);
     return this.updateActiveTokens(activeTokens);
   }
 
   async getRole(pass) {
-
     const role = {};
-
-    if (await this.isGuest(pass)) {
-      role.isGuest = true;
-    }
 
     if (await this.isTeamMember(pass)) {
       role.isTeamMember = true;
@@ -133,7 +132,9 @@ class Auth {
   async getRoleByToken(token) {
     const { pass } = await this.verify(token);
 
-    return this.getRole(pass);
+    const role = this.getRole(pass);
+
+    return role || await this.isGuest(token);
   }
 
   async isAdmin(pass) {
@@ -152,14 +153,10 @@ class Auth {
     return activeHackathon.teams.some(team => team.members.find(member => member.pass === pass));
   }
 
-  async isGuest(pass) {
-    const activeHackathon = await this.getActiveHackathon();
+  async isGuest(token) {
+    const activeTokens = await this.getActiveTokens();
 
-    if (!activeHackathon) {
-      return false;
-    }
-
-    return activeHackathon.guests.find(guest => guest.pass === pass);
+    return activeTokens.includes(token);
   }
 
   async getActiveHackathonID() {
