@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ChartIcon from '@material-ui/icons/ShowChart';
 
 import LoginDialog from 'components/LoginDialog';
-import RoleButton from 'components/RoleButton';
+import NavigationButtons from 'components/NavigationButtons';
 
 import { withRouter, Link } from 'react-router-dom';
 import { getRouteTitle } from 'utils';
@@ -30,7 +30,7 @@ const styles = {
   },
 };
 
-class TopBar extends Component {
+class TopBar extends PureComponent {
 
   state = {
     isLoginDialogOpen: false,
@@ -82,6 +82,12 @@ class TopBar extends Component {
       ? activeHackathon.name
       : 'no name';
 
+    let role;
+
+    if (isGuest) (role = 'Guest');
+    if (isTeamMember) (role = 'Team Member');
+    if (isAdmin) (role = 'Admin');
+
     return (
       <div className={classes.root}>
         <AppBar color="default" position="static">
@@ -98,11 +104,16 @@ class TopBar extends Component {
 
             {
               this.state.isAuth && (
-                <RoleButton
-                  isAdmin={isAdmin}
-                  isGuest={isGuest}
-                  isTeamMember={isTeamMember}
-                />
+                <Fragment>
+                  <Typography variant="title">
+                    {role}
+                  </Typography>
+                  <NavigationButtons
+                    isAdmin={isAdmin}
+                    isGuest={isGuest}
+                    isTeamMember={isTeamMember}
+                  />
+                </Fragment>
               )
             }
 
