@@ -1,5 +1,6 @@
 .chart {
   width: 100%;
+  height: 100%;
 }
 
 .highcharts-title, .highcharts-subtitle {
@@ -450,6 +451,11 @@ g.highcharts-series,
 .highcharts-legend-box {
   fill: none;
   stroke-width: 0;
+}
+
+.highcharts-legend-item {
+  display: block;
+  margin-top: 5px;
 }
 
 .highcharts-legend-item text {
