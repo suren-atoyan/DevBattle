@@ -11,7 +11,7 @@ class Challenge extends PureComponent {
 
   render() {
 
-    const { hasCodeEditor, description, name } = this.props;
+    const { hasCodeEditor, description, name, sendResult, _id } = this.props;
 
     return (
       <Grid
@@ -20,7 +20,7 @@ class Challenge extends PureComponent {
         alignItems={hasCodeEditor ? 'stretch' : 'center'}
       >
         {
-          hasCodeEditor && <Grid item xs={6}><CodeEditor /></Grid>
+          hasCodeEditor && <Grid item xs={6}><CodeEditor _id={_id} sendResult={sendResult} /></Grid>
         }
         <Grid item xs={hasCodeEditor ? 6 : 12}>
           <Description
