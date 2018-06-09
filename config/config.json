@@ -1,7 +1,5 @@
 {
   "port": 8080,
-  "auth_path": "./.auth.json",
-  "admin_pass_length": 10,
   "exclude_from_auth": [
     "/login",
     "/check_token",
@@ -9,7 +7,12 @@
   ],
   "default_data": {
     "hackathons": [],
-    "active_hackathon_id": null
+    "active_hackathon_id": null,
+    "admin": {},
+    "secret": "",
+    "active_tokens": []
   },
-  "db_path": ".db.json"
+  "db_path": ".db.json",
+  "default_salt_rounds": 10,
+  "default_admin_password": "adminonaly"
 }
