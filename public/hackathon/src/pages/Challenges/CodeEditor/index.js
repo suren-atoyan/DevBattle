@@ -6,7 +6,7 @@ import Editor from 'components/Editor';
 
 // Example
 
-const sourceExample = `class Auth {
+const codeExample = `class Auth {
   static genRandomCryptoString(len) {
     return crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len);
   }
@@ -36,7 +36,7 @@ export default class CodeEditor extends PureComponent {
     return (
       <Fragment>
         <Editor
-          value={sourceExample}
+          value={this.props.value || codeExample}
           valueGetter={getEditorValue => (this.getEditorValue = getEditorValue)}
           editorDidMount={this.editorDidMount}
           theme={this.state.theme}
