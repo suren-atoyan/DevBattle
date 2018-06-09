@@ -3,7 +3,7 @@ import db from '../../db/';
 import { asyncWrapper } from '../../libs/utils';
 
 const login = async (req, res) => {
-  const { pass, isGuest } = req.body;
+  const { name, password, isGuest } = req.body;
 
   let token;
   let role;
@@ -12,12 +12,12 @@ const login = async (req, res) => {
     role = { isGuest: true };
     token = await auth.sign(role);
   } else {
-    role = await auth.getRole(pass);
+    role = await auth.getRole(name, password);
 
     if (role) {
       token = await auth.sign(role);
     } else {
-      res.status(401).send({ message: 'Authentication failed.' });
+      res.status(401).send({ errorMessage: 'Authentication failed.' });
       return;
     }
   }

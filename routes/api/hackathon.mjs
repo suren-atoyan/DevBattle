@@ -16,18 +16,23 @@ async function _createHackathon(req, res) {
       await db.updateActiveHackathonId(currentHackathon._id);
       res.status(200).send(currentHackathon);
     } else {
-      res.status(422).send({});
+      res.status(422).send({ errorMessage: 'Invalid Data' });
     }
 
   } else {
-    res.status(401).send({ message: 'Authentication failed.' });
+    res.status(401).send({ errorMessage: 'Authentication failed.' });
   }
 }
 
 async function _getHackathon(req, res) {
-  res.status(200).send({
-    activeHackathon: await db.getActiveHackathon(),
-  });
+  const result = {};
+
+  try {
+    result.activeHackathon = await db.getActiveHackathon();
+    res.status(200).send(result);
+  } catch(err) {
+    res.status(500).send({ errorMessage: 'Something went wrong' });
+  }
 }
 
 const createHackathon = asyncWrapper(_createHackathon);

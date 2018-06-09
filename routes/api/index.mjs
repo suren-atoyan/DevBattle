@@ -3,6 +3,7 @@ import express from 'express';
 import login from './login';
 import logout from './logout';
 import checkToken from './check-token';
+import { createTeam } from './team';
 import { createHackathon, getHackathon } from './hackathon';
 import challengeAnswer from './challenge-answer';
 
@@ -13,6 +14,7 @@ router.post('/logout', logout);
 router.post('/hackathons', createHackathon);
 router.get('/hackathons', getHackathon);
 router.post('/challenge_answer', challengeAnswer);
+router.post('/team', createTeam);
 
 router.get('/check_token', checkToken);
 
