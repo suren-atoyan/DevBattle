@@ -8,20 +8,26 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import { withStore } from 'store';
+
+const defaultState = {
+  name: '',
+  password: '',
+};
+
 class LoginDialog extends PureComponent {
 
-  state = {
-    textFieldValue: '',
-  }
+  state = defaultState;
 
-  handleTextFieldChange = ev => this.setState({ textFieldValue: ev.target.value });
+  handleNameChange = ev => this.setState({ name: ev.target.value });
 
-  login = _ => this.props.login(this.state.textFieldValue) & this.clearTextField();
+  handlePasswordChange = ev => this.setState({ password: ev.target.value });
+
+  login = _ => this.props.login({ ...this.state }) & this.clearTextField();
 
   handleEnterPress = ev => {
     const keycode = (ev.keyCode || ev.which);
-
-    (keycode === 13) && this.login();
+    (keycode === 13) && (this.state.name && this.state.password) && this.login();
   }
 
   handleClose = _ => this.props.handleClose() & this.clearTextField();
@@ -29,13 +35,14 @@ class LoginDialog extends PureComponent {
   loginAsGuest = _ => this.props.loginAsGuest() & this.clearTextField();
 
   clearTextField() {
-    this.setState({ textFieldValue: '' });
+    this.setState(defaultState);
   }
 
   render() {
     const {
       open,
       isLoading,
+      store: { activeHackathon }
     } = this.props;
 
     return (
@@ -45,7 +52,7 @@ class LoginDialog extends PureComponent {
           onClose={this.handleClose}
           aria-labelledby="login-dialog"
         >
-          <DialogTitle id="form-dialog">Login</DialogTitle>
+          <DialogTitle>Login</DialogTitle>
           {
             isLoading
             ? (
@@ -62,11 +69,20 @@ class LoginDialog extends PureComponent {
                     <TextField
                       autoFocus
                       margin="dense"
+                      label="Name"
+                      type="name"
+                      fullWidth
+                      onChange={this.handleNameChange}
+                      value={this.state.name}
+                      onKeyPress={this.handleEnterPress}
+                    />
+                    <TextField
+                      margin="dense"
                       label="Password"
                       type="password"
                       fullWidth
-                      onChange={this.handleTextFieldChange}
-                      value={this.state.textFieldValue}
+                      onChange={this.handlePasswordChange}
+                      value={this.state.password}
                       onKeyPress={this.handleEnterPress}
                     />
                   </DialogContent>
@@ -74,12 +90,22 @@ class LoginDialog extends PureComponent {
                     <Button onClick={this.handleClose} color="primary">
                       Cancel
                     </Button>
-                    <Button onClick={this.login} color="primary">
+                    <Button
+                      onClick={this.login} color="primary"
+                      disabled={!(this.state.name && this.state.password)}
+                    >
                       Login
                     </Button>
                     <Button onClick={this.loginAsGuest} color="primary">
                       Login as Guest
                     </Button>
+                    {
+                      activeHackathon && (
+                        <Button onClick={this.props.openCreateTeamDialog}>
+                          Create Your Team
+                        </Button>
+                      )
+                    }
                   </DialogActions>
                 </Fragment>
               )
@@ -90,4 +116,4 @@ class LoginDialog extends PureComponent {
   }
 };
 
-export default LoginDialog;
+export default withStore(LoginDialog);
