@@ -11,6 +11,8 @@ const url = {
   logout: '/logout',
   check_tocken: '/check_token',
   hackathons: '/hackathons',
+  challenge_answer: '/challenge_answer',
+  create_team: '/team',
   monaco_loader: '/monaco-editor/vs/loader.js',
   monaco_base: '/monaco-editor/vs',
 }
