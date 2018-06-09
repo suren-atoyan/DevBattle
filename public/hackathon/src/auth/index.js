@@ -7,6 +7,7 @@ const defaultAuthState = {
   isAdmin: false,
   isGuest: false,
   isTeamMember: false,
+  team: null,
   isLoading: true,
 }
 
@@ -33,10 +34,10 @@ class AuthProvider extends Component {
 
   async makeRequest(url, method, data) {
     const response = await makeRequest(url, method, data, defaultAuthState);
-    this.setState({ ...response });
+    this.setState(response);
   }
 
-  login = pass => this.makeRequest(`${url.base_url}${url.login}`, 'POST', { pass });
+  login = data => this.makeRequest(`${url.base_url}${url.login}`, 'POST', data);
 
   logout = _ => this.makeRequest(`${url.base_url}${url.logout}`, 'POST', {});
 
