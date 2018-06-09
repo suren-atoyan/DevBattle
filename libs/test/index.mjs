@@ -2,11 +2,12 @@ import vm from 'vm';
 import assert from './assert';
 
 export default (requirements, solutionRaw) => {
-    const sandbox = {};
-    vm.createContext(sandbox);
-    vm.runInContext(solutionRaw, sandbox);
+  const sandbox = {};
 
-    const solution = sandbox[requirements.name];
+  vm.createContext(sandbox);
+  vm.runInContext(solutionRaw, sandbox);
 
-    return requirements.tests.every(requirement => assert(requirement.input, requirement.output, solution));
+  const solution = sandbox[requirements.name];
+
+  return requirements.tests.every(requirement => assert(requirement.input, requirement.output, solution));
 }
