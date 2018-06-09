@@ -28,9 +28,7 @@ export default class CodeEditor extends PureComponent {
     this.setState({ isEditorMounted: true });
   }
 
-  sendResult = _ => {
-    // ...
-  }
+  sendResult = _ => this.props.sendResult(this.getEditorValue(), this.props._id);
 
   toggleTheme = _ => this.setState({ theme: this.state.theme.endsWith('dark') ? 'vs' : 'vs-dark' });
 
@@ -45,7 +43,7 @@ export default class CodeEditor extends PureComponent {
         />
         <Button
           onClick={this.sendResult}
-          disabled={this.isEditorMounted}
+          disabled={!this.state.isEditorMounted}
         >
           Submit
         </Button>

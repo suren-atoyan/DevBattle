@@ -16,6 +16,13 @@ class Challenges extends PureComponent {
     !match.params.id && history.push(`${match.url}/1`);
   }
 
+  sendResult = (source, challengeId) => {
+    this.props.store.sendChallengeAnswer({
+      source,
+      id: challengeId,
+    });
+  }
+
   getChallengesContent() {
 
     const { match: { params }, store: { activeHackathon : { challenges } } } = this.props;
@@ -24,7 +31,9 @@ class Challenges extends PureComponent {
       return null;
     }
 
-    const { description, name, hasCodeEditor } = challenges[params.id - 1];
+    const currentChallenge = challenges[params.id - 1];
+
+    const { description, name, hasCodeEditor, _id } = currentChallenge;
 
     return (
       <Fragment>
@@ -33,6 +42,8 @@ class Challenges extends PureComponent {
             description={description}
             name={name}
             hasCodeEditor={hasCodeEditor}
+            sendResult={this.sendResult}
+            _id={_id}
           />
         </div>
         <div className="challenges__stepper">
