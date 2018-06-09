@@ -25,7 +25,7 @@ class Auth {
     return bcrypt.hash(password, salt);
   }
 
-  static async genPassword(password) {
+  async genPassword(password) {
     const salt = await Auth.genSalt(config.get('default_salt_rounds'));
     return Auth.hashPassword(password, salt);
   }
@@ -40,7 +40,7 @@ class Auth {
 
     if (!admin.password) {
       const defaultPassword = config.get('default_admin_password');
-      const password = await Auth.genPassword(defaultPassword);
+      const password = await this.genPassword(defaultPassword);
       await db.set('admin.password', password);
     }
 
@@ -85,24 +85,27 @@ class Auth {
     return bcrypt.compare(password, hash);
   }
 
-  async getRole(pass) {
-    const role = {};
+  async getRole(name, pass) {
+    const teamInfo = await this.getTeamInfo(name, pass);
 
-    if (await this.isAdmin(pass)) {
-      role.isAdmin = true;
+    if (teamInfo) {
+      return {
+        isTeamMember: true,
+        team: teamInfo,
+      };
     }
 
-    // if (await this.isTeamMember(pass)) {
-    //   role.isTeamMember = true;
-    // }
+    if (name === 'admin' && await this.isAdmin(pass)) {
+      return { isAdmin: true };
+    }
 
-    return Object.keys(role).length ? role : null;
+    return null;
   }
 
   async getRoleByToken(token) {
     const { pass } = await this.verify(token);
 
-    const role = this.getRole(pass);
+    const role = await this.getRole(pass);
 
     return role || await this.isGuest(token);
   }
@@ -113,14 +116,32 @@ class Auth {
     return await this.checkPassword(pass, adminPass);
   }
 
-  async isTeamMember(pass) {
-    const activeHackathon = await this.getActiveHackathon();
+  async getTeamInfo(name, pass) {
+    const activeHackathon = await db.getActiveHackathon(false, true);
 
     if (!activeHackathon) {
       return false;
     }
 
-    return activeHackathon.teams.some(team => team.members.find(member => member.pass === pass));
+    const { teams } = activeHackathon;
+
+    const result = await Promise.all(
+      teams.map(team => (team.name === name && this.checkPassword(pass, team.password))),
+    );
+
+    const teamIndex = result.indexOf(true);
+
+    // FIXME ::: Fix this code segment
+
+    if (~teamIndex) {
+      const currentTeam = teams[teamIndex];
+
+      const { password, ...withoutPassword } = currentTeam;
+
+      return withoutPassword;
+    }
+
+    return false;
   }
 
   async isGuest(token) {
