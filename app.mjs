@@ -6,6 +6,7 @@ import http from 'http';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import morgan from 'morgan';
 
 import config from './config';
 import cors from 'cors';
@@ -20,7 +21,7 @@ import { connectMessage } from './libs/utils';
 (async _ => {
   await db.connect();
 
-  await auth.generateAuthJson();
+  await auth.run();
 
   const app = express();
 
@@ -28,10 +29,11 @@ import { connectMessage } from './libs/utils';
   app.use(bodyParser.json());
   app.use(cookieParser());
 
-  env.isDev && app.use(cors({
-    credentials: true,
-    origin: true,
-  }));
+  env.isDev && (
+    app.use(cors({ credentials: true, origin: true, })),
+    app.use(morgan('combined')),
+    process.on('uncaughtException', console.error)
+  );
 
   app.use(express.static(__dirname + '/public/'));
 
