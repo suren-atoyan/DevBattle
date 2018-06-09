@@ -10,7 +10,8 @@ const getMessageBasedOnStatus = status => status === 401
 const defaultSnackbarPosition = { vertical: 'top', horizontal: 'right' };
 
 const StatusMessage = props => {
-  const message = getMessageBasedOnStatus(props.statusData.status);
+  const message = props.statusData.errorMessage ||
+    getMessageBasedOnStatus(props.statusData.status);
 
   return (
     <Snackbar
