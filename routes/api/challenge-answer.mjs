@@ -13,7 +13,7 @@ async function _challengeAnswer(req, res) {
       res.status(422).send({});
     }
   } else {
-    res.status(401).send({ message: 'Authentication failed.' });
+    res.status(401).send({ errorMessage: 'Authentication failed.' });
   }
 }
 
