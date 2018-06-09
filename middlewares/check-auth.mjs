@@ -4,7 +4,7 @@ export default async (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) {
-    res.status(401).send({ message: 'Authentication failed.'});
+    res.status(401).send({ message: 'Authentication failed.' });
   } else {
     const decoded = await auth.verify(token);
 
