@@ -1,9 +1,9 @@
-import auth from '../../libs/auth';
 import { asyncWrapper } from '../../libs/utils';
 
 import Hackathon from '../../db/models/hackathon';
 import hackathons from '../../db/collections/hackathons';
 import db from '../../db';
+import auth from '../../libs/auth';
 
 async function _createHackathon(req, res) {
   const { cookies : { token }, body } = req;

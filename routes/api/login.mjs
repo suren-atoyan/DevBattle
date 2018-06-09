@@ -1,4 +1,5 @@
 import auth from '../../libs/auth';
+import db from '../../db/';
 import { asyncWrapper } from '../../libs/utils';
 
 const login = async (req, res) => {
@@ -8,13 +9,13 @@ const login = async (req, res) => {
   let role;
 
   if (isGuest) {
-    token = await auth.sign();
     role = { isGuest: true };
+    token = await auth.sign(role);
   } else {
     role = await auth.getRole(pass);
 
     if (role) {
-      token = await auth.sign(pass);
+      token = await auth.sign(role);
     } else {
       res.status(401).send({ message: 'Authentication failed.' });
       return;
