@@ -18,14 +18,27 @@ class Fetch {
 
       const response = await fetch(url, options);
 
-      if (response.status >= 200 && response.status < 300) {
-        const result = await response.json();
+      const status = response.status;
+
+      let result;
+
+      try {
+        result = await response.json();
+      } catch(err) {
+        return {
+          success: false,
+          errorMessage: 'Something went wrong',
+        }
+      }
+
+      if (status >= 200 && status < 300) {
         // TODO ::: Use response.ok
         return (result.success = true, result);
       } else {
         return {
-          status: response.status,
+          status: status,
           success: false,
+          errorMessage: result.errorMessage,
         }
       }
 

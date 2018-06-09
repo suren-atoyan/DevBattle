@@ -28,16 +28,27 @@ class AppStateProvider extends Component {
     this.getActiveHackathon();
   }
 
-  async makeRequest(url, method, data) {
-    const response = await makeRequest(url, method, data, defaultState);
+
+  getActiveHackathon = async _ => {
+    const response = await makeRequest(`${url.base_url}${url.hackathons}`, 'GET');
     this.setState(response);
+  };
+
+  createHackathon = async data => {
+    const response = await makeRequest(`${url.base_url}${url.hackathons}`, 'POST', data);
+    this.setState(response);
+  };
+
+  createTeam = async data => {
+    const response = await makeRequest(`${url.base_url}${url.create_team}`, 'POST', data);
+    this.setState(response);
+    return response.success;
+  };
+
+  sendChallengeAnswer = async data => {
+    makeRequest(`${url.base_url}${url.challenge_answer}`, 'POST', data);
+    // TODO ::: Add functionality for check challenge anwser
   }
-
-  getActiveHackathon = _ =>
-    this.makeRequest(`${url.base_url}${url.hackathons}`, 'GET');
-
-  createHackathon = data =>
-    this.makeRequest(`${url.base_url}${url.hackathons}`, 'POST', data);
 
   handleStatusMessageClose = _ => this.setState({ showStatusMessage: false });
 
@@ -49,6 +60,8 @@ class AppStateProvider extends Component {
       getActiveHackathon,
       createHackathon,
       handleStatusMessageClose,
+      sendChallengeAnswer,
+      createTeam,
     } = this;
 
     return(
@@ -61,6 +74,8 @@ class AppStateProvider extends Component {
           ...state,
           getActiveHackathon,
           createHackathon,
+          sendChallengeAnswer,
+          createTeam,
         }}>
           {this.props.children}
         </AppContext.Provider>

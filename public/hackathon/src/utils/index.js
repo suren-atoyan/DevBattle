@@ -22,7 +22,7 @@ async function makeRequest(url, method, data, defaultStatusState = {}) {
       : { showStatusMessage: true, statusMessage: response };
 
     // TODO ::: Move to pick mathod ( + implement pick method )
-    result = { ...omit(response, ['success']), ...statusMessageData };
+    result = { ...response, ...statusMessageData };
 
   } catch(err) {
     console.log(err);
