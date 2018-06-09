@@ -16,12 +16,6 @@ const teamSchema = {
     required: true,
     type: String,
   },
-
-  answersCount: {
-    require: false,
-    type: Number,
-    default: 0,
-  },
 };
 
 export default Model('team', teamSchema);
