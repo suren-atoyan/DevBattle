@@ -103,11 +103,7 @@ class Auth {
   }
 
   async getRoleByToken(token) {
-    const { pass } = await this.verify(token);
-
-    const role = await this.getRole(pass);
-
-    return role || await this.isGuest(token);
+    return await this.verify(token);
   }
 
   async isAdmin(pass) {
@@ -145,7 +141,7 @@ class Auth {
   }
 
   async isGuest(token) {
-    const activeTokens = await db.get('active_tockens');
+    const activeTokens = await db.get('active_tokens');
 
     return activeTokens.includes(token);
   }
