@@ -70,6 +70,21 @@ class DB {
         )
       : null;
   }
+
+  async getActiveHackathonID() {
+    const activeHackathonID = await this.get('active_hackathon_id');
+
+    return activeHackathonID;
+  }
+
+  async getActiveHackathon() {
+
+    const currentHackathonID = await this.getActiveHackathonID();
+
+    const hackathons = await this.get('hackathons');
+
+    return hackathons.find(hackathon => hackathon.id === currentHackathonID);
+  }
 }
 
 export default new DB({
