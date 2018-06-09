@@ -3,7 +3,8 @@
   "exclude_from_auth": [
     "/login",
     "/check_token",
-    "/hackathons:get"
+    "/hackathons:get",
+    "/team"
   ],
   "default_data": {
     "hackathons": [],
