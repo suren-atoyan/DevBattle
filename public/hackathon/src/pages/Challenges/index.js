@@ -41,7 +41,7 @@ class Challenges extends PureComponent {
 
     const currentChallenge = challenges[params.id - 1];
 
-    const { description, name, hasCodeEditor, _id } = currentChallenge;
+    const { description, name, hasCodeEditor, codeExample, _id } = currentChallenge;
 
     return (
       <Fragment>
@@ -50,6 +50,7 @@ class Challenges extends PureComponent {
             description={description}
             name={name}
             hasCodeEditor={hasCodeEditor}
+            codeExample={codeExample}
             sendResult={this.sendResult}
             _id={_id}
           />
