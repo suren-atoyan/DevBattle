@@ -1,105 +1,71 @@
 import crypto from 'crypto';
+import bcrypt from 'bcrypt';
 import fs from './promisify-fs';
 import path from 'path';
 import config from '../config';
 import env from './env';
 import jwt from 'jsonwebtoken';
 import db from '../db';
-import { readFile } from './utils';
 
 // TODO ::: It will be removed after Node 10 LTS verion.
 import __getDirname from './__dirname';
 const __dirname = __getDirname(import.meta.url);
 
-const AUTH_JSON_PATH = path.join(__dirname, '../config/', config.get('auth_path'));
-const ADMIN_PASS_LENGTH = config.get('admin_pass_length');
-
 class Auth {
-
   static genRandomCryptoString(len) {
     // TODO ::: Replace crypto to tls.createSecureContext
     return crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len);
   }
 
-  static async reWritePassword(authJsonPath, authObj, adminPassLength) {
-    authObj.password = Auth.genRandomCryptoString(adminPassLength);
-    return Auth.saveAuthJson(authJsonPath, authObj);
+  static async genSalt(saltRounds) {
+    return bcrypt.genSalt(saltRounds);
   }
 
-  static async saveAuthJson(authJsonPath, authObj) {
-    return fs.writeFile(authJsonPath, JSON.stringify(authObj))
+  static async hashPassword(password, salt) {
+    return bcrypt.hash(password, salt);
   }
 
-  static async getAuthObj(authJsonPath) {
-    return JSON.parse(await fs.readFile(authJsonPath, 'utf8'));
+  static async genPassword(password) {
+    const salt = await Auth.genSalt(config.get('default_salt_rounds'));
+    return Auth.hashPassword(password, salt);
   }
 
-  constructor({ authJsonPath, adminPassLength, withNewPassword }) {
-    this.authJsonPath = authJsonPath;
-    this.adminPassLength = adminPassLength;
-    this.withNewPassword = withNewPassword;
+  async run() {
+    return this.checkAndGenAdminPasswordAndSecret();
   }
 
-  async generateAuthJson() {
+  async checkAndGenAdminPasswordAndSecret() {
+    const admin = await db.get('admin');
+    const secret = await db.get('secret');
 
-    const { authJsonPath, withNewPassword, adminPassLength } = this;
-
-    const authObj = await readFile(authJsonPath, 'json');
-
-    if (!authObj.secret) {
-      authObj.secret = Auth.genRandomCryptoString(10);
+    if (!admin.password) {
+      const defaultPassword = config.get('default_admin_password');
+      const password = await Auth.genPassword(defaultPassword);
+      await db.set('admin.password', password);
     }
 
-    this.secret = authObj.secret;
-
-    if (
-      withNewPassword ||
-      (!authObj.password || authObj.password.length !== adminPassLength)
-    ) {
-      return Auth.reWritePassword(authJsonPath, authObj, adminPassLength);
-    } else {
-      return Auth.saveAuthJson(authJsonPath, authObj);
+    if (!secret) {
+      const secret = Auth.genRandomCryptoString(10);
+      await db.set('secret', secret);
     }
   }
 
-  async getActiveTokens() {
-    const authObj = await Auth.getAuthObj(this.authJsonPath);
-    return authObj.activeTokens || [];
-  }
+  async sign(role) {
+    const token = jwt.sign(role, await db.get('secret'));
 
-  async getPassword() {
-    const authObj = await Auth.getAuthObj(this.authJsonPath);
-    return authObj.password;
-  }
-
-  async updateActiveTokens(activeTokens) {
-    const authObj = await Auth.getAuthObj(this.authJsonPath);
-    authObj.activeTokens = activeTokens;
-    Auth.saveAuthJson(this.authJsonPath, authObj);
-  }
-
-  async sign(pass) {
-
-    const signObject = pass
-      ? { role: await this.getRole(pass), pass }
-      : { role: { isGuest: true } };
-
-    const token = jwt.sign(signObject, this.secret);
-
-    const activeTokens = await this.getActiveTokens();
+    const activeTokens = await db.get('active_tokens');
     if (!activeTokens.includes(token)) {
-      activeTokens.push(token);
-      await this.updateActiveTokens(activeTokens);
+      await db.setPush('active_tokens', token);
     }
 
     return token;
   }
 
   async verify(token) {
-    const activeTokens = await this.getActiveTokens();
+    const activeTokens = await db.get('active_tokens');
     if (activeTokens.includes(token)) {
       try {
-        return jwt.verify(token, this.secret);
+        return jwt.verify(token, await db.get('secret'));
       } catch(err) {
         await this.unsign(token);
         return false;
@@ -110,21 +76,25 @@ class Auth {
   }
 
   async unsign(token) {
-    let activeTokens = await this.getActiveTokens();
+    let activeTokens = await db.get('active_tokens');
     activeTokens = activeTokens.filter(activeToken => activeToken !== token);
-    return this.updateActiveTokens(activeTokens);
+    return db.set('active_tokens', activeTokens);
+  }
+
+  async checkPassword(password, hash) {
+    return bcrypt.compare(password, hash);
   }
 
   async getRole(pass) {
     const role = {};
 
-    if (await this.isTeamMember(pass)) {
-      role.isTeamMember = true;
-    }
-
     if (await this.isAdmin(pass)) {
       role.isAdmin = true;
     }
+
+    // if (await this.isTeamMember(pass)) {
+    //   role.isTeamMember = true;
+    // }
 
     return Object.keys(role).length ? role : null;
   }
@@ -138,9 +108,9 @@ class Auth {
   }
 
   async isAdmin(pass) {
-    const authObj = await Auth.getAuthObj(this.authJsonPath);
+    const adminPass = await db.get('admin.password');
 
-    return authObj.password === pass;
+    return await this.checkPassword(pass, adminPass);
   }
 
   async isTeamMember(pass) {
@@ -154,29 +124,10 @@ class Auth {
   }
 
   async isGuest(token) {
-    const activeTokens = await this.getActiveTokens();
+    const activeTokens = await db.get('active_tockens');
 
     return activeTokens.includes(token);
   }
-
-  async getActiveHackathonID() {
-    const activeHackathonID = await db.get('active_hackathon_id');
-
-    return activeHackathonID;
-  }
-
-  async getActiveHackathon() {
-
-    const currentHackathonID = await this.getActiveHackathonID();
-
-    const hackathons = await db.get('hackathons');
-
-    return hackathons.find(hackathon => hackathon.id === currentHackathonID);
-  }
 }
 
-export default new Auth({
-  authJsonPath: AUTH_JSON_PATH,
-  adminPassLength: ADMIN_PASS_LENGTH,
-  withNewPassword: env.args.withNewPassword,
-});
+export default new Auth();
