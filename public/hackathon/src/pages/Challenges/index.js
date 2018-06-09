@@ -4,6 +4,7 @@ import Stepper from 'components/Stepper';
 import NoActive from 'components/NoActive';
 
 import { withStore } from 'store';
+import { withAuth } from 'auth';
 import { withRouter } from 'react-router-dom';
 
 import './index.scss';
@@ -17,10 +18,17 @@ class Challenges extends PureComponent {
   }
 
   sendResult = (source, challengeId) => {
-    this.props.store.sendChallengeAnswer({
+
+    const { isGuest, isAdmin, team } = this.props.authState;
+
+    const result = {
       source,
-      id: challengeId,
-    });
+      challengeId,
+    }
+
+    !(isGuest || isAdmin) && (result.teamId = team._id);
+
+    this.props.store.sendChallengeAnswer(result);
   }
 
   getChallengesContent() {
@@ -73,4 +81,4 @@ class Challenges extends PureComponent {
   }
 }
 
-export default withRouter(withStore(Challenges));
+export default withRouter(withStore(withAuth(Challenges)));
