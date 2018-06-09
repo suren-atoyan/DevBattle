@@ -8,7 +8,8 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ChartIcon from '@material-ui/icons/ShowChart';
 
-import LoginDialog from 'components/LoginDialog';
+import LoginDialog from 'components/Dialogs/Login/';
+import CreateTeamDialog from 'components/Dialogs/CreateTeam/';
 import NavigationButtons from 'components/NavigationButtons';
 
 import { withRouter, Link } from 'react-router-dom';
@@ -35,6 +36,7 @@ class TopBar extends PureComponent {
   state = {
     isLoginDialogOpen: false,
     isAuth: false,
+    isOpenCreateTeamDialog: false,
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -59,6 +61,10 @@ class TopBar extends PureComponent {
 
   handleLoginDialogClose = _ => this.setState({ isLoginDialogOpen: false });
 
+  openCreateTeamDialog = _ => this.setState({ isOpenCreateTeamDialog: true });
+
+  closeCreateTeamDialog = _ => this.setState({ isOpenCreateTeamDialog: false });
+
   render() {
     const {
       classes,
@@ -71,9 +77,12 @@ class TopBar extends PureComponent {
         isAdmin,
         isGuest,
         isTeamMember,
+        team,
       },
       store: {
+        isLoading: isLoadingStore,
         activeHackathon,
+        createTeam,
       }
     } = this.props;
 
@@ -85,8 +94,10 @@ class TopBar extends PureComponent {
     let role;
 
     if (isGuest) (role = 'Guest');
-    if (isTeamMember) (role = 'Team Member');
     if (isAdmin) (role = 'Admin');
+    if (isTeamMember) {
+      role = team.name;
+    }
 
     return (
       <div className={classes.root}>
@@ -137,7 +148,16 @@ class TopBar extends PureComponent {
           login={login}
           loginAsGuest={loginAsGuest}
           isLoading={isLoading}
+          openCreateTeamDialog={this.openCreateTeamDialog}
         />
+
+        <CreateTeamDialog
+          open={this.state.isOpenCreateTeamDialog}
+          handleClose={this.closeCreateTeamDialog}
+          createTeam={createTeam}
+          isLoading={isLoadingStore}
+        />
+
       </div>
     );
   }
