@@ -58,32 +58,49 @@ class DB {
     return id;
   }
 
-  async getActiveHackathon() {
-    const hackathons = await this.get('hackathons');
+  async getActiveHackathon(withLodashWrapper, withPasswords) {
     const activeHackathonId = await this.get('active_hackathon_id');
-    const activeHackathon = hackathons.find(hackathon => hackathon._id === activeHackathonId);
+    let activeHackathon = await this.db.get('hackathons').find({ _id: activeHackathonId });
 
-    return activeHackathon
+    if (withLodashWrapper) {
+      return activeHackathon;
+    }
+
+    activeHackathon = { ...(await activeHackathon.value()) };
+
+    return withPasswords
+      ? activeHackathon
+      : activeHackathon
       ? (
-          activeHackathon.teams = activeHackathon.teams.map(team => (delete team.password, team)),
+          activeHackathon.teams = activeHackathon.teams.map(team => {
+            const { password, ...withoutPassword } = team;
+            return withoutPassword;
+          }),
           activeHackathon
         )
       : null;
   }
 
-  async getActiveHackathonID() {
-    const activeHackathonID = await this.get('active_hackathon_id');
+  async createNewTeam(team) {
+    const currentHackathon = await this.getActiveHackathon(true);
 
-    return activeHackathonID;
-  }
+    const teams = currentHackathon.get('teams');
 
-  async getActiveHackathon() {
+    const isTeamNameUnique = await !teams.find({ name: team.name.trim() }).value();
 
-    const currentHackathonID = await this.getActiveHackathonID();
-
-    const hackathons = await this.get('hackathons');
-
-    return hackathons.find(hackathon => hackathon.id === currentHackathonID);
+    if (isTeamNameUnique) {
+      await teams.push(team).write();
+      const { password, ...withoutPassword } = team;
+      return {
+        success: true,
+        team: withoutPassword,
+      };
+    } else {
+      return {
+        success: false,
+        errorMessage: 'Team name should be unique',
+      }
+    }
   }
 }
 
