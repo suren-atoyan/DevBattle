@@ -1,5 +1,6 @@
 import auth from '../../libs/auth';
 import { asyncWrapper } from '../../libs/utils';
+import db from '../../db';
 
 import testRunner from '../../libs/test';
 
@@ -9,40 +10,23 @@ async function _challengeAnswer(req, res) {
 
   if (role) {
 
-    // Just Sample
-
-    const requirements = {
-      tests: [
-        {
-          input: [2],
-          output: 4,
-        },
-        {
-          input: [4],
-          output: 16,
-        },
-        {
-          input: [8],
-          output: 64,
-        },
-      ],
-
-      name: 'test',
-    };
-
-    // find challenge by challengeId from body
-    // and get challenge requirements
-    // execute source and check it here
-
     // TODO ::: Make testRunner function execution asynchronous.
 
-    const result = testRunner(requirements, source);
+    const currentHackathon = await db.getActiveHackathon();
 
-    if (!role.isAdmin && (role.isGuest || role.isTeamMember)) {
-      // TODO ::: Write logic for saving result in proper part of data base
+    const currnetChallenge = currentHackathon.challenges.find(challenge => challenge._id === challengeId);
+
+    if (currnetChallenge) {
+      const result = testRunner(currnetChallenge.requirements, source);
+
+      if (!role.isAdmin && (role.isGuest || role.isTeamMember)) {
+        // TODO ::: Write logic for saving result in proper part of data base
+      }
+
+      res.status(200).send({ success: result }); // true/false will be calculated from line 8
+    } else {
+      res.status(422).send({ errorMessage: 'There is no challenge mentioned by you!' });
     }
-
-    res.status(200).send({ success: result }); // true/false will be calculated from line 8
   } else {
     res.status(401).send({ errorMessage: 'Authentication failed.' });
   }
