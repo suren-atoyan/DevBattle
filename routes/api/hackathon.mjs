@@ -1,7 +1,6 @@
 import { asyncWrapper } from '../../libs/utils';
 
-import Hackathon from '../../db/models/hackathon';
-import hackathons from '../../db/collections/hackathons';
+import hackathon from '../../db/models/hackathon';
 import db from '../../db';
 import auth from '../../libs/auth';
 
@@ -10,13 +9,19 @@ async function _createHackathon(req, res) {
   const role = await auth.getRoleByToken(token);
 
   if (role && role.isAdmin) {
-    if (body && Hackathon.__isValid(body)) {
-      const currentHackathon = new Hackathon(body);
-      await hackathons.push(currentHackathon);
-      await db.updateActiveHackathonId(currentHackathon._id);
-      res.status(200).send(currentHackathon);
+    if (body) {
+      const currentHackathon = hackathon.create(body);
+
+      if (currentHackathon._error) {
+        res.status(422).send({ errorMessage: currentHackathon._error });
+      } else {
+        await db.addNewHackathon(currentHackathon);
+        await db.updateActiveHackathonId(currentHackathon._id);
+        res.status(200).send(currentHackathon);
+      }
+
     } else {
-      res.status(422).send({ errorMessage: 'Invalid Data' });
+      res.status(422).send({ errorMessage: 'Data is not passed' });
     }
 
   } else {
