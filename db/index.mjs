@@ -102,6 +102,10 @@ class DB {
       }
     }
   }
+
+  async addNewHackathon(hackathon) {
+    return await this.setPush('hackathons', hackathon);
+  }
 }
 
 export default new DB({
