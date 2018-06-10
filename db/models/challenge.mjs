@@ -1,21 +1,15 @@
 import Model from './';
+import uuid from 'uuid/v1';
 
-const challengeSchema = {
-  name: {
-    required: true,
-    type: String,
-  },
+import Joi from 'joi';
 
-  description: {
-    required: true,
-    type: String,
-  },
+const challengeSchema = Joi.object().keys({
+  name: Joi.string().min(4).max(12).required(),
+  description: Joi.string().min(1).max(500).required(),
+  hasCodeEditor: Joi.boolean(),
+  _id: Joi.any().forbidden().default(_ => uuid(), 'unique id'),
+});
 
-  hasCodeEditor: {
-    required: false,
-    default: false,
-    type: Boolean,
-  },
-};
+export { challengeSchema };
 
 export default Model('challenge', challengeSchema);

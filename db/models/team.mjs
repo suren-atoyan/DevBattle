@@ -1,21 +1,16 @@
 import Model from './';
+import uuid from 'uuid/v1';
+
+import Joi from 'joi';
 
 const teamSchema = {
-  name: {
-    required: true,
-    type: String,
-  },
+  name: Joi.string().min(4).max(12).required(),
+  password: Joi.string().min(4).max(12).required(),
 
-  count: {
-    required: false,
-    default: 10,
-    type: Number,
-  },
-
-  password: {
-    required: true,
-    type: String,
-  },
+  count: Joi.number().empty().default(10),
+  _id: Joi.any().forbidden().default(_ => uuid(), 'unique id'),
 };
+
+export { teamSchema };
 
 export default Model('team', teamSchema);

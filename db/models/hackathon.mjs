@@ -1,33 +1,19 @@
 import Model from '.';
-import Teams from '../collections/teams';
-import Challenges from '../collections/challenges';
+import uuid from 'uuid';
 
-const hackathonSchema = {
-  name: {
-    required: true,
-    type: String,
-  },
+import { teamSchema } from './team';
+import { challengeSchema } from './challenge';
 
-  teams: {
-    required: true,
-    type: Teams,
-  },
+import Joi from 'joi';
 
-  isGuestTeam: {
-    required: false,
-    type: Boolean,
-    default: true,
-  },
+const hackathonSchema = Joi.object().keys({
+  name: Joi.string().min(4).max(30).required(),
+  duration: Joi.number().required(),
 
-  duration: {
-    required: true,
-    type: Number, // Date
-  },
-
-  challenges: {
-    required: true,
-    type: Challenges,
-  }
-};
+  teams: Joi.array().items(teamSchema).empty().default([]),
+  isGuestTeam: Joi.boolean(),
+  challenges: Joi.array().items(challengeSchema).empty().default([]),
+  _id: Joi.any().forbidden().default(_ => uuid(), 'unique id'),
+});
 
 export default Model('hackathon', hackathonSchema);
