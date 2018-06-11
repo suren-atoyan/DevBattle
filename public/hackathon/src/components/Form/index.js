@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
 import Button from '@material-ui/core/Button';
 
+import './index.scss';
+
 export default class Form extends PureComponent {
 
   state = {
@@ -24,12 +26,23 @@ export default class Form extends PureComponent {
   checkFormValidation() {
     const { validation } = this.props;
     const canSubmit = Object.keys(validation)
-      .some(name => (validation[name].required && !!this.formChildrenState[name]));
+      .every(
+        name => (
+          validation[name].required
+            ? !!this.formChildrenState[name]
+            : true
+        )
+      );
 
     this.setState({ canSubmit });
   }
 
   render() {
+
+    const canSubmit = this.props.hasOwnProperty('canSubmit')
+      ? this.props.canSubmit && this.state.canSubmit
+      : this.state.canSubmit;
+
     return (
       <form
         className={`form ${this.props.className ? this.props.className : ''}`}
@@ -42,7 +55,7 @@ export default class Form extends PureComponent {
           <Button
             color="primary"
             label="Submit"
-            disabled={!(this.state.canSubmit || this.props.canSubmit)}
+            disabled={!canSubmit}
             onClick={this.handleSubmit}
           >
             Submit
