@@ -12,7 +12,7 @@ const hackathonSchema = Joi.object().keys({
 
   teams: Joi.array().items(teamSchema).empty().default([]),
   isGuestTeam: Joi.boolean(),
-  challenges: Joi.array().items(challengeSchema).empty().default([]),
+  challenges: Joi.array().items(challengeSchema).required(),
   _id: Joi.any().forbidden().default(_ => uuid(), 'unique id'),
 });
 
