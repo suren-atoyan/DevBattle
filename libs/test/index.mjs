@@ -3,11 +3,20 @@ import assert from './assert';
 
 export default (requirements, solutionRaw) => {
   const sandbox = {};
+  let result;
 
   vm.createContext(sandbox);
-  vm.runInContext(solutionRaw, sandbox);
 
-  const solution = sandbox[requirements.name];
+  try {
+    vm.runInContext(solutionRaw, sandbox);
+    const solution = sandbox[requirements.name];
 
-  return requirements.tests.every(requirement => assert(requirement.input, requirement.output, solution));
+    if (!solution) throw new Error('Your function name is wrong');
+
+    result = requirements.tests.every(({input, output}) => assert(input, output, solution));
+  } catch (e) {
+    return { errorMessage: e.message };
+  }
+
+  return result ? { success: true } : { errorMessage: 'Solution is wrong!' }
 }
