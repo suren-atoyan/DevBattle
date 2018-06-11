@@ -41,6 +41,8 @@ class Challenges extends PureComponent {
 
     const currentChallenge = challenges[params.id - 1];
 
+    if (!currentChallenge) return <NoActive value="There is no such kind of challenge" />;
+
     const { description, name, hasCodeEditor, codeExample, _id } = currentChallenge;
 
     return (
