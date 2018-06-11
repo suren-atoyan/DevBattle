@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
-import Button from 'components/Button';
-import './index.scss';
+import Button from '@material-ui/core/Button';
 
-export default class ValidatableForm extends PureComponent {
+export default class Form extends PureComponent {
 
   state = {
     canSubmit: false,
@@ -42,11 +41,11 @@ export default class ValidatableForm extends PureComponent {
         <div className="footer">
           <Button
             color="primary"
-            children="Submit"
             label="Submit"
-            disabled={!this.state.canSubmit}
+            disabled={!(this.state.canSubmit || this.props.canSubmit)}
             onClick={this.handleSubmit}
           >
+            Submit
             <TrendingFlatIcon />
           </Button>
         </div>
