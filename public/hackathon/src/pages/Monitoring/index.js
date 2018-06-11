@@ -7,7 +7,7 @@ import Details from './Details';
 
 import './index.scss';
 
-class Monitoring extends PureComponent {  
+class Monitoring extends PureComponent {
   render() {
 
     const { store: { activeHackathon } } = this.props;
@@ -32,5 +32,3 @@ class Monitoring extends PureComponent {
     );
   }
 }
-
-export default withStore(Monitoring);
