@@ -1,42 +1,47 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import MUICheckbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import './index.scss';
 
-export default class Checkbox extends React.PureComponent {
+export default class Checkbox extends PureComponent {
 
-    state = {
-        checked: false,
+  static getDerivedStateFromProps(props, state) {
+    if (props.hasOwnProperty('checked') && (state.checked !== props.checked)) {
+      return {
+        checked: props.checked,
+      }
+    } else {
+      return null;
     }
+  }
 
-    handleChange = e => {
-        const checked = e.target.checked;
-        const { onChange } = this.props;
+  state = {
+    checked: false,
+  }
 
-        !this.props.hasOwnProperty('checked') && this.setState({ checked });
-        onChange && onChange(checked);
-    }
+  handleChange = e => {
+    const checked = e.target.checked;
+    const { onChange } = this.props;
 
+    !this.props.hasOwnProperty('checked') && this.setState({ checked });
+    onChange && onChange(checked);
+  }
 
-    getChecked() {
-        return this.props.hasOwnProperty('checked') ? this.props.checked : this.state.checked;
-    }
-
-    render() {
-        return (
-            <div className="checkbox-container">
-                <FormControlLabel
-                    control={
-                        <MUICheckbox
-                            checked={this.getChecked()}
-                            onChange={this.handleChange}
-                            value="guest"
-                            {...this.props}
-                        />
-                    }
-                    label={this.props.label}
+  render() {
+    return (
+      <div className="checkbox-container">
+        <FormControlLabel
+          control={
+            <MUICheckbox
+              checked={this.state.checked}
+              onChange={this.handleChange}
+              value="guest"
+              {...this.props}
             />
-            </div>
-        )
-    }
+          }
+          label={this.props.label}
+      />
+      </div>
+    );
+  }
 }

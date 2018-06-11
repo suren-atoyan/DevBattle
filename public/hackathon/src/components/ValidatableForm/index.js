@@ -1,46 +1,31 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
 import Button from 'components/Button';
 import './index.scss';
 
-export default class ValidatableForm extends React.PureComponent {
+export default class ValidatableForm extends PureComponent {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      canSubmit: false,
-    };
-
-    this.formChildrenState = {};
-  }
-
-  handleSubmit = _ => {
-    this.props.submit(this.formChildrenState);
+  state = {
+    canSubmit: false,
   };
+
+  formChildrenState = {};
+
+  handleSubmit = _ => this.props.submit(this.formChildrenState);
 
   handleChildChange = e => {
     const name = e.target.name;
+
     if (this.props.validation[name]) {
       this.formChildrenState[name] = e.target.value;
+      this.checkFormValidation();
     }
-    this.checkFormValidation();
   }
 
   checkFormValidation() {
     const { validation } = this.props;
-    let canSubmit = false;
-
-    for (let name in validation) {
-      
-      if (validation[name].required && !!this.formChildrenState[name]) {
-        canSubmit = true;
-      } else {
-        canSubmit = false;
-        this.setState({ canSubmit });
-        break;
-      }
-    }
+    const canSubmit = Object.keys(validation)
+      .some(name => (validation[name].required && !!this.formChildrenState[name]));
 
     this.setState({ canSubmit });
   }

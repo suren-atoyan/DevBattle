@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -7,53 +7,47 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-const styles = theme => ({
-    content: {
-        width: '100%',
-        padding: '0 !important',
-    },
-    typography: {
-        textAlign: 'center',
-    },
-});
+const styles = {
+  content: {
+    width: '100%',
+    padding: '0 !important',
+  },
 
-class DetailedExpansionPanel extends React.PureComponent {
+  typography: {
+    textAlign: 'center',
+  },
+};
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            expanded: props.expanded || props.defaultExpanded,
-        }
-    }
+class DetailedExpansionPanel extends PureComponent {
 
-    handleClick = e => {
-        this.setState(prevState => ({
-            expanded: !prevState.expanded
-        }))
-    }
+  state = {
+    expanded: this.props.expanded || this.props.defaultExpanded,
+  }
 
-    render() {
-        const { classes } = this.props;
-        return (
-            <ExpansionPanel
-                expanded={this.state.expanded}
-                onClick={this.handleClick}
-                className={this.props.className}
-                defaultExpanded={this.props.defaultExpanded}
-            >
-                <ExpansionPanelSummary className="tets" expandIcon={<ExpandMoreIcon />}>
-                        <Typography className={classes.typography}>{this.props.label}</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <div className={classes.content}>
-                        { this.state.expanded && (
-                            this.props.children
-                        )}
-                    </div>
-                </ExpansionPanelDetails>  
-            </ExpansionPanel>
-        );
-    }
+  handleClick = e => this.setState({ expanded: !this.state.expanded });
+
+  render() {
+    const { classes, label, children, className, defaultExpanded } = this.props;
+    return (
+      <ExpansionPanel
+        expanded={this.state.expanded}
+        onClick={this.handleClick}
+        className={className}
+        defaultExpanded={defaultExpanded}
+      >
+        <ExpansionPanelSummary className="tets" expandIcon={<ExpandMoreIcon />}>
+          <Typography className={classes.typography}>{label}</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <div className={classes.content}>
+            { this.state.expanded && (
+                children
+            )}
+          </div>
+        </ExpansionPanelDetails>  
+      </ExpansionPanel>
+    );
+  }
 }
 
 DetailedExpansionPanel.propTypes = {

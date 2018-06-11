@@ -15,7 +15,7 @@ class Admin extends PureComponent {
     challengePanelCount: 1,
   }
 
-  handleTeamSubmit = hackathonData => {
+  handleHackathonSubmit = hackathonData => {
     const { name, challengesName, challengesDescription } = hackathonData;
     const hackathon = {
       name: name,
@@ -27,11 +27,12 @@ class Admin extends PureComponent {
           description: challengesDescription,
         },
       ],
-    }
+    };
+
     this.props.store.createHackathon(hackathon)
   }
 
-  handlePlusButtonClick = _ => {
+  handleAddChallengeClick = _ => {
     this.setState(prevState => ({
       challengePanelCount: prevState.challengePanelCount + 1
     }), () => {
@@ -39,15 +40,13 @@ class Admin extends PureComponent {
     })
   }
 
-  stopPropagation = e => {
-    e.stopPropagation();
-  }
+  stopPropagation = e => e.stopPropagation();
 
   render() {
     return (
       <Form
         className="admin-form"
-        submit={this.handleTeamSubmit}
+        submit={this.handleHackathonSubmit}
         validation={{
           name: {
             required: true,
@@ -76,7 +75,6 @@ class Admin extends PureComponent {
           name="duration"
           label="Duration"
           type="time"
-          defaultValue="01:00"
           inputLabelProps={{
             shrink: true,
           }}
@@ -95,6 +93,7 @@ class Admin extends PureComponent {
               label="Create Chellenge"
               expanded={index === array.length - 1}
               className="challenges-expansion-panel"
+              key={index}
             >
               <TextField
                 name="challengesName"
@@ -115,7 +114,7 @@ class Admin extends PureComponent {
           <Button
             variant="fab"
             color="primary"
-            onClick={this.handlePlusButtonClick}
+            onClick={this.handleAddChallengeClick}
           >
             <AddIcon />
           </Button>

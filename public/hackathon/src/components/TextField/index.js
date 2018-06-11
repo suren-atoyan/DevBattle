@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -8,73 +8,73 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import './index.scss';
 
+export default class TextField extends PureComponent {
 
-export default class TextField extends React.PureComponent{
-    state = {
-        value: '',
-        showPassword: false,
+  static getDerivedStateFromProps(props, state) {
+    if (props.hasOwnProperty('value') && (state.value !== props.value)) {
+      return {
+        value: props.value,
+      }
+    } else {
+      return null;
     }
+  }
 
-    static defaultProps = {
-        type: 'Text',
-        label: 'Name',
-        error: false,
-        required: false,
-    }
+  state = {
+    value: '',
+    showPassword: false,
+  }
 
-    handleChange = e => {
-        !this.props.hasOwnProperty('value') && this.setState({
-            value: e.target.value
-        });
-        
-        const { onChange } = this.props;
-        onChange && onChange();
-    }
+  static defaultProps = {
+    type: 'Text',
+    label: 'Name',
+    error: false,
+    required: false,
+  }
 
-    
-    handleClickShowPassword = _ => {
-        this.setState({
-            showPassword: !this.state.showPassword
-        })
-    }
+  handleChange = e => {
+    !this.props.hasOwnProperty('value') && this.setState({
+        value: e.target.value,
+    });
 
-    getValue() {
-        return this.props.hasOwnProperty('value') ? this.props.value : this.state.value;
-    }
+    this.props.onChange && this.props.onChange();
+  }
 
-    render() {
-        const { inputLabelProps, ...inputProps } = this.props;
-        const { type, name } = inputProps;
+  toggleShowPassword = _ => this.setState({ showPassword: !this.state.showPassword });
 
-        return (
-            <div className="input-field-container">
-                <FormControl
-                    required={this.props.required}
-                    error={this.props.error}
-                >
-                    <InputLabel {...this.props.inputLabelProps}>{this.props.label}</InputLabel>
-                    <Input
-                        className="input-field"
-                        value={this.getValue()}
-                        onChange={this.handleChange}
-                        name={name}
-                        {...inputProps}
-                        type={type === 'password' ? (this.state.showPassword ? 'text' : 'password') : type}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                {  type === 'password' && (
-                                        <IconButton
-                                            aria-label="Toggle password visibility"
-                                            onClick={this.handleClickShowPassword}
-                                        >
-                                            {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                )}
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
-            </div>
-        )
-    }
+  render() {
+    const { inputLabelProps, ...inputProps } = this.props;
+    const { type, name, required, error, label } = inputProps;
+
+    return (
+      <div className="input-field-container">
+        <FormControl
+          required={required}
+          error={error}
+        >
+          <InputLabel {...inputLabelProps}>{label}</InputLabel>
+          <Input
+            className="input-field"
+            value={this.state.value}
+            onChange={this.handleChange}
+            name={name}
+            {...inputProps}
+            type={type === 'password' ? (this.state.showPassword ? 'text' : 'password') : type}
+            endAdornment={
+              <InputAdornment position="end">
+                { type === 'password' && (
+                  <IconButton
+                    aria-label="Toggle password visibility"
+                    onClick={this.toggleShowPassword}
+                  >
+                    {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                )}
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+      </div>
+    );
+  }
 }
