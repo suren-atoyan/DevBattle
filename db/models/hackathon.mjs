@@ -13,6 +13,19 @@ const hackathonSchema = Joi.object().keys({
   teams: Joi.array().items(teamSchema).empty().default([]),
   isGuestTeam: Joi.boolean(),
   challenges: Joi.array().items(challengeSchema).required(),
+
+  started: Joi.boolean().empty().default(false),
+  finished: Joi.boolean().empty().default(false),
+
+  results: Joi.array().item({
+    teamId: Joi.string().required(),
+    score: Joi.number().empty().default(0),
+    confirmedSolutions: Joi.array().items(Joi.object().keys({
+      challengeId: Joi.string().required(),
+      solution: Joi.string().required(),
+    })).empty().default([]),
+  }).empty().default([]),
+
   _id: Joi.any().forbidden().default(_ => uuid(), 'unique id'),
 });
 
