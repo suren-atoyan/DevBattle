@@ -1,0 +1,36 @@
+.admin-form {
+    width: 32rem;
+    height: auto;
+    margin: 0 auto;
+    padding-top: 1rem;
+    .name-field,
+    .password-field,
+    .duration-field,
+    .challenges-expansion-panel {
+        width: 30rem;
+    }
+
+    .hackathon-label {
+        font-weight: bold;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .challenges-expansion-panel {
+        margin-top: 1rem !important;
+    }
+
+    .input-field-container {
+        flex-direction: column;
+        margin: 2rem;
+        margin-left: 0;
+    }
+
+    .button-container {
+        margin: 1rem 2rem 0 0;
+        justify-content: flex-end;
+    }
+    >.footer {
+        margin: 2rem 0;
+    } 
+}
