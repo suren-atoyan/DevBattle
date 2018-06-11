@@ -1,9 +1,19 @@
 import React, { PureComponent } from 'react';
 
-export default class Admin extends {
+import Form from 'components/Form';
+
+export default class Admin extends PureComponent {
   render() {
     return (
-      Admin
+      <Form
+        validation={{
+          name: {
+            required: true,
+          }
+        }}
+      >
+        <input name="name" />
+      </Form>
     );
   }
 }
