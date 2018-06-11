@@ -1,0 +1,45 @@
+.admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  overflow-y: auto;
+  padding: 2rem 0;
+  font-family: sans-serif;
+  h2 {
+    text-align: center;
+  }
+  .form {
+    width: 30rem;
+    .content{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      > * {
+        margin-top: 2rem;
+      }
+    }
+    
+    .footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+  .challenges-paper {
+    min-height: 3rem;
+    width: 30rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    > p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-basis: 60%;
+    }
+  }
+}
