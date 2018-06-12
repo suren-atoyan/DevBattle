@@ -36,7 +36,9 @@ class AppStateProvider extends Component {
 
   createHackathon = async data => {
     const response = await makeRequest(`${url.base_url}${url.hackathons}`, 'POST', data);
-    this.setState(response);
+    response.errorMessage
+      ? this.setState({ errorMessage: response.errorMessage })
+      : this.setState({ activeHackathon: response });
   };
 
   createTeam = async data => {

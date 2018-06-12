@@ -17,7 +17,7 @@ export default class Challenge extends PureComponent {
   }
 
   addTest = test => this.setState({
-    tests: [ ...this.state.tests, test ],
+    tests: [ ...this.state.tests, { ...test, input: [test.input.replace(/ /g, '')] } ],
     isOpenAddTestDialog: false,
   });
 

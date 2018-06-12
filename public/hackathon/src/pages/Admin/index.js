@@ -4,9 +4,11 @@ import Typography from '@material-ui/core/Typography'
 import { removeItem } from 'utils/';
 import Form from './Form';
 import Challenges from './Challenges';
+
+import { withStore } from 'store';
 import './index.scss';
 
-export default class Admin extends PureComponent {
+class Admin extends PureComponent {
 
   state = {
     challenges: [],
@@ -50,3 +52,5 @@ export default class Admin extends PureComponent {
     );
   }
 }
+
+export default withStore(Admin);
