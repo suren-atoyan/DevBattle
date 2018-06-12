@@ -20,16 +20,14 @@ export default class Info extends PureComponent {
   render() {
 
     const {
-      name,
-      description,
-      hasCodeEditor,
-      codeExample,
+      input,
+      output,
     } = this.props;
 
     return (
       <Fragment>
         <ListItem button onClick={this.handleClick}>
-          <ListItemText inset primary={name} />
+          <ListItemText inset primary={`${input}/${output}`} />
           <Button onClick={this.deleteTest} variant="flat" color="secondary">Delete</Button>
           {this.state.open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
@@ -38,10 +36,8 @@ export default class Info extends PureComponent {
           timeout="auto"
           unmountOnExit
         >
-          <Typography>Name - {name}</Typography>
-          <Typography>Description - {description}</Typography>
-          <Typography>Has Code Editor - {hasCodeEditor ? 'Yes' : 'No'}</Typography>
-          <Typography>Code Example - {codeExample || 'N/A'}</Typography>
+          <Typography>Input - {input}</Typography>
+          <Typography>Output - {output}</Typography>
         </Collapse>
       </Fragment>
     );
