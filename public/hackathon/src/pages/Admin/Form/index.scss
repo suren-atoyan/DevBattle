@@ -1,0 +1,17 @@
+.admin__form {
+  width: 30rem;
+  .content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    > * {
+      margin-top: 2rem;
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

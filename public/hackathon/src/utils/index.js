@@ -33,4 +33,10 @@ async function makeRequest(url, method, data, defaultStatusState = {}) {
   return { ...defaultStatusState, ...result };
 }
 
-export { getRouteTitle, omit, makeRequest };
+const removeItem = (arr, i) => {
+  const res = arr.slice(0);
+  res.splice(i, 1);
+  return res;
+}
+
+export { getRouteTitle, omit, makeRequest, removeItem };

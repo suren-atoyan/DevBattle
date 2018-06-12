@@ -4,28 +4,17 @@
   align-items: center;
   height: 100%;
   overflow-y: auto;
-  padding: 2rem 0;
+  padding: 2rem 10rem;
   font-family: sans-serif;
+
   h2 {
     text-align: center;
   }
-  .form {
-    width: 30rem;
-    .content{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
 
-      > * {
-        margin-top: 2rem;
-      }
-    }
-    
-    .footer {
-      display: flex;
-      justify-content: flex-end;
-    }
+  &__paper {
+    margin: 1.3rem 0;
   }
+
   .challenges-paper {
     min-height: 3rem;
     width: 30rem;

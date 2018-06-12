@@ -1,0 +1,22 @@
+.add-test-dialog {
+  &__form {
+
+    min-width: 400px;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      > * {
+        margin-top: 2rem;
+      }
+    }
+
+    .footer {
+      display: flex;
+      justify-content: flex-end;
+      margin: 1.5rem 0;
+    }
+  }
+}
