@@ -1,127 +1,109 @@
-import React, { PureComponent } from 'react';
-import AddIcon from '@material-ui/icons/Add';
-import Typography from '@material-ui/core/Typography';
-import TextField from 'components/TextField';
-import Form from 'components/ValidatableForm';
-import ExpansionPanel from 'components/ExpansionPanel';
-import Checkbox from 'components/Checkbox';
-import Button from 'components/Button';
-import { withStore } from 'store';
+import React, { PureComponent, Fragment } from 'react';
+
+import Form from 'components/Form';
+import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
+import Challenge from './Challenge';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button';
 import './index.scss';
 
-class Admin extends PureComponent {
+const hackathonSchema = {
+  name: {
+    required: true,
+  },
+
+  duration: {
+    required: true,
+  },
+
+  isGuestTeam: {
+    required: false,
+  },
+};
+
+const emptyChallenge = {
+  name: '',
+  description: '',
+  hasCodeEditor: true,
+};
+
+export default class Admin extends PureComponent {
 
   state = {
-    challengePanelCount: 1,
+    challenges: [],
+    canAddCallenge: true,
   }
 
-  handleHackathonSubmit = hackathonData => {
-    const { name, challengesName, challengesDescription } = hackathonData;
+  createHackathon = data => {
+
+    const { challenges } = this.state;
+
     const hackathon = {
-      name: name,
-      isGuestTeam: true,
-      duration: 1000,
-      challenges: [
-        {
-          name: challengesName,
-          description: challengesDescription,
-        },
-      ],
-    };
+      ...data,
+      challenges,
+    }
 
-    this.props.store.createHackathon(hackathon)
+    this.props.store.createHackathon(hackathon);
   }
 
-  handleAddChallengeClick = _ => {
-    this.setState(prevState => ({
-      challengePanelCount: prevState.challengePanelCount + 1
-    }), () => {
-      this.buttonRef && this.buttonRef.scrollIntoView(true);
-    })
-  }
-
-  stopPropagation = e => e.stopPropagation();
+  addChallenge = challenge => this.setState({
+    challenges: [ ...this.state.challenges, challenge ],
+    canAddCallenge: true,
+  });
 
   render() {
     return (
-      <Form
-        className="admin-form"
-        submit={this.handleHackathonSubmit}
-        validation={{
-          name: {
-            required: true,
-          },
-          duration: {
-            required: true, 
-          },
-          challengesName: {
-            required: true,
-          },
-          challengesDescription: {
-            required: true
-          }
-        }}
-      >
-        <Typography className="hackathon-label">Create hackathon</Typography>
-        <TextField
-          required
-          className="name-field"
-          name="name"
-          label="Name"
-        />
-        <TextField
-          required
-          className="duration-field"
-          name="duration"
-          label="Duration"
-          type="time"
-          inputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            step: 300, // 5 min
-          }}
-        />
-        <Checkbox
-          name="canHaveGuest"
-          label="Can have guest"
-          color="primary"
-        />
+      <div className="admin">
+        <Typography variant="headline" component="h2" >
+          Create new hackathon
+        </Typography>
+        <Form
+          validation={hackathonSchema}
+          submit={this.createHackathon}
+          canSubmit={!!this.state.challenges.length}
+        >
+          <TextField
+            required
+            label="Name"
+            name="name"
+          />
+          <TextField
+            required
+            label="Duration"
+            type="time"
+            name="duration"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              step: 300, // 5 min
+            }}
+          />
+          <div>
+            <Checkbox color="primary" name="isGuestTeam" />
+            Is guest team
+          </div>
+        </Form>
         {
-          [...Array(this.state.challengePanelCount)].map((el, index, array) => (
-            <ExpansionPanel
-              label="Create Chellenge"
-              expanded={index === array.length - 1}
-              className="challenges-expansion-panel"
-              key={index}
-            >
-              <TextField
-                name="challengesName"
-                label="Name"
-                onClick={this.stopPropagation}
-              />
-              <TextField
-                multiline
-                name="challengesDescription"
-                label="Description"
-                onClick={this.stopPropagation}
-              />
-            </ExpansionPanel>
-          ))
-
+          <Fragment>
+            {
+              this.state.challenges.map(({ name, description, hasCodeEditor }, index) => (
+                <Paper key={index} className="challenges-paper">
+                  <Typography>Challenge Name - {name}</Typography>
+                  <Button variant="contained" color="primary">Edit</Button>
+                  <Button variant="contained" color="secondary">Delete</Button>
+                </Paper>
+              ))
+            }
+            <Challenge
+              {...emptyChallenge}
+              submit={this.addChallenge}
+            />
+          </Fragment>
         }
-        <div ref={ref => (this.buttonRef = ref)}>
-          <Button
-            variant="fab"
-            color="primary"
-            onClick={this.handleAddChallengeClick}
-          >
-            <AddIcon />
-          </Button>
-        </div>
-      </Form>
+      </div>
     );
   }
 }
-
-export default withStore(Admin)

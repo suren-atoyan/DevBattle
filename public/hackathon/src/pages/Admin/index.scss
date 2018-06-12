@@ -1,38 +1,45 @@
-.admin-form {
-  width: 32rem;
-  height: auto;
-  margin: 0 auto;
-  padding-top: 1rem;
-
-  .name-field,
-  .password-field,
-  .duration-field,
-  .challenges-expansion-panel {
-    width: 30rem;
-  }
-
-  .hackathon-label {
-    font-weight: bold;
-    font-size: 1.5rem;
+.admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  overflow-y: auto;
+  padding: 2rem 0;
+  font-family: sans-serif;
+  h2 {
     text-align: center;
   }
+  .form {
+    width: 30rem;
+    .content{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
 
-  .challenges-expansion-panel {
-    margin-top: 1rem !important;
+      > * {
+        margin-top: 2rem;
+      }
+    }
+    
+    .footer {
+      display: flex;
+      justify-content: flex-end;
+    }
   }
-
-  .input-field-container {
-    flex-direction: column;
-    margin: 2rem;
-    margin-left: 0;
-  }
-
-  .button-container {
-    margin: 1rem 2rem 0 0;
+  .challenges-paper {
+    min-height: 3rem;
+    width: 30rem;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: flex-end;
+    > p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-basis: 60%;
+    }
   }
-
-  >.footer {
-    margin: 2rem 0;
-  } 
 }

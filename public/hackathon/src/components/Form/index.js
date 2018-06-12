@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
-import Button from 'components/Button';
+import Button from '@material-ui/core/Button';
+
 import './index.scss';
 
-export default class ValidatableForm extends PureComponent {
+export default class Form extends PureComponent {
 
   state = {
     canSubmit: false,
@@ -25,12 +26,23 @@ export default class ValidatableForm extends PureComponent {
   checkFormValidation() {
     const { validation } = this.props;
     const canSubmit = Object.keys(validation)
-      .some(name => (validation[name].required && !!this.formChildrenState[name]));
+      .every(
+        name => (
+          validation[name].required
+            ? !!this.formChildrenState[name]
+            : true
+        )
+      );
 
     this.setState({ canSubmit });
   }
 
   render() {
+
+    const canSubmit = this.props.hasOwnProperty('canSubmit')
+      ? this.props.canSubmit && this.state.canSubmit
+      : this.state.canSubmit;
+
     return (
       <form
         className={`form ${this.props.className ? this.props.className : ''}`}
@@ -42,11 +54,11 @@ export default class ValidatableForm extends PureComponent {
         <div className="footer">
           <Button
             color="primary"
-            children="Submit"
             label="Submit"
-            disabled={!this.state.canSubmit}
+            disabled={!canSubmit}
             onClick={this.handleSubmit}
           >
+            Submit
             <TrendingFlatIcon />
           </Button>
         </div>
