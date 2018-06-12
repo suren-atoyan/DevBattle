@@ -1,5 +1,4 @@
 import React, { PureComponent, Fragment } from 'react';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -41,13 +40,13 @@ export default class Info extends PureComponent {
           timeout="auto"
           unmountOnExit
         >
-          <Typography>Name - {name}</Typography>
-          <Typography>Description - {description}</Typography>
-          <Typography>Has Code Editor - {hasCodeEditor ? 'Yes' : 'No'}</Typography>
-          <Typography>Code Example - {codeExample || 'N/A'}</Typography>
-          <Typography>hasCodeLimitation - {hasCodeLimitation ? 'Yes' : 'No'}</Typography>
-          <Typography>Function name - {fnName}</Typography>
-          <Typography>Function length - {fnLength}</Typography>
+          <ListItem>Name - {name}</ListItem>
+          <ListItem>Description - {description}</ListItem>
+          <ListItem>Has Code Editor - {hasCodeEditor ? 'Yes' : 'No'}</ListItem>
+          <ListItem>Code Example - {codeExample || 'N/A'}</ListItem>
+          <ListItem>hasCodeLimitation - {hasCodeLimitation ? 'Yes' : 'No'}</ListItem>
+          <ListItem>Function name - {fnName}</ListItem>
+          <ListItem>Function length - {fnLength}</ListItem>
         </Collapse>
       </Fragment>
     );

@@ -1,5 +1,4 @@
 import React, { PureComponent, Fragment } from 'react';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -36,8 +35,8 @@ export default class Info extends PureComponent {
           timeout="auto"
           unmountOnExit
         >
-          <Typography>Input - {input}</Typography>
-          <Typography>Output - {output}</Typography>
+          <ListItem>Input - {input}</ListItem>
+          <ListItem>Output - {output}</ListItem>
         </Collapse>
       </Fragment>
     );
