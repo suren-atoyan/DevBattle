@@ -23,10 +23,20 @@ export default class Challenge extends PureComponent {
 
   deleteTest = inx => this.setState({ tests: removeItem(this.state.tests, inx) });
 
-  render() {
+  submit = data => {
 
+    const { tests } = this.state;
+
+    const currentChallenge = {
+      ...data,
+      tests,
+    }
+
+    this.props.submit(currentChallenge);
+  }
+
+  render() {
     const {
-      submit,
       onClose,
       ...props
     } = this.props;
@@ -45,9 +55,9 @@ export default class Challenge extends PureComponent {
             Please be creative and don't write challenges less then 400 Mwatt
           </DialogContentText>
           <Form
-            submit={submit}
-            canSubmit={canSubmit}
             {...props}
+            canSubmit={canSubmit}
+            submit={this.submit}
           />
           <Typography variant="title">Tests</Typography>
           <Tests

@@ -16,12 +16,12 @@ export default class Admin extends PureComponent {
 
     const { challenges } = this.state;
 
-    const hackathon = {
+    const currentHackathon = {
       ...data,
       challenges,
     }
 
-    this.props.store.createHackathon(hackathon);
+    this.props.store.createHackathon(currentHackathon);
   }
 
   addChallenge = challenge => this.setState({
