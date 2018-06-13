@@ -1,12 +1,11 @@
 import React, {PureComponent} from 'react';
-import {Card} from '@material-ui/core';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import { Card, CardContent, Typography, Button } from '@material-ui/core';
 import CountDown from '../../components/CountDown';
+const startDate = new Date().valueOf();
 
-class Details extends PureComponent {
+  class Details extends PureComponent {
   render() {
-    const { activeHackathon: {teams, duration} } = this.props;
+    const { activeHackathon: {teams, duration, challenges} } = this.props;
 
     return (
       <div>
@@ -15,24 +14,27 @@ class Details extends PureComponent {
         </Typography>
         <Card className='countDown'>
           <CardContent>
-            <CountDown duration={duration} />
+            <CountDown startDate={startDate} duration={duration} />
           </CardContent>
         </Card>
         {
-          teams.map(({name, _id}, i) =>
+          teams.map(({name, _id}) =>
             <Card className={`teamCard team-${name.split(" ").join('-')}`} key={_id}>
               <CardContent>
                 <Typography gutterBottom variant="headline" component="h2">
                   {name}
                 </Typography>
-                <Typography component="p">
-                  Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                  across all continents except Antarctica
-                </Typography>
+                {
+                  challenges.map(({resolved}, i) =>
+                    <Button key={i} variant="raised" color={ resolved ? 'primary' : 'secondary' }>
+                      Challenge {i+1}
+                    </Button>
+                  )
+                }
               </CardContent>
-            </Card>)
+            </Card>
+          )
         }
-
       </div>
     )
   }

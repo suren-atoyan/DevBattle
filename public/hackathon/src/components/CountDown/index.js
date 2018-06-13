@@ -9,12 +9,11 @@ class CountDown extends PureComponent {
     this.state = {
       hours: 0,
       min: 0,
-    }
+      sec: 0,
+    };
   }
 
   componentDidMount() {
-    console.log(this.props.duration);
-    // update every second
     this.interval = setInterval(() => {
       const date = this.calculateCountdown(this.props.duration);
       date ? this.setState(date) : this.stop();
@@ -24,23 +23,20 @@ class CountDown extends PureComponent {
   componentWillUnmount() {
     this.stop();
   }
-  calculateCountdown(endDate) {
-    let diff = endDate;
 
+  calculateCountdown() {
+    const {startDate, duration: dur} = this.props;
+    const duration = dur.split(':').reduce((prev, value, index) => prev + value * (index ? 60 : 3600), 0);
+    const diff = Math.floor((startDate + duration * 1000 - new Date().valueOf())/1000);
     const timeLeft = {
       hours: 0,
       min: 0,
+      sec: 0,
     };
 
-    // calculate time difference between now and expected date
-    if (diff >= 3600) { // 60 * 60
-      timeLeft.hours = Math.floor(diff / 3600);
-      diff -= timeLeft.hours * 3600;
-    }
-
-    if (diff >= 60) {
-      timeLeft.min = Math.floor(diff / 60);
-    }
+    timeLeft.hours = Math.floor(diff / 3600);
+    timeLeft.min = Math.floor(diff % 3600 / 60);
+    timeLeft.sec = diff % 60;
 
     return timeLeft;
   }
@@ -58,16 +54,15 @@ class CountDown extends PureComponent {
   }
 
   render() {
-    const {min, hours} = this.state;
+    const {hours, min, sec} = this.state;
 
     return (
       <Typography variant="headline" gutterBottom style={{textAlign: 'center', marginTop: '10px', color: '#fff'}}>
-        <span className="Countdown-col-element">
-          <strong>{this.addLeadingZeros(hours)}</strong>
-          <span>Hours</span>
-          <strong>{this.addLeadingZeros(min)}</strong>
-          <span>Min</span>
-        </span>
+        <div className="countdown-element">
+          <strong>{this.addLeadingZeros(hours)} : </strong>
+          <strong>{this.addLeadingZeros(min)} : </strong>
+          <strong>{this.addLeadingZeros(sec)}</strong>
+        </div>
       </Typography>
     );
   }
