@@ -1,22 +1,19 @@
-import React, {PureComponent} from 'react';
-import './index.scss';
-import Typography from '@material-ui/core/Typography';
+import React, { PureComponent } from 'react';
 
+import './index.scss';
 
 class CountDown extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hours: 0,
-      min: 0,
-      sec: 0,
-    };
-  }
+
+  state = {
+    hours: 0,
+    min: 0,
+    sec: 0,
+  };
 
   componentDidMount() {
-    this.interval = setInterval(() => {
+    this.intervalId = setInterval(_ => {
       const date = this.calculateCountdown(this.props.duration);
-      date ? this.setState(date) : this.stop();
+      this.setState(date);
     }, 1000);
   }
 
@@ -25,45 +22,37 @@ class CountDown extends PureComponent {
   }
 
   calculateCountdown() {
-    const {startDate, duration: dur} = this.props;
-    const duration = dur.split(':').reduce((prev, value, index) => prev + value * (index ? 60 : 3600), 0);
-    const diff = Math.floor((startDate + duration * 1000 - new Date().valueOf())/1000);
-    const timeLeft = {
-      hours: 0,
-      min: 0,
-      sec: 0,
+    const { startDate, duration: dur } = this.props;
+    const [hours, minutes] = dur.split(':');
+    const duration = hours * 3600 + minutes * 60;
+    const diff = Math.floor((startDate + duration * 1000 - new Date().valueOf()) / 1000);
+
+    return {
+      hours: Math.floor(diff / 3600),
+      min: Math.floor(diff % 3600 / 60),
+      sec: diff % 60,
     };
-
-    timeLeft.hours = Math.floor(diff / 3600);
-    timeLeft.min = Math.floor(diff % 3600 / 60);
-    timeLeft.sec = diff % 60;
-
-    return timeLeft;
   }
 
   stop() {
-    clearInterval(this.interval);
+    clearInterval(this.intervalId);
   }
 
-  addLeadingZeros(value) {
-    value = String(value);
-    while (value.length < 2) {
-      value = '0' + value;
-    }
-    return value;
+  makeDoubleDigitString(value) {
+    return (value < 10)
+      ? '0' + value
+      : '' + value;
   }
 
   render() {
     const {hours, min, sec} = this.state;
 
     return (
-      <Typography variant="headline" gutterBottom style={{textAlign: 'center', marginTop: '10px', color: '#fff'}}>
-        <div className="countdown-element">
-          <strong>{this.addLeadingZeros(hours)} : </strong>
-          <strong>{this.addLeadingZeros(min)} : </strong>
-          <strong>{this.addLeadingZeros(sec)}</strong>
-        </div>
-      </Typography>
+      <div className="countdown-element">
+        <strong>{this.makeDoubleDigitString(hours)} : </strong>
+        <strong>{this.makeDoubleDigitString(min)} : </strong>
+        <strong>{this.makeDoubleDigitString(sec)}</strong>
+      </div>
     );
   }
 }
