@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ChartIcon from '@material-ui/icons/ShowChart';
-
+import Tooltip from '@material-ui/core/Tooltip';
 import LoginDialog from 'components/Dialogs/Login/';
 import CreateTeamDialog from 'components/Dialogs/CreateTeam/';
 import NavigationButtons from 'components/NavigationButtons';
@@ -104,9 +104,11 @@ class TopBar extends PureComponent {
         <AppBar color="default" position="static">
           <Toolbar>
             <Link to="/monitoring" className="link">
-              <IconButton variant="fab" className={classes.menuButton} color="secondary" aria-label="charts">
-                <ChartIcon />
-              </IconButton>
+              <Tooltip id="tooltip-fab" title="Monitoring">
+                <IconButton variant="fab" className={classes.menuButton} color="secondary" aria-label="charts">
+                  <ChartIcon />
+                </IconButton>
+              </Tooltip>
             </Link>
             <Typography variant="title" color="inherit" className={classes.flex}>
               {`${hackathonName} - `}

@@ -26,12 +26,10 @@ class CountDown extends PureComponent {
   }
   calculateCountdown(endDate) {
     let diff = endDate;
-    // clear countdown when date is reached
 
     const timeLeft = {
       hours: 0,
       min: 0,
-      sec: 0
     };
 
     // calculate time difference between now and expected date
@@ -39,11 +37,10 @@ class CountDown extends PureComponent {
       timeLeft.hours = Math.floor(diff / 3600);
       diff -= timeLeft.hours * 3600;
     }
+
     if (diff >= 60) {
       timeLeft.min = Math.floor(diff / 60);
-      diff -= timeLeft.min * 60;
     }
-    timeLeft.sec = diff;
 
     return timeLeft;
   }
