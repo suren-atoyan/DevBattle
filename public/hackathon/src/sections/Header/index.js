@@ -104,7 +104,7 @@ class TopBar extends PureComponent {
         <AppBar color="default" position="static">
           <Toolbar>
             <Link to="/monitoring" className="link">
-              <Tooltip id="tooltip-fab" title="Monitoring">
+              <Tooltip title="Monitoring">
                 <IconButton variant="fab" className={classes.menuButton} color="secondary" aria-label="charts">
                   <ChartIcon />
                 </IconButton>
