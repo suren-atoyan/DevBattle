@@ -14,11 +14,12 @@ export default class Form extends PureComponent {
 
   handleSubmit = _ => this.props.submit(this.formChildrenState);
 
-  handleChildChange = e => {
-    const name = e.target.name;
+  handleChildChange = ({ target: { name, value, checked } }) => {
+
+    const currentValue = value || checked;
 
     if (this.props.validation[name]) {
-      this.formChildrenState[name] = e.target.value;
+      this.formChildrenState[name] = currentValue;
       this.checkFormValidation();
     }
   }

@@ -1,0 +1,16 @@
+.admin__tests {
+  width: 30rem;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  > p {
+    margin: 1rem 0;
+  }
+
+  &--add {
+    align-self: flex-end;
+    margin-top: 1rem;
+  }
+}

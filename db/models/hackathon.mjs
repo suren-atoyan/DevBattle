@@ -8,7 +8,7 @@ import Joi from 'joi';
 
 const hackathonSchema = Joi.object().keys({
   name: Joi.string().min(4).max(30).required(),
-  duration: Joi.number().required(),
+  duration: Joi.string().required(),
 
   teams: Joi.array().items(teamSchema).empty().default([]),
   isGuestTeam: Joi.boolean(),
