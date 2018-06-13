@@ -1,0 +1,25 @@
+.details {
+  &__title {
+    text-align: center;
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+
+  &__count-down {
+    background-color: #192431 !important;
+    will-change: opacity,transform;
+    transition: all 0.3s ease-out;
+    // TODO ::: Use scss variables for colors
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    color: #fff !important;
+    margin: 1rem;
+
+    &:hover{
+      box-shadow:0 12px 15px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+  }
+
+  &__team-card {
+    margin: 1rem;
+  }
+}
