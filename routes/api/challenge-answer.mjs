@@ -38,14 +38,21 @@ async function _challengeAnswer(req, res) {
 
             !currentHackathon.results[rTeamId] && (currentHackathon.results[rTeamId] = {
               confirmedSolutions: [],
+              score: 0,
             });
 
             const currentTeamResults = currentHackathon.results[rTeamId];
 
             const existingSolution = currentTeamResults.confirmedSolutions.some(solution => solution.challengeId === challengeId);
-            currentTeamResults.confirmedSolutions.push({ challengeId, source });
-            await db.updateActiveHackathon(currentHackathon);
-            res.status(200).send(currentHackathon);
+
+            if (existingSolution) {
+              res.status(422).send({ errorMessage: 'This challenge have already solved by your team' });
+            } else {
+              currentTeamResults.confirmedSolutions.push({ challengeId, source });
+              currentTeamResults.score++;
+              await db.updateActiveHackathon(currentHackathon);
+              res.status(200).send(currentHackathon);
+            }
           }
 
           res.status(200).send({ success: true }); // true/false will be calculated from line 8
