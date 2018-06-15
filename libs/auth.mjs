@@ -6,6 +6,7 @@ import config from '../config';
 import env from './env';
 import jwt from 'jsonwebtoken';
 import db from '../db';
+import { getActiveHackathon } from '../models/helpers';
 
 // TODO ::: It will be removed after Node 10 LTS verion.
 import __getDirname from './__dirname';
@@ -113,7 +114,7 @@ class Auth {
   }
 
   async getTeamInfo(name, pass) {
-    const activeHackathon = await db.getActiveHackathon(false, true);
+    const activeHackathon = await getActiveHackathon(false, true);
 
     if (!activeHackathon) {
       return false;
