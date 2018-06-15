@@ -103,6 +103,21 @@ class DB {
     }
   }
 
+  async startHackathon() {
+    const activeHackathon = this.getActiveHackathon(true, true);
+    return activeHackathon
+      .set('startTime', Date.now())
+      .set('started', true)
+      .write();
+  }
+
+  async finishHackathon() {
+    const activeHackathon = this.getActiveHackathon(true, true);
+    return activeHackathon
+      .set('finished', true)
+      .write();
+  }
+
   async addNewHackathon(hackathon) {
     return await this.setPush('hackathons', hackathon);
   }
