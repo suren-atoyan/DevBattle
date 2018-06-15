@@ -42,6 +42,7 @@ class Challenge extends PureComponent {
           {
             solvedChallenge && (
               <Info
+                titleColor="#00BCD4"
                 title="Challenge solved!"
                 content={solvedChallenge.source}
               />

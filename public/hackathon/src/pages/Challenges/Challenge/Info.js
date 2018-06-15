@@ -20,13 +20,17 @@ const styles = {
 };
 
 function Description(props) {
-  const { classes } = props;
+  const { classes, titleColor } = props;
 
   return (
     <div>
       <Card className={classes.card}>
         <CardContent>
-          <Typography className={classes.title} variant="headline" color="textSecondary">
+          <Typography
+            className={classes.title}
+            variant="headline"
+            style={{color: titleColor || 'rgba(0, 0, 0, 0.54)'}}
+          >
             {props.title}
           </Typography>
           <Typography className={classes.pos} variant="body1">
