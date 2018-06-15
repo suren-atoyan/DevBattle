@@ -1,4 +1,8 @@
 .details {
+
+  max-height: 100%;
+  overflow: scroll;
+
   &__title {
     text-align: center;
     margin-top: 10px;

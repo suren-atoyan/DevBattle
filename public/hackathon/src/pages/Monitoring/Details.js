@@ -38,7 +38,7 @@ export default class Details extends PureComponent {
     const { activeHackathon: { duration } } = this.props;
 
     return (
-      <div>
+      <div className="details">
         <Typography variant="headline" component="h2" className="details__title" >
           deatails
         </Typography>
