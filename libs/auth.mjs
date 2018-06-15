@@ -119,7 +119,7 @@ class Auth {
     if (!activeHackathon) {
       return false;
     }
-console.log(activeHackathon);
+
     const { teams } = activeHackathon;
 
     const result = await Promise.all(
