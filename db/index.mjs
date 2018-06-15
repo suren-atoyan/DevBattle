@@ -58,6 +58,12 @@ class DB {
     return id;
   }
 
+  async updateActiveHackathon(hackathon) {
+    return await this.db.get('hackathons').find({
+      _id: await this.get('active_hackathon_id')
+    }).update(hackathon).write();
+  }
+
   async getActiveHackathon(withLodashWrapper, withPasswords) {
     const activeHackathonId = await this.get('active_hackathon_id');
     let activeHackathon = await this.db.get('hackathons').find({ _id: activeHackathonId });
