@@ -38,6 +38,10 @@ export default class Test extends Component {
         <DialogContent>
           <DialogContentText>
             Please write input/output for your function
+            Note ::: type of input/output should be JSON
+            So, eg. if you want to write 2 as number in input field
+            just write 2. If you want to write 2 as string, write "2".
+            They are boght valid JSONs.
           </DialogContentText>
           <Form
             submit={submit}

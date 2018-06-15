@@ -33,7 +33,17 @@ class Challenges extends PureComponent {
 
   getChallengesContent() {
 
-    const { match: { params }, store: { activeHackathon : { challenges } } } = this.props;
+    const {
+      match: { params },
+      store: {
+        activeHackathon: { challenges, results: allResults },
+      },
+      authState: { team },
+    } = this.props;
+
+    const results = team
+      ? allResults[team._id]
+      : allResults.guests;
 
     if (!params.id) {
       return null;
@@ -54,6 +64,7 @@ class Challenges extends PureComponent {
             hasCodeEditor={hasCodeEditor}
             codeExample={codeExample}
             sendResult={this.sendResult}
+            results={results}
             _id={_id}
           />
         </div>

@@ -18,7 +18,12 @@ const hackathonSchema = Joi.object().keys({
   started: Joi.boolean().empty().default(false),
   finished: Joi.boolean().empty().default(false),
 
-  results: Joi.object().empty().default({}),
+  results: Joi.object().empty().default({
+    guests: {
+      confirmedSolutions: [],
+      score: 0,
+    },
+  }),
 
   _id: Joi.any().forbidden().default(_ => uuid(), 'unique id'),
 });
