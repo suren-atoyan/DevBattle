@@ -23,39 +23,29 @@ async function _challengeAnswer(req, res) {
         if (result.errorMessage) {
           res.status(422).send({ errorMessage: result.errorMessage });
         } else {
-          if (role.isGuest && currentHackathon.results.guests) {
-            const { guests } = currentHackathon.results;
-            const existingSolution = guests.confirmedSolutions.some(solution => solution.challengeId === challengeId);
-            if (existingSolution) {
-              res.status(422).send({ errorMessage: 'This challenge have already solved by your team' });
-            } else {
-              guests.confirmedSolutions.push({ challengeId, source });
-              guests.score++;
-              await db.updateActiveHackathon(currentHackathon);
-              res.status(200).send(currentHackathon);
-            }
-          } else {
+          const { guests } = currentHackathon.results;
 
+          if (rTeamId) {
             !currentHackathon.results[rTeamId] && (currentHackathon.results[rTeamId] = {
               confirmedSolutions: [],
               score: 0,
             });
-
-            const currentTeamResults = currentHackathon.results[rTeamId];
-
-            const existingSolution = currentTeamResults.confirmedSolutions.some(solution => solution.challengeId === challengeId);
-
-            if (existingSolution) {
-              res.status(422).send({ errorMessage: 'This challenge have already solved by your team' });
-            } else {
-              currentTeamResults.confirmedSolutions.push({ challengeId, source });
-              currentTeamResults.score++;
-              await db.updateActiveHackathon(currentHackathon);
-              res.status(200).send(currentHackathon);
-            }
           }
 
-          res.status(200).send({ success: true }); // true/false will be calculated from line 8
+          const currentTeam = role.isGuest
+            ? guests
+            : currentHackathon.results[rTeamId];
+
+          const existingSolution = currentTeam.confirmedSolutions.some(solution => solution.challengeId === challengeId);
+
+          if (existingSolution) {
+            res.status(422).send({ errorMessage: 'This challenge have already solved by your team' });
+          } else {
+            currentTeam.confirmedSolutions.push({ challengeId, source });
+            currentTeam.score++;
+            await db.updateActiveHackathon(currentHackathon);
+            res.status(200).send(currentHackathon);
+          }
         }
       } else {
         if (role.isAdmin) {
