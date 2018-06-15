@@ -1,3 +1,4 @@
+/* eslint-disable no-sequences */
 import React, { PureComponent } from 'react';
 import Test from './Test';
 import TestInfo from './Test/Info';
@@ -54,7 +55,11 @@ export default class Tests extends PureComponent {
 
   addTest = data => {
     this.closeAddTestDialog();
-    this.props.addTest(data);
+    this.props.addTest(
+      Object
+        .keys(data)
+        .reduce((acc, key) => (acc[key] = JSON.parse(data[key]), acc), {})
+    );
   }
 
   render() {
