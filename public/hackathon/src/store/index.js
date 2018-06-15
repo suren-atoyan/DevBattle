@@ -6,7 +6,7 @@ import StatusMessage from 'components/StatusMessage';
 const defaultState = {
   activeHackathon: null,
   isLoading: false,
-}
+};
 
 const AppContext = React.createContext(defaultState);
 
@@ -26,8 +26,7 @@ class AppStateProvider extends Component {
 
   componentDidMount() {
     this.getActiveHackathon();
-  }
-
+  };
 
   getActiveHackathon = async _ => {
     const response = await makeRequest(`${url.base_url}${url.hackathons}`, 'GET');
