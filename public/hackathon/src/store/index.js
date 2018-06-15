@@ -47,8 +47,14 @@ class AppStateProvider extends Component {
   };
 
   sendChallengeAnswer = async data => {
-    makeRequest(`${url.base_url}${url.challenge_answer}`, 'POST', data);
-    // TODO ::: Add functionality for check challenge anwser
+    const response = await makeRequest(`${url.base_url}${url.challenge_answer}`, 'POST', data);
+    if (response.errorMessage) {
+      this.setState(response);
+    } else {
+      this.setState({
+        activeHackathon: response,
+      })
+    }
   }
 
   handleStatusMessageClose = _ => this.setState({ showStatusMessage: false });
