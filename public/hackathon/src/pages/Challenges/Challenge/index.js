@@ -1,17 +1,22 @@
 import React, { PureComponent } from 'react';
 import CodeEditor from '../CodeEditor/';
-import Description from './Description';
+import Info from './Info';
 import Grid from '@material-ui/core/Grid';
 
 class Challenge extends PureComponent {
 
   static defaultProps = {
     hasCodeEditor: true,
+    results: {
+      confirmedSolutions: [],
+    },
   }
 
   render() {
 
-    const { hasCodeEditor, description, name, codeExample, sendResult, _id } = this.props;
+    const { hasCodeEditor, description, name, codeExample, sendResult, _id, results } = this.props;
+
+    const solvedChallenge = results.confirmedSolutions.find(({ challengeId }) => challengeId === _id );
 
     return (
       <Grid
@@ -29,10 +34,19 @@ class Challenge extends PureComponent {
           </Grid>
         }
         <Grid item xs={hasCodeEditor ? 6 : 12}>
-          <Description
-            name={name}
-            description={description}
+          <Info
+            title={name}
+            content={description}
           />
+
+          {
+            solvedChallenge && (
+              <Info
+                title="Challenge solved!"
+                content={solvedChallenge.source}
+              />
+            )
+          }
         </Grid>
       </Grid>
     );

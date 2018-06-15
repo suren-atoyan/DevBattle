@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 const styles = {
   card: {
     minWidth: 275,
+    marginBottom: '1rem',
   },
   title: {
     marginBottom: 16,
@@ -26,10 +27,10 @@ function Description(props) {
       <Card className={classes.card}>
         <CardContent>
           <Typography className={classes.title} variant="headline" color="textSecondary">
-            {props.name}
+            {props.title}
           </Typography>
           <Typography className={classes.pos} variant="body1">
-            {props.description}
+            {props.content}
           </Typography>
         </CardContent>
       </Card>
