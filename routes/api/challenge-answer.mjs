@@ -1,8 +1,8 @@
 import auth from '../../libs/auth';
 import { asyncWrapper } from '../../libs/utils';
-import db from '../../db';
-
 import testRunner from '../../libs/test';
+
+import { getActiveHackathon } from '../../models/helpers';
 
 async function _challengeAnswer(req, res) {
   const { cookies : { token }, body: { challengeId, source } } = req;
@@ -12,7 +12,7 @@ async function _challengeAnswer(req, res) {
 
     // TODO ::: Make testRunner function execution asynchronous.
 
-    const currentHackathon = await db.getActiveHackathon();
+    const currentHackathon = await getActiveHackathon();
 
     const currnetChallenge = currentHackathon.challenges.find(challenge => challenge._id === challengeId);
 

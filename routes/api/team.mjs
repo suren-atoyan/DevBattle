@@ -1,8 +1,8 @@
 import { asyncWrapper } from '../../libs/utils';
 
-import team from '../../db/models/team';
-import db from '../../db';
+import team from '../../models/team';
 import auth from '../../libs/auth';
+import { createNewTeam } from '../../models/helpers';
 
 async function _createTeam(req, res) {
   const { body } = req;
@@ -14,7 +14,7 @@ async function _createTeam(req, res) {
       res.status(422).send({ errorMessage: currentTeam._error });
     } else {
       currentTeam.password = await auth.genPassword(currentTeam.password);
-      const result = await db.createNewTeam(currentTeam);
+      const result = await createNewTeam(currentTeam);
       
       if (result.success) {
         res.status(200).send(result.team);
