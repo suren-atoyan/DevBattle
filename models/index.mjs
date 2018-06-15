@@ -1,4 +1,4 @@
-import db from './';
+import db from '../db';
 import uuid from 'uuid/v1';
 import Joi from 'joi';
 
