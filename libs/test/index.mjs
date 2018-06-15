@@ -9,7 +9,7 @@ export default ({ tests, fnName, fnLength }, source) => {
   vm.createContext(sandbox);
 
   try {
-    if (fnLength && code.length > fnLength) throw new Error('Your code is too long');
+    if (fnLength && source.length > fnLength) throw new Error('Your code is too long');
 
     vm.runInContext(source, sandbox);
     const userFunction = sandbox[fnName];
