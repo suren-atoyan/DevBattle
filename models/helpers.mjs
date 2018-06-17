@@ -5,9 +5,15 @@ async function updateActiveHackathonId(id) {
   return id;
 }
 
+async function updateActiveHackathon(hackathon) {
+  return await db.get('hackathons', true).find({
+    _id: db.get('active_hackathon_id')
+  }).update(hackathon).write();
+}
+
 async function getActiveHackathon(withLodashWrapper, withPasswords) {
-  const activeHackathonId = await db.get('active_hackathon_id');
-  const activeHackathonWrapped = (await db.get('hackathons', true)).find({ _id: activeHackathonId });
+  const activeHackathonId = db.get('active_hackathon_id');
+  const activeHackathonWrapped = db.get('hackathons', true).find({ _id: activeHackathonId });
 
   if (withLodashWrapper) {
     return activeHackathonWrapped;
@@ -71,6 +77,7 @@ async function addNewHackathon(hackathon) {
 
 export {
   updateActiveHackathonId,
+  updateActiveHackathon,
   getActiveHackathon,
   createNewTeam,
   startHackathon,

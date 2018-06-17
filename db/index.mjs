@@ -28,10 +28,10 @@ class DB {
                     .write();
   }
 
-  async get(key, withLodashWrapper) {
+  get(key, withLodashWrapper) {
     return withLodashWrapper
-      ? await this.db.get(key)
-      : await this.db.get(key).value();
+      ? this.db.get(key)
+      : this.db.get(key).value();
   }
 
   async setPush(key, value) {

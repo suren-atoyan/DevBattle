@@ -2,7 +2,7 @@ import auth from '../../libs/auth';
 import { asyncWrapper } from '../../libs/utils';
 import testRunner from '../../libs/test';
 
-import { getActiveHackathon } from '../../models/helpers';
+import { getActiveHackathon, updateActiveHackathon } from '../../models/helpers';
 
 async function _challengeAnswer(req, res) {
   const { cookies : { token }, body: { challengeId, source, teamId: rTeamId }, body } = req;
@@ -12,7 +12,7 @@ async function _challengeAnswer(req, res) {
 
     // TODO ::: Make testRunner function execution asynchronous.
 
-    const currentHackathon = await getActiveHackathon();
+    const currentHackathon = await getActiveHackathon(false, true);
 
     const currnetChallenge = currentHackathon.challenges.find(challenge => challenge._id === challengeId);
 
@@ -43,8 +43,9 @@ async function _challengeAnswer(req, res) {
           } else {
             currentTeam.confirmedSolutions.push({ challengeId, source });
             currentTeam.score++;
-            await db.updateActiveHackathon(currentHackathon);
-            res.status(200).send(currentHackathon);
+            await updateActiveHackathon(currentHackathon);
+            const currentHackathonWithoutPasswords = await getActiveHackathon();
+            res.status(200).send(currentHackathonWithoutPasswords);
           }
         }
       } else {
