@@ -14,13 +14,13 @@ if which node > /dev/null
 then
   node_version=$(node --version)
 
-  node_version=${node_version:1:6}
+  declare -i node_version=$(echo ${node_version:1:6} | awk -F "." '{ print $1 }')
 
   if which npm > /dev/null
   then
     npm_version=$(npm --version)
 
-    if [[ $node_version > 10 ]]
+    if (( $node_version >= 10 ))
     then
       echo "Node version is correct"
       npm i
