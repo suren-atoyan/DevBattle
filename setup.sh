@@ -29,9 +29,9 @@ then
       npm run build
       cd -
       echo "Setup has successfully finished..."
-      echo "For running server in development env you can write 'npm run start-dev'"
-      echo "For running server with hackathon client in development env you can write 'npm run start-dev-with-hackathon-client'"
-      echo "For running project in production env you can write 'npm run start-prod' (or by using any process manager like pm2)"
+      echo "For running server in development environment run - 'npm run start-dev'"
+      echo "For running server with hackathon client in development environment run - 'npm run start-dev-with-hackathon-client'"
+      echo "For running project in production environment run - 'npm run start-prod' (or by using any process manager like pm2)"
     else
       dependency_alert "nodejs" $node_version 10
     fi
