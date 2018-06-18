@@ -96,14 +96,16 @@ class LoginDialog extends PureComponent {
                     >
                       Login
                     </Button>
-                    <Button onClick={this.loginAsGuest} color="primary">
-                      Login as Guest
-                    </Button>
                     {
                       activeHackathon && (
-                        <Button onClick={this.props.openCreateTeamDialog}>
-                          Create Your Team
-                        </Button>
+                        <Fragment>
+                          <Button onClick={this.loginAsGuest} color="primary">
+                            Login as Guest
+                          </Button>
+                          <Button onClick={this.props.openCreateTeamDialog}>
+                            Create Your Team
+                          </Button>
+                        </Fragment>
                       )
                     }
                   </DialogActions>
