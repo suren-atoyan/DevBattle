@@ -2,7 +2,6 @@ import lowDB from 'lowdb';
 
 import FileAsync from 'lowdb/adapters/FileAsync';
 import lodashId from 'lodash-id';
-import _ from 'lodash';
 import mixins from './mixins';
 
 import config from '../config';

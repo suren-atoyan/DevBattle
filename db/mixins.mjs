@@ -1,5 +1,5 @@
-import _ from 'lodash';
+import omit from 'lodash/omit';
 
 export default {
-    omitCollection: (collection, propertyToOmit) => collection.map(item => _.omit(item, propertyToOmit)),
+    omitCollection: (collection, propertyToOmit) => collection.map(item => omit(item, propertyToOmit)),
 };
