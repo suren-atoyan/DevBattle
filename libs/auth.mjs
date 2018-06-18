@@ -6,7 +6,7 @@ import config from '../config';
 import env from './env';
 import jwt from 'jsonwebtoken';
 import db from '../db';
-import { getActiveHackathon } from '../models/helpers';
+import { getTeamByName } from '../models/helpers';
 
 // TODO ::: It will be removed after Node 10 LTS verion.
 import __getDirname from './__dirname';
@@ -56,7 +56,7 @@ class Auth {
 
     const activeTokens = await db.get('active_tokens');
     if (!activeTokens.includes(token)) {
-      await db.setPush('active_tokens', token);
+      await db.insert('active_tokens', token);
     }
 
     return token;
@@ -114,31 +114,15 @@ class Auth {
   }
 
   async getTeamInfo(name, pass) {
-    const activeHackathon = await getActiveHackathon(false, true);
+    const team = await getTeamByName(name);
 
-    if (!activeHackathon) {
-      return false;
-    }
+    if (!team) return false;
 
-    const { teams } = activeHackathon;
+    const { password: hash, ...teamWithoutPassword } = team;
 
-    const result = await Promise.all(
-      teams.map(team => (team.name === name && this.checkPassword(pass, team.password))),
-    );
-
-    const teamIndex = result.indexOf(true);
-
-    // FIXME ::: Fix this code segment
-
-    if (~teamIndex) {
-      const currentTeam = teams[teamIndex];
-
-      const { password, ...withoutPassword } = currentTeam;
-
-      return withoutPassword;
-    }
-
-    return false;
+    return this.checkPassword(pass, hash)
+      ? teamWithoutPassword
+      : false;
   }
 
   async isGuest(token) {

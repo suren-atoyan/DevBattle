@@ -23,7 +23,7 @@ For organizing hackathons or quizzes for developers in IT companies we need an a
   - SocketIo
   - V8 virtual machine for executing and testing js code ( at this moment we can create and test only js code )
   - Some new features from Nodejs version 10
-      - ES modules ( .jsm )
+      - ES modules ( .mjs )
       - async/await and other features from ES6+
  - LowDB
       - In this project was used a very simple json based database, which is called [LowDB](https://github.com/typicode/lowdb). NOTE ::: Please, if you are going to use it for huge amount of users (e.g 1000+) use more proper database, it's just local contest in which less then 1000 people can participate.
