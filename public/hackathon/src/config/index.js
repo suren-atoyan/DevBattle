@@ -13,6 +13,8 @@ const url = {
   hackathons: '/hackathons',
   challenge_answer: '/challenge_answer',
   create_team: '/team',
+  start_hackathon: '/hackathon/start',
+  finish_hackathon: '/hackathon/finish',
   monaco_loader: '/monaco-editor/vs/loader.js',
   monaco_base: '/monaco-editor/vs',
 }

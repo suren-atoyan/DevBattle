@@ -46,7 +46,34 @@ class AppStateProvider extends Component {
     return response.success;
   };
 
+  startHackathoon = async _ => {
+    const response = await makeRequest(`${url.base_url}${url.start_hackathon}`, 'POST');
+    response.success && this.setState({
+      activeHackathon: {
+        start: true,
+      }
+    });
+  };
+
+  finishHackathon = async _ => {
+    if (this.state.activeHackathon.started) {
+      return false;
+    }
+
+    const response = await makeRequest(`${url.base_url}${url.finish_hackathon}`, 'POST');
+    response.success && this.setState({
+      activeHackathon: {
+        finished: true,
+      }
+    });
+  };
+
   sendChallengeAnswer = async data => {
+
+    if (this.state.activeHackathon.finished) {
+      return false;
+    }
+
     const response = await makeRequest(`${url.base_url}${url.challenge_answer}`, 'POST', data);
     if (response.errorMessage) {
       this.setState(response);
@@ -69,6 +96,8 @@ class AppStateProvider extends Component {
       handleStatusMessageClose,
       sendChallengeAnswer,
       createTeam,
+      startHackathoon,
+      finishHackathon,
     } = this;
 
     return(
@@ -83,6 +112,8 @@ class AppStateProvider extends Component {
           createHackathon,
           sendChallengeAnswer,
           createTeam,
+          startHackathoon,
+          finishHackathon,
         }}>
           {this.props.children}
         </AppContext.Provider>

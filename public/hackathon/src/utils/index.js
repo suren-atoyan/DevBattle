@@ -1,3 +1,4 @@
+/* eslint-disable no-sequences */
 import { existingRoutes } from 'config';
 import Fetch from 'utils/fetch';
 
@@ -7,7 +8,6 @@ const getRouteTitle = location => {
 
 const omit = (obj, exclude) =>
   Object.keys(obj).reduce((acc, item) =>
-    // eslint-disable-next-line
     (!exclude.includes(item) && (acc[item] = obj[item]), acc), {});
 
 async function makeRequest(url, method, data, defaultStatusState = {}) {
