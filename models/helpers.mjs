@@ -13,25 +13,20 @@ async function updateActiveHackathon(hackathon) {
 
 async function getActiveHackathon(withLodashWrapper, withPasswords) {
   const activeHackathonId = db.get('active_hackathon_id');
-  const activeHackathonWrapped = db.get('hackathons', true).find({ _id: activeHackathonId });
+  const activeHackathonWrapped = db.get('hackathons', true).getById(activeHackathonId);
 
   if (withLodashWrapper) {
     return activeHackathonWrapped;
   }
 
-  const activeHackathon = activeHackathonWrapped.value();
+  const activeHackathon = activeHackathonWrapped.value() || null;
 
   return withPasswords
     ? activeHackathon
-    : activeHackathon
-    ? (
-        activeHackathon.teams = activeHackathon.teams.map(team => {
-          const { password, ...withoutPassword } = team;
-          return withoutPassword;
-        }),
+    : (activeHackathon && (
+        activeHackathon.teams = activeHackathonWrapped.get('teams').omitCollection('password').value(),
         activeHackathon
-      )
-    : null;
+      ));
 }
 
 async function createNewTeam(team) {
@@ -56,23 +51,30 @@ async function createNewTeam(team) {
   }
 }
 
+async function getTeamByName(name) {
+  return (await getActiveHackathon(true))
+    .get('teams')
+    .find({ name })
+    .value();
+}
+
 async function startHackathon() {
-  const activeHackathon = getActiveHackathon(true, true);
-  return activeHackathon
-    .set('startTime', Date.now())
-    .set('started', true)
-    .write();
+  const activeHackathon = await getActiveHackathon(true);
+  return activeHackathon.assign({
+      startTime: Date.now(),
+      started: true,
+    }).write();
 }
 
 async function finishHackathon() {
-  const activeHackathon = getActiveHackathon(true, true);
+  const activeHackathon = await getActiveHackathon(true);
   return activeHackathon
     .set('finished', true)
     .write();
 }
 
 async function addNewHackathon(hackathon) {
-  return await db.setPush('hackathons', hackathon);
+  return await db.insert('hackathons', hackathon);
 }
 
 export {
@@ -80,6 +82,7 @@ export {
   updateActiveHackathon,
   getActiveHackathon,
   createNewTeam,
+  getTeamByName,
   startHackathon,
   finishHackathon,
   addNewHackathon,
