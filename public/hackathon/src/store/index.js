@@ -46,7 +46,7 @@ class AppStateProvider extends Component {
     return response.success;
   };
 
-  startHackathoon = async _ => {
+  startHackathon = async _ => {
     const response = await makeRequest(`${url.base_url}${url.start_hackathon}`, 'POST');
     response.success && this.setState({
       activeHackathon: {
@@ -96,7 +96,7 @@ class AppStateProvider extends Component {
       handleStatusMessageClose,
       sendChallengeAnswer,
       createTeam,
-      startHackathoon,
+      startHackathon,
       finishHackathon,
     } = this;
 
@@ -112,7 +112,7 @@ class AppStateProvider extends Component {
           createHackathon,
           sendChallengeAnswer,
           createTeam,
-          startHackathoon,
+          startHackathon,
           finishHackathon,
         }}>
           {this.props.children}
