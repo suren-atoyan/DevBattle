@@ -2,7 +2,6 @@ import lowDB from 'lowdb';
 
 import FileAsync from 'lowdb/adapters/FileAsync';
 import lodashId from 'lodash-id';
-import mixins from './mixins';
 
 import config from '../config';
 
@@ -19,7 +18,6 @@ class DB {
 
     this.db = await lowDB(adapter);
 
-    this.db._.mixin(mixins);
     this.db._.mixin(lodashId);
     this.db._.id = '_id';
 
