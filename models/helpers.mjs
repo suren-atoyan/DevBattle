@@ -65,16 +65,16 @@ async function getTeamByName(name) {
 async function startHackathon() {
   const activeHackathon = await getActiveHackathon(true);
   return activeHackathon.assign({
-        startTime: Date.now(),
-        started: true,
-      }).write();
+    startTime: Date.now(),
+    started: true,
+  }).write();
 }
 
 async function finishHackathon() {
   const activeHackathon = await getActiveHackathon(true);
   return activeHackathon
-        .set('finished', true)
-        .write();
+    .set('finished', true)
+    .write();
 }
 
 async function addNewHackathon(hackathon) {
