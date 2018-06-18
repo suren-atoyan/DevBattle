@@ -3,19 +3,11 @@ import React, { PureComponent } from 'react';
 import './index.scss';
 
 class CountDown extends PureComponent {
-
   state = {
     hours: 0,
     min: 0,
     sec: 0,
   };
-
-  componentDidMount() {
-    this.intervalId = setInterval(_ => {
-      const date = this.calculateCountdown(this.props.duration);
-      this.setState(date);
-    }, 1000);
-  }
 
   componentWillUnmount() {
     this.stop();
@@ -34,6 +26,13 @@ class CountDown extends PureComponent {
     };
   }
 
+  start() {
+    this.intervalId = setInterval(_ => {
+      const date = this.calculateCountdown(this.props.duration);
+      this.setState(date);
+    }, 1000);
+  }
+
   stop() {
     clearInterval(this.intervalId);
   }
@@ -47,13 +46,16 @@ class CountDown extends PureComponent {
   render() {
     const {hours, min, sec} = this.state;
 
-    return (
+    console.log(this.props)
+    return this.props.styled ?
       <div className="countdown-element">
         <strong>{this.makeDoubleDigitString(hours)} : </strong>
         <strong>{this.makeDoubleDigitString(min)} : </strong>
         <strong>{this.makeDoubleDigitString(sec)}</strong>
       </div>
-    );
+      : <div>
+        {this.makeDoubleDigitString(hours)} : {this.makeDoubleDigitString(min)} : {this.makeDoubleDigitString(sec)}
+      </div>;
   }
 }
 

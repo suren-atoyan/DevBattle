@@ -1,5 +1,4 @@
 .details {
-
   max-height: 100%;
   overflow: scroll;
 
@@ -22,7 +21,13 @@
       box-shadow:0 12px 15px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
     }
   }
-
+  &__winner-block {
+    margin: 1rem;
+    color: #fff !important;
+    font-size: 2rem;
+    text-align: center;
+    background-color: #192431 !important;
+  }
   &__team-card {
     margin: 1rem;
   }

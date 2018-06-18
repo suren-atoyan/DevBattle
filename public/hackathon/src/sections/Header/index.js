@@ -137,7 +137,7 @@ class TopBar extends PureComponent {
               {
                 this.state.isAuth
                   ? 'Logout'
-                  : 'Logoin'
+                  : 'Log in'
               }
             </Button>
 
