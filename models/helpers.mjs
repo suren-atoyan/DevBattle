@@ -1,4 +1,5 @@
 import db from '../db';
+import omit from 'lodash/omit';
 
 async function updateActiveHackathonId(id) {
   await db.set('active_hackathon_id', id);
@@ -12,7 +13,8 @@ async function updateActiveHackathon(hackathon) {
 }
 
 async function getActiveHackathon(withLodashWrapper, withPasswords) {
-  const activeHackathonId = db.get('active_hackathon_id');
+  // FIXME ::: Properly handle case when active_hackathon_id is null
+  const activeHackathonId = db.get('active_hackathon_id') || '';
   const activeHackathonWrapped = db.get('hackathons', true).getById(activeHackathonId);
 
   if (withLodashWrapper) {
@@ -23,10 +25,12 @@ async function getActiveHackathon(withLodashWrapper, withPasswords) {
 
   return withPasswords
     ? activeHackathon
-    : (activeHackathon && (
-        activeHackathon.teams = activeHackathonWrapped.get('teams').omitCollection('password').value(),
-        activeHackathon
-      ));
+    : (activeHackathon && ({
+      ...activeHackathon,
+      ...{
+        teams: activeHackathon.teams.map(team => omit(team, 'password')),
+      }
+    }));
 }
 
 async function createNewTeam(team) {
@@ -61,9 +65,9 @@ async function getTeamByName(name) {
 async function startHackathon() {
   const activeHackathon = await getActiveHackathon(true);
   return activeHackathon.assign({
-      startTime: Date.now(),
-      started: true,
-    }).write();
+    startTime: Date.now(),
+    started: true,
+  }).write();
 }
 
 async function finishHackathon() {
