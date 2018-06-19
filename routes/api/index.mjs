@@ -25,6 +25,8 @@ router.post('/team', createTeam);
 
 router.get('/check_token', checkToken);
 
-router.use('/', (req, res) => res.send({}));
+router.use('/', (req, res) => res.status(404).send({
+  errorMessage: 'Oops! You tried to get something that does not exist in this universe.',
+}));
 
 export default router;

@@ -6,15 +6,15 @@ import Loading from 'components/Loading';
 
 const PrivateRoute = ({ component: Component, hasAccess, isLoading, ...rest }) => {
   return (<Route
-      {...rest}
-      render = {
-        (props) => isLoading
-          ? <Loading />
-          : hasAccess
-              ? <Component {...props} />
-              : <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-        }
-    />)
+    {...rest}
+    render = {
+      (props) => isLoading
+        ? <Loading />
+        : hasAccess
+          ? <Component {...props} />
+          : <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+      }
+  />);
 };
 
 export default PrivateRoute;

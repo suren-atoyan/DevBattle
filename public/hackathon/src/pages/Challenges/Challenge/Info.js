@@ -4,6 +4,11 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
+
+import HelpIcon from '@material-ui/icons/Help';
+
+import './index.scss';
 
 const styles = {
   card: {
@@ -18,6 +23,25 @@ const styles = {
     marginBottom: 12,
   },
 };
+
+const helperTexts = {
+  fnName: 'Function name should be declated ...',
+  fnLength: 'The maximum length of source is ...',
+  exclude: 'Those symboles or fragment ...',
+  points: 'You can get mentioned points if ...',
+}
+
+const LineOfRequirements = ({ content, helperText }) => (
+  <Typography>
+    {content}
+    <Tooltip
+      title={<Typography className="helper-text" variant="body1">{helperText}</Typography>}
+      noWrap
+    >
+      <HelpIcon className="helper-icon" />
+    </Tooltip>
+  </Typography>
+);
 
 function Description(props) {
   const {
@@ -37,7 +61,7 @@ function Description(props) {
   return (
     <div>
       <Card className={classes.card}>
-        <CardContent>
+        <CardContent className="challenge-info__content">
           <Typography
             className={classes.title}
             variant="headline"
@@ -49,10 +73,26 @@ function Description(props) {
             requirements
               ? (
                 <Fragment>
-                  <Typography>Function name - {fnName}</Typography>
-                  {fnLength && <Typography>Maximum source length - {fnLength}</Typography>}
-                  <Typography>Points - {points / 2 || 1}</Typography>
-                  {exclude && <Typography>Exclude - "{exclude.join(', ')}"</Typography>}
+                  <LineOfRequirements
+                    content={`Function name - ${fnName}`}
+                    helperText={helperTexts.fnName}
+                  />
+                  {fnLength &&
+                    <LineOfRequirements
+                      content={`Maximum source length - ${fnLength}`}
+                      helperText={helperTexts.fnLength}
+                    />
+                  }
+                  <LineOfRequirements
+                    content={`Points - ${points / 2 || 1}`}
+                    helperText={helperTexts.points}
+                  />
+                  {exclude &&
+                    <LineOfRequirements
+                      content={`Exclude - "${exclude.join(', ')}"`}
+                      helperText={helperTexts.exclude}
+                    />
+                  }
                 </Fragment>
               )
               : (

@@ -1,6 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import { makeRequest } from 'utils';
 import { url } from 'config';
+import {
+  GET_ACTIVE_HACKATHON,
+  CREATE_HACKATHON,
+  SEND_CHALLENGE_ANSWER,
+  CREATE_TEAM,
+  START_HACKATHON,
+  FINISH_HACKATHON,
+} from 'constants/action-types/store';
 import StatusMessage from 'components/StatusMessage';
 
 const defaultState = {
@@ -13,7 +21,11 @@ const AppContext = React.createContext(defaultState);
 const withStore = Component => function WrappedComponent(props) {
   return (
     <AppContext.Consumer>
-      { state => <Component {...props} store={state} /> }
+      {value => <Component
+        {...props}
+        store={value.state}
+        storeActions={value.actions}
+      />}
     </AppContext.Consumer>
   )
 };
@@ -28,60 +40,108 @@ class AppStateProvider extends Component {
     this.getActiveHackathon();
   };
 
-  getActiveHackathon = async _ => {
-    const response = await makeRequest(`${url.base_url}${url.hackathons}`, 'GET');
-    this.setState(response);
-  };
+  async handleResponse(request, action) {
+    this.setState({ isLoading: true });
+    const response = await request;
 
-  createHackathon = async data => {
-    const response = await makeRequest(`${url.base_url}${url.hackathons}`, 'POST', data);
-    response.errorMessage
-      ? this.setState({ errorMessage: response.errorMessage })
-      : this.setState({ activeHackathon: response });
-  };
-
-  createTeam = async data => {
-    const response = await makeRequest(`${url.base_url}${url.create_team}`, 'POST', data);
-    this.setState(response);
-    return response.success;
-  };
-
-  startHackathon = async _ => {
-    const response = await makeRequest(`${url.base_url}${url.start_hackathon}`, 'POST');
-    response.success && this.setState({
-      activeHackathon: {
-        start: true,
-      }
-    });
-  };
-
-  finishHackathon = async _ => {
-    if (this.state.activeHackathon.started) {
+    if (response && response.errorMessage) {
+      this.showError(response.errorMessage);
       return false;
     }
 
-    const response = await makeRequest(`${url.base_url}${url.finish_hackathon}`, 'POST');
-    response.success && this.setState({
-      activeHackathon: {
-        finished: true,
-      }
+    switch(action) {
+      case GET_ACTIVE_HACKATHON:
+      case CREATE_HACKATHON:
+      case SEND_CHALLENGE_ANSWER:
+        this.setState({ activeHackathon: response });
+      break;
+      case CREATE_TEAM:
+        this.setState({
+          activeHackathon: {
+            ...this.state.activeHackathon,
+            teams: [
+              ...this.state.activeHackathon.teams,
+              response,
+            ],
+          },
+        });
+        break;
+      case START_HACKATHON:
+        this.setState({
+          activeHackathon: {
+            ...this.state.activeHackathon,
+            ...response,
+          }
+        });
+      break;
+      case FINISH_HACKATHON:
+        this.setState({
+          activeHackathon: {
+            ...this.state.activeHackathon,
+            ...response,
+          }
+        });
+      break;
+      default: break;
+    }
+
+    this.setState({
+      isLoading: false,
+      showStatusMessage: false,
     });
+  }
+
+  showError(message) {
+    this.setState({
+      isLoading: false,
+      showStatusMessage: true,
+      statusMessage: { errorMessage: message },
+    });
+  }
+
+  getActiveHackathon = async _ => this.handleResponse(
+    makeRequest(`${url.base_url}${url.hackathons}`, 'GET'),
+    GET_ACTIVE_HACKATHON,
+  );
+
+  createHackathon = async data => this.handleResponse(
+    makeRequest(`${url.base_url}${url.hackathons}`, 'POST', data),
+    CREATE_HACKATHON,
+  );
+
+  createTeam = async data => this.handleResponse(
+    makeRequest(`${url.base_url}${url.create_team}`, 'POST', data),
+    CREATE_TEAM,
+  );
+
+  startHackathon = async _ => this.handleResponse(
+    makeRequest(`${url.base_url}${url.start_hackathon}`, 'POST'),
+    START_HACKATHON,
+  );
+
+  finishHackathon = async _ => {
+    if (!this.state.activeHackathon.started) {
+      this.showError('Bro You can\'t finish something that hasn\'t been started!');
+      return false;
+    }
+
+    this.handleResponse(
+      makeRequest(`${url.base_url}${url.finish_hackathon}`, 'POST'),
+      FINISH_HACKATHON,
+    );
   };
 
   sendChallengeAnswer = async data => {
 
     if (this.state.activeHackathon.finished) {
+      this.showError('Hackathon already has finished!');
       return false;
     }
 
-    const response = await makeRequest(`${url.base_url}${url.challenge_answer}`, 'POST', data);
-    if (response.errorMessage) {
-      this.setState(response);
-    } else {
-      this.setState({
-        activeHackathon: response,
-      })
-    }
+    this.handleResponse(
+      makeRequest(`${url.base_url}${url.challenge_answer}`, 'POST', data),
+      SEND_CHALLENGE_ANSWER,
+    );
   }
 
   handleStatusMessageClose = _ => this.setState({ showStatusMessage: false });
@@ -107,13 +167,15 @@ class AppStateProvider extends Component {
           handleClose={handleStatusMessageClose}
         />}
         <AppContext.Provider value={{
-          ...state,
-          getActiveHackathon,
-          createHackathon,
-          sendChallengeAnswer,
-          createTeam,
-          startHackathon,
-          finishHackathon,
+          state,
+          actions: {
+            getActiveHackathon,
+            createHackathon,
+            sendChallengeAnswer,
+            createTeam,
+            startHackathon,
+            finishHackathon,
+          },
         }}>
           {this.props.children}
         </AppContext.Provider>

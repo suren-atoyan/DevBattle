@@ -24,7 +24,7 @@ class Admin extends PureComponent {
       challenges,
     }
 
-    this.props.store.createHackathon(currentHackathon);
+    this.props.storeActions.createHackathon(currentHackathon);
   }
 
   addChallenge = challenge => this.setState({
@@ -37,11 +37,15 @@ class Admin extends PureComponent {
   render() {
 
     const {
-      activeHackathon,
-      startHackathon,
-      finishHackathon,
-      isLoading,
-    } = this.props.store;
+      store: {
+        activeHackathon,
+        isLoading,
+      },
+      storeActions: {
+        startHackathon,
+        finishHackathon,
+      },
+    } = this.props;
 
     return (
       <div className="admin">

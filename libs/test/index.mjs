@@ -9,14 +9,14 @@ export default ({ tests, fnName, fnLength, points, exclude }, source) => {
   let hasPassedTest = false;
   let result = {};
 
-  vm.createContext(sandbox, {
-    timeout: 500, // For avoiding such kind of code injections -> while(true) ...
-  });
+  vm.createContext(sandbox);
 
   try {
     if (fnLength && source.length > fnLength) throw new Error('Your code is too long');
 
-    vm.runInContext(`${source}; this.fnName=${fnName};`, sandbox);
+    vm.runInContext(`${source}; this.fnName=${fnName};`, sandbox, {
+      timeout: 500, // For avoiding such kind of code injections -> while(true) ...
+    });
 
     const userFunction = sandbox.fnName;
 

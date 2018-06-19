@@ -71,25 +71,29 @@ class TopBar extends PureComponent {
       location: { pathname },
       authState: {
         isLoading,
-        login,
-        logout,
-        loginAsGuest,
         isAdmin,
         isGuest,
         isTeamMember,
         team,
       },
+      authActions: {
+        login,
+        logout,
+        loginAsGuest,
+      },
       store: {
-        isLoading: isLoadingStore,
         activeHackathon,
+        isLoading: isLoadingStore,
+      },
+      storeActions: {
         createTeam,
-      }
+      },
     } = this.props;
 
     const title = getRouteTitle(pathname);
     const hackathonName = activeHackathon
-      ? activeHackathon.name
-      : 'no name';
+      ? `${activeHackathon.name} - `
+      : '';
 
     let role;
 
@@ -111,7 +115,7 @@ class TopBar extends PureComponent {
               </Tooltip>
             </Link>
             <Typography variant="title" color="inherit" className={classes.flex}>
-              {`${hackathonName} - `}
+              {hackathonName}
               {title}
             </Typography>
 
@@ -137,7 +141,7 @@ class TopBar extends PureComponent {
               {
                 this.state.isAuth
                   ? 'Logout'
-                  : 'Log in'
+                  : 'Login'
               }
             </Button>
 
