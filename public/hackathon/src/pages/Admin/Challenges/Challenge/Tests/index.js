@@ -20,11 +20,15 @@ export default class Tests extends PureComponent {
 
   state = {
     isOpenAddTestDialog: false,
+    errorMessage: null,
   }
 
   openAddTestDialog = _ => this.setState({ isOpenAddTestDialog: true });
 
-  closeAddTestDialog = _ => this.setState({ isOpenAddTestDialog: false });
+  closeAddTestDialog = _ => this.setState({
+    isOpenAddTestDialog: false,
+    errorMessage: null,
+  });
 
   getTests = _ => {
     const tests = this.props.tests.map((test, index) => (
@@ -54,12 +58,19 @@ export default class Tests extends PureComponent {
   }
 
   addTest = data => {
-    this.closeAddTestDialog();
-    this.props.addTest(
-      Object
+    let result;
+    try {
+      result = Object
         .keys(data)
-        .reduce((acc, key) => (acc[key] = JSON.parse(data[key]), acc), {})
-    );
+        .reduce((acc, key) => (acc[key] = JSON.parse(data[key]), acc), {});
+
+      this.closeAddTestDialog();
+    } catch(e) {
+      this.setState({ errorMessage: 'Input/Output should be a valid JSON.' });
+      return false;
+    }
+
+    this.props.addTest(result);
   }
 
   render() {
@@ -71,6 +82,7 @@ export default class Tests extends PureComponent {
           open={this.state.isOpenAddTestDialog}
           submit={this.addTest}
           onClose={this.closeAddTestDialog}
+          errorMessage={this.state.errorMessage}
         />
         <Tooltip title="Add new Test">
           <Button

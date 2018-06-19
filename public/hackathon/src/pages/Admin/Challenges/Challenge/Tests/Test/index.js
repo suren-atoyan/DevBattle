@@ -5,6 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Typography from '@material-ui/core/Typography';
 
 import './index.scss';
 
@@ -18,6 +19,7 @@ const testSchema = {
 };
 
 export default class Test extends Component {
+
   render() {
 
     const {
@@ -26,6 +28,7 @@ export default class Test extends Component {
       onClose,
       input,
       output,
+      errorMessage,
     } = this.props;
 
     return (
@@ -43,6 +46,7 @@ export default class Test extends Component {
             just write 2. If you want to write 2 as string, write "2".
             They are boght valid JSONs.
           </DialogContentText>
+          {errorMessage && <Typography color="error">{errorMessage}</Typography>}
           <Form
             submit={submit}
             validation={testSchema}
