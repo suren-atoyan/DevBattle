@@ -2,9 +2,9 @@ import React, {PureComponent} from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import CountDown from '../../../components/CountDown/index';
-
+import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
 import './index.scss'
 
 const startDate = new Date().valueOf();
@@ -12,21 +12,23 @@ const startDate = new Date().valueOf();
 export default class Details extends PureComponent {
 
   getTeams() {
-    const {activeHackathon: {challenges, teams}} = this.props;
+    const {activeHackathon: {challenges, teams, results}} = this.props;
     console.log(this.props.activeHackathon.results);
     // TODO ::: Use results
 
     return teams.map(({name, _id}) => (
       <Card className="details__team-card" key={_id}>
         <CardContent>
-          <Typography gutterBottom variant="headline" component="h2">
-            {name}
-          </Typography>
+		          <Typography gutterBottom variant="headline" component="h2" className="details__team-data">
+		          	{name} - Score {results[_id] ? results[_id].score : '0'}
+		          </Typography>
           {
-            challenges.map(({name, _id}) =>
-              <Button key={_id} variant="raised" disableRipple>
-                {name}
-              </Button>
+            challenges.map(({name}) =>
+              <Chip
+				        avatar={<Avatar> {results[_id] ? results[_id].score : '0'} </Avatar>}
+				        label={name}
+				        className={results[_id] && results[_id].score !== '0' ? 'challenge__solved' : 'unsolved'}
+				      />
             )
           }
         </CardContent>
@@ -41,7 +43,7 @@ export default class Details extends PureComponent {
       return (
         <Card className="details__winner-block">
           <CardContent>
-            <Typography>
+            <Typography className="details__winner-team">
               The winner is {winner} !!!
             </Typography>
           </CardContent>

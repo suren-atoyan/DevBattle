@@ -10,7 +10,9 @@ import './index.scss';
 class Monitoring extends PureComponent {  
   render() {
     const { store: { activeHackathon } } = this.props;
-    console.log(this.props);
+
+    console.log(this.props.store);
+    
     return (
       <div className="monitoring">
         {

@@ -23,12 +23,21 @@
   }
   &__winner-block {
     margin: 1rem;
-    color: #fff !important;
-    font-size: 2rem;
     text-align: center;
     background-color: #192431 !important;
+  }
+  &__winner-team{
+		color: #fff !important;
+    font-size: 2rem !important;
+  }
+  &__team-data{
+  	text-transform: capitalize;
+  	border-bottom: 1px solid #192431;
   }
   &__team-card {
     margin: 1rem;
   }
+}
+.challenge__solved{
+	background: cyan !important;
 }
