@@ -82,18 +82,18 @@ class TopBar extends PureComponent {
         loginAsGuest,
       },
       store: {
+        activeHackathon,
         isLoading: isLoadingStore,
       },
       storeActions: {
-        activeHackathon,
         createTeam,
       },
     } = this.props;
 
     const title = getRouteTitle(pathname);
     const hackathonName = activeHackathon
-      ? activeHackathon.name
-      : 'no name';
+      ? `${activeHackathon.name} - `
+      : '';
 
     let role;
 
@@ -115,7 +115,7 @@ class TopBar extends PureComponent {
               </Tooltip>
             </Link>
             <Typography variant="title" color="inherit" className={classes.flex}>
-              {`${hackathonName} - `}
+              {hackathonName}
               {title}
             </Typography>
 

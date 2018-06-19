@@ -19,9 +19,9 @@ async function makeRequest(url, method, data) {
   try {
     const response = await Fetch.request(url, method, data);
 
-    return response.success
+    return response && (response.success
       ? omit(response, ['success'])
-      : pick(response, ['errorMessage', 'status']);
+      : pick(response, ['errorMessage', 'status']));
   } catch(err) {
     console.warn(err);
     return { errorMessage: err };

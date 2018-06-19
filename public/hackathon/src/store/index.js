@@ -43,44 +43,60 @@ class AppStateProvider extends Component {
   async handleResponse(request, action) {
     this.setState({ isLoading: true });
     const response = await request;
+
+    if (response && response.errorMessage) {
+      this.showError(response.errorMessage);
+      return false;
+    }
+
     switch(action) {
       case GET_ACTIVE_HACKATHON:
-        this.setState(response);
-      break;
       case CREATE_HACKATHON:
-        response.errorMessage
-          ? this.setState({ errorMessage: response.errorMessage })
-          : this.setState({ activeHackathon: response });
+      case SEND_CHALLENGE_ANSWER:
+        this.setState({ activeHackathon: response });
       break;
       case CREATE_TEAM:
-        this.setState(response);
-        return response.success;
-      case START_HACKATHON:
-        response.success && this.setState({
+        this.setState({
           activeHackathon: {
-            start: true,
+            ...this.state.activeHackathon,
+            teams: [
+              ...this.state.activeHackathon.teams,
+              response,
+            ],
+          },
+        });
+        break;
+      case START_HACKATHON:
+        this.setState({
+          activeHackathon: {
+            ...this.state.activeHackathon,
+            ...response,
           }
         });
       break;
       case FINISH_HACKATHON:
-        response.success && this.setState({
+        this.setState({
           activeHackathon: {
-            finished: true,
+            ...this.state.activeHackathon,
+            ...response,
           }
         });
       break;
-      case SEND_CHALLENGE_ANSWER:
-        if (response.errorMessage) {
-          this.setState(response);
-        } else {
-          this.setState({
-            activeHackathon: response,
-          })
-        }
-      break;
       default: break;
     }
-    this.setState({ isLoading: false });
+
+    this.setState({
+      isLoading: false,
+      showStatusMessage: false,
+    });
+  }
+
+  showError(message) {
+    this.setState({
+      isLoading: false,
+      showStatusMessage: true,
+      statusMessage: { errorMessage: message },
+    });
   }
 
   getActiveHackathon = async _ => this.handleResponse(
@@ -104,7 +120,8 @@ class AppStateProvider extends Component {
   );
 
   finishHackathon = async _ => {
-    if (this.state.activeHackathon.started) {
+    if (!this.state.activeHackathon.started) {
+      this.showError('Bro You can\'t finish something that hasn\'t been started!');
       return false;
     }
 
@@ -117,6 +134,7 @@ class AppStateProvider extends Component {
   sendChallengeAnswer = async data => {
 
     if (this.state.activeHackathon.finished) {
+      this.showError('Hackathon already has finished!');
       return false;
     }
 

@@ -45,26 +45,27 @@ class AuthProvider extends Component {
   async handleResponse(request, action) {
     this.setState({ isLoading: true });
     const response = await request;
+
+    if (response && response.errorMessage) {
+      this.showError(response.errorMessage);
+      return false;
+    }
+
     switch(action) {
       case LOGIN:
       case LOGIN_AS_GUEST:
       case CHECK_TOKEN:
-        if (!response.errorMessage) {
-          response.showStatusMessage = false;
           this.setState(response);
-        } else {
-          this.setState({
-            showStatusMessage: true,
-            statusMessage: response,
-          });
-        }
       break;
       case LOGOUT:
         this.setState(defaultAuthState);
       break;
       default: break;
     }
-    this.setState({ isLoading: false });
+    this.setState({
+      isLoading: false,
+      showStatusMessage: false,
+    });
   }
 
   login = data => this.handleResponse(
@@ -86,6 +87,14 @@ class AuthProvider extends Component {
     makeRequest(`${url.base_url}${url.check_tocken}`, 'GET'),
     CHECK_TOKEN,
   );
+
+  showError(message) {
+    this.setState({
+      isLoading: false,
+      showStatusMessage: true,
+      statusMessage: { errorMessage: message },
+    });
+  }
 
   handleAuthMessageClose = _ => this.setState({ showStatusMessage: false });
 
