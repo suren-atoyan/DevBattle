@@ -59,6 +59,7 @@ class Challenges extends PureComponent {
         <div className="challenge__wrapper">
           <Challenge
             {...currentChallenge}
+            sendResult={this.sendResult}
             results={results}
           />
         </div>
