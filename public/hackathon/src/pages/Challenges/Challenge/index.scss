@@ -1,0 +1,19 @@
+.challenge-info {
+  &__content {
+
+    p {
+      display: flex;
+      align-items: center;
+    }
+
+    .helper-icon {
+      font-size: 1.1rem;
+      margin-left: 1rem;
+      cursor: pointer;
+    }
+  }
+}
+
+.helper-text {
+  width: 20rem;
+}
