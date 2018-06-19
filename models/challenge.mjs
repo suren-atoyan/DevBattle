@@ -8,7 +8,9 @@ const challengeSchema = Joi.object().keys({
   description: Joi.string().min(1).max(500).required(),
   hasCodeEditor: Joi.boolean(),
   fnName: Joi.string().required(),
-  fnLength: Joi.string(),
+  fnLength: Joi.number(),
+  points: Joi.number().empty().default(1),
+  exclude: Joi.array(),
   tests: Joi.array().items(Joi.object().keys({
     input: Joi.array().items(Joi.any()).required(),
     output: Joi.any().required(),
