@@ -28,7 +28,7 @@ class Challenges extends PureComponent {
 
     !(isGuest || isAdmin) && (result.teamId = team._id);
 
-    this.props.store.sendChallengeAnswer(result);
+    this.props.storeActions.sendChallengeAnswer(result);
   }
 
   getChallengesContent() {

@@ -71,19 +71,23 @@ class TopBar extends PureComponent {
       location: { pathname },
       authState: {
         isLoading,
-        login,
-        logout,
-        loginAsGuest,
         isAdmin,
         isGuest,
         isTeamMember,
         team,
       },
+      authActions: {
+        login,
+        logout,
+        loginAsGuest,
+      },
       store: {
         isLoading: isLoadingStore,
+      },
+      storeActions: {
         activeHackathon,
         createTeam,
-      }
+      },
     } = this.props;
 
     const title = getRouteTitle(pathname);
@@ -137,7 +141,7 @@ class TopBar extends PureComponent {
               {
                 this.state.isAuth
                   ? 'Logout'
-                  : 'Logoin'
+                  : 'Login'
               }
             </Button>
 

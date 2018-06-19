@@ -10,27 +10,22 @@ const omit = (obj, exclude) =>
   Object.keys(obj).reduce((acc, item) =>
     (!exclude.includes(item) && (acc[item] = obj[item]), acc), {});
 
-async function makeRequest(url, method, data, defaultStatusState = {}) {
+const pick = (obj, picks) =>
+  Object.keys(obj).reduce((acc, item) =>
+    (picks.includes(item) && (acc[item] = obj[item]), acc), {});
 
-  let result = {};
+async function makeRequest(url, method, data) {
 
   try {
     const response = await Fetch.request(url, method, data);
 
-    const statusMessageData = response.success
-      ? { showStatusMessage: false, statusMessage: {} }
-      : { showStatusMessage: true, statusMessage: response };
-
-    // TODO ::: Move to pick mathod ( + implement pick method )
-    result = { ...response, ...statusMessageData };
-
+    return response.success
+      ? omit(response, ['success'])
+      : pick(response, ['errorMessage', 'status']);
   } catch(err) {
-    console.log(err);
+    console.warn(err);
+    return { errorMessage: err };
   }
-
-  result.isLoading = false;
-
-  return { ...defaultStatusState, ...result };
 }
 
 const removeItem = (arr, i) => {
