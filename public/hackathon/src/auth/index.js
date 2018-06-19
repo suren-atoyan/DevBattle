@@ -22,11 +22,11 @@ const AuthContext = React.createContext(defaultAuthState);
 const withAuth = Component => function WrappedComponent(props) {
   return (
     <AuthContext.Consumer>
-      { value => <Component
+      {value => <Component
         {...props}
         authState={value.state}
         authActions={value.actions}
-        /> }
+      />}
     </AuthContext.Consumer>
   )
 };

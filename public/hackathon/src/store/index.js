@@ -21,11 +21,11 @@ const AppContext = React.createContext(defaultState);
 const withStore = Component => function WrappedComponent(props) {
   return (
     <AppContext.Consumer>
-      { value => <Component
+      {value => <Component
         {...props}
         store={value.state}
         storeActions={value.actions}
-        /> }
+      />}
     </AppContext.Consumer>
   )
 };
