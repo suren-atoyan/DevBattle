@@ -120,7 +120,7 @@ class Auth {
 
     const { password: hash, ...teamWithoutPassword } = team;
 
-    return this.checkPassword(pass, hash)
+    return await this.checkPassword(pass, hash)
       ? teamWithoutPassword
       : false;
   }

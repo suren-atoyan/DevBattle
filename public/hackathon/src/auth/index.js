@@ -1,6 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { makeRequest } from 'utils';
 import { url } from 'config';
+import {
+  LOGIN,
+  LOGIN_AS_GUEST,
+  LOGOUT,
+  CHECK_TOKEN,
+} from 'constants/action-types/auth';
 import StatusMessage from 'components/StatusMessage';
 
 const defaultAuthState = {
@@ -8,7 +14,7 @@ const defaultAuthState = {
   isGuest: false,
   isTeamMember: false,
   team: null,
-  isLoading: true,
+  isLoading: false,
 }
 
 const AuthContext = React.createContext(defaultAuthState);
@@ -16,7 +22,11 @@ const AuthContext = React.createContext(defaultAuthState);
 const withAuth = Component => function WrappedComponent(props) {
   return (
     <AuthContext.Consumer>
-      { authState => <Component {...props} authState={authState} /> }
+      {value => <Component
+        {...props}
+        authState={value.state}
+        authActions={value.actions}
+      />}
     </AuthContext.Consumer>
   )
 };
@@ -32,18 +42,59 @@ class AuthProvider extends Component {
     this.checkToken();
   }
 
-  async makeRequest(url, method, data) {
-    const response = await makeRequest(url, method, data, defaultAuthState);
-    this.setState(response);
+  async handleResponse(request, action) {
+    this.setState({ isLoading: true });
+    const response = await request;
+
+    if (response && response.errorMessage) {
+      this.showError(response.errorMessage);
+      return false;
+    }
+
+    switch(action) {
+      case LOGIN:
+      case LOGIN_AS_GUEST:
+      case CHECK_TOKEN:
+          this.setState(response);
+      break;
+      case LOGOUT:
+        this.setState(defaultAuthState);
+      break;
+      default: break;
+    }
+    this.setState({
+      isLoading: false,
+      showStatusMessage: false,
+    });
   }
 
-  login = data => this.makeRequest(`${url.base_url}${url.login}`, 'POST', data);
+  login = data => this.handleResponse(
+    makeRequest(`${url.base_url}${url.login}`, 'POST', data),
+    LOGIN,
+  );
 
-  logout = _ => this.makeRequest(`${url.base_url}${url.logout}`, 'POST', {});
+  logout = _ => this.handleResponse(
+    makeRequest(`${url.base_url}${url.logout}`, 'POST', {}),
+    LOGOUT,
+  );
 
-  loginAsGuest = _ => this.makeRequest(`${url.base_url}${url.login}`, 'POST', { isGuest: true });
+  loginAsGuest = _ => this.handleResponse(
+    makeRequest(`${url.base_url}${url.login}`, 'POST', { isGuest: true }),
+    LOGIN_AS_GUEST,
+  );
 
-  checkToken = _ => this.makeRequest(`${url.base_url}${url.check_tocken}`, 'GET');
+  checkToken = _ => this.handleResponse(
+    makeRequest(`${url.base_url}${url.check_tocken}`, 'GET'),
+    CHECK_TOKEN,
+  );
+
+  showError(message) {
+    this.setState({
+      isLoading: false,
+      showStatusMessage: true,
+      statusMessage: { errorMessage: message },
+    });
+  }
 
   handleAuthMessageClose = _ => this.setState({ showStatusMessage: false });
 
@@ -65,10 +116,12 @@ class AuthProvider extends Component {
           handleClose={handleAuthMessageClose}
         />}
         <AuthContext.Provider value={{
-          ...state,
-          login,
-          logout,
-          loginAsGuest,
+          state,
+          actions: {
+            login,
+            logout,
+            loginAsGuest,
+          },
         }}>
           {this.props.children}
         </AuthContext.Provider>

@@ -33,7 +33,7 @@ class Fetch {
 
       if (status >= 200 && status < 300) {
         // TODO ::: Use response.ok
-        return (result.success = true, result);
+        return (result && (result.success = true), result);
       } else {
         return {
           status: status,

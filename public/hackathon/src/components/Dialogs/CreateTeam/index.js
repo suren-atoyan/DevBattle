@@ -22,12 +22,8 @@ class LoginDialog extends PureComponent {
   handlePasswordChange = ev => this.setState({ password: ev.target.value });
 
   createTeam = async _ => {
-    const success = await this.props.createTeam({ ...this.state });    
-
-    if (success) {
-      this.handleClose();
-    }
-
+    await this.props.createTeam({ ...this.state });
+    this.handleClose();
     this.clearTextFieldValues();
   };
 
