@@ -36,13 +36,35 @@ async function _challengeAnswer(req, res) {
             ? guests
             : currentHackathon.results[rTeamId];
 
-          const existingSolution = currentTeam.confirmedSolutions.some(solution => solution.challengeId === challengeId);
+          const existingSolution = currentTeam.confirmedSolutions.find(solution => solution.challengeId === challengeId);
 
           if (existingSolution) {
-            res.status(422).send({ errorMessage: 'This challenge have already solved by your team' });
+            if (currnetChallenge.points) {
+              if (result.points > existingSolution.points) {
+                // Update challenge points
+                currentTeam.score += result.points - existingSolution.points;
+                existingSolution.points = result.points;
+                existingSolution.source = source;
+                await updateActiveHackathon(currentHackathon);
+                const currentHackathonWithoutPasswords = await getActiveHackathon();
+                res.status(200).send(currentHackathonWithoutPasswords);
+              } else {
+                res.status(422).send({ errorMessage: 'The previus version of your team is better' })
+              }
+            } else {
+              res.status(422).send({ errorMessage: 'This challenge have already solved by your team' });
+            }
           } else {
-            currentTeam.confirmedSolutions.push({ challengeId, source });
-            currentTeam.score++;
+            const currentSolution = { challengeId, source };
+
+            if (result.points) {
+              currentSolution.points = result.points;
+              currentTeam.score += result.points;
+            } else {
+              currentTeam.score++;
+            }
+
+            currentTeam.confirmedSolutions.push(currentSolution);
             await updateActiveHackathon(currentHackathon);
             const currentHackathonWithoutPasswords = await getActiveHackathon();
             res.status(200).send(currentHackathonWithoutPasswords);
@@ -55,7 +77,6 @@ async function _challengeAnswer(req, res) {
           res.status(401).send({ errorMessage: 'Authentication failed.' });
         }
       }
-
     } else {
       res.status(422).send({ errorMessage: 'There is no challenge mentioned by you!' });
     }

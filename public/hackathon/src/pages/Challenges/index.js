@@ -53,19 +53,14 @@ class Challenges extends PureComponent {
 
     if (!currentChallenge) return <NoActive value="There is no such kind of challenge" />;
 
-    const { description, name, hasCodeEditor, codeExample, _id } = currentChallenge;
 
     return (
       <Fragment>
         <div className="challenge__wrapper">
           <Challenge
-            description={description}
-            name={name}
-            hasCodeEditor={hasCodeEditor}
-            codeExample={codeExample}
+            {...currentChallenge}
             sendResult={this.sendResult}
             results={results}
-            _id={_id}
           />
         </div>
         <div className="challenges__stepper">

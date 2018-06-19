@@ -26,15 +26,15 @@ const challengeSchema = {
   fnLength: {
     required: false,
   },
+  points: {
+    required: false,
+  },
+  exclude: {
+    required: false,
+  },
 };
 
 export default class ChallengeForm extends PureComponent {
-
-  state = {
-    hasCodeLimitation: false,
-  }
-
-  toggleCodeLimitation = _ => this.setState({ hasCodeLimitation: !this.state.hasCodeLimitation });
 
   render() {
 
@@ -44,9 +44,10 @@ export default class ChallengeForm extends PureComponent {
       codeExample,
       hasCodeEditor,
       fnName,
-      hasCodeLimitation,
       fnLength,
       canSubmit,
+      points,
+      exclude,
     } = this.props;
 
     return (
@@ -92,24 +93,22 @@ export default class ChallengeForm extends PureComponent {
           name="fnName"
           label="Function Name"
         />
-        <FormControlLabel
-          control={
-            <Checkbox
-              name="hasCodeLimitation"
-              defaultValue={hasCodeLimitation}
-              onChange={this.toggleCodeLimitation}
-              color="primary"
-            />
-          }
-          label="Has code limitation"
-        />
         <TextField
-          disabled={!this.state.hasCodeLimitation}
-          required={this.state.hasCodeLimitation}
           type="number"
           name="fnLength"
-          label="Function length"
+          label="Function length (optional)"
           defaultValue={fnLength}
+        />
+        <TextField
+          type="number"
+          name="points"
+          label="Points (optional)"
+          defaultValue={points}
+        />
+        <TextField
+          defaultValue={exclude}
+          name="exclude"
+          label="Exclude (optional)"
         />
       </Form>
     );
