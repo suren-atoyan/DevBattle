@@ -20,7 +20,7 @@ const styles = {
 };
 
 function Description(props) {
-  const { classes, titleColor } = props;
+  const { classes, titleColor, title, content } = props;
 
   return (
     <div>
@@ -31,10 +31,10 @@ function Description(props) {
             variant="headline"
             style={{color: titleColor || 'rgba(0, 0, 0, 0.54)'}}
           >
-            {props.title}
+            {title}
           </Typography>
           <Typography className={classes.pos} variant="body1">
-            {props.content}
+            {content}
           </Typography>
         </CardContent>
       </Card>

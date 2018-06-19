@@ -44,7 +44,13 @@ class Challenge extends PureComponent {
               <Info
                 titleColor="#00BCD4"
                 title="Challenge solved!"
-                content={solvedChallenge.source}
+                content={
+                  `${solvedChallenge.source}${
+                    solvedChallenge.points
+                    ? `  (Points - ${solvedChallenge.points})`
+                    : ''
+                  }`
+                }
               />
             )
           }
