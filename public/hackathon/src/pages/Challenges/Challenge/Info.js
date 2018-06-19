@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -20,7 +20,19 @@ const styles = {
 };
 
 function Description(props) {
-  const { classes, titleColor, title, content } = props;
+  const {
+    classes,
+    titleColor,
+    title,
+    content,
+    requirements,
+    challenge: {
+      fnName,
+      fnLength,
+      exclude,
+      points,
+    }
+  } = props;
 
   return (
     <div>
@@ -33,9 +45,22 @@ function Description(props) {
           >
             {title}
           </Typography>
-          <Typography className={classes.pos} variant="body1">
-            {content}
-          </Typography>
+          {
+            requirements
+              ? (
+                <Fragment>
+                  <Typography>Function name - {fnName}</Typography>
+                  {fnLength && <Typography>Maximum source length - {fnLength}</Typography>}
+                  <Typography>Points - {points || 1}</Typography>
+                  {exclude && <Typography>Exclude - "{exclude.join(', ')}"</Typography>}
+                </Fragment>
+              )
+              : (
+                <Typography className={classes.pos} variant="body1">
+                  {content}
+                </Typography>
+              )
+          }
         </CardContent>
       </Card>
     </div>
@@ -45,5 +70,9 @@ function Description(props) {
 Description.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
+Description.defaultProps = {
+  challenge: {},
+}
 
 export default withStyles(styles)(Description);

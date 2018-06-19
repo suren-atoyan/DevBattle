@@ -14,7 +14,16 @@ class Challenge extends PureComponent {
 
   render() {
 
-    const { hasCodeEditor, description, name, codeExample, sendResult, _id, results } = this.props;
+    const { results, ...challenge } = this.props;
+
+    const {
+      hasCodeEditor,
+      description,
+      name,
+      codeExample,
+      sendResult,
+      _id,
+    } = challenge;
 
     const solvedChallenge = results.confirmedSolutions.find(({ challengeId }) => challengeId === _id );
 
@@ -38,7 +47,11 @@ class Challenge extends PureComponent {
             title={name}
             content={description}
           />
-
+          <Info
+            title="Requirements"
+            requirements
+            challenge={challenge}
+          />
           {
             solvedChallenge && (
               <Info
