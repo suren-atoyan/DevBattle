@@ -51,7 +51,7 @@ function Description(props) {
                 <Fragment>
                   <Typography>Function name - {fnName}</Typography>
                   {fnLength && <Typography>Maximum source length - {fnLength}</Typography>}
-                  <Typography>Points - {points || 1}</Typography>
+                  <Typography>Points - {points / 2 || 1}</Typography>
                   {exclude && <Typography>Exclude - "{exclude.join(', ')}"</Typography>}
                 </Fragment>
               )
