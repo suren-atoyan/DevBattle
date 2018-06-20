@@ -13,8 +13,6 @@ export default class Details extends PureComponent {
 
   getTeams() {
     const {activeHackathon: {challenges, teams, results}} = this.props;
-    console.log(this.props.activeHackathon.results);
-    // TODO ::: Use results
 
     return teams.map(({name, _id}) => (
       <Card className="details__team-card" key={_id}>
@@ -25,8 +23,9 @@ export default class Details extends PureComponent {
           {
             challenges.map(({name}) =>
               <Chip
-				        avatar={<Avatar> {results[_id] ? results[_id].score : '0'} </Avatar>}
 				        label={name}
+             		key={_id}
+				        avatar={<Avatar> {results[_id] ? results[_id].score : '0'} </Avatar>}
 				        className={results[_id] && results[_id].score !== '0' ? 'challenge__solved' : 'unsolved'}
 				      />
             )
@@ -36,24 +35,10 @@ export default class Details extends PureComponent {
     ));
   }
 
-  getWinner() {
-    const winner = 'Team 2';
-
-    if (winner) {
-      return (
-        <Card className="details__winner-block">
-          <CardContent>
-            <Typography className="details__winner-team">
-              The winner is {winner} !!!
-            </Typography>
-          </CardContent>
-        </Card>
-      )
-    }
-  }
+  
 
   render() {
-    const {activeHackathon: {duration, startDate}} = this.props;
+    const { activeHackathon: { duration, startDate, started, finished, winner } } = this.props;
 
     return (
       <div className="details">
@@ -62,10 +47,16 @@ export default class Details extends PureComponent {
         </Typography>
         <Card className="details__count-down">
           <CardContent>
-            <CountDown startDate={startDate} duration={duration} styled/>
+            <CountDown
+            	styled
+            	winner={winner}
+            	started={started}
+            	duration={duration}
+            	finished={finished}
+            	startDate={startDate}
+            />
           </CardContent>
         </Card>
-        {this.getWinner()}
         {this.getTeams()}
       </div>
     )

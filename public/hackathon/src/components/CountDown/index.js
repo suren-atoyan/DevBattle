@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
-
+import Typography from '@material-ui/core/Typography';
 import './index.scss';
 
 class CountDown extends PureComponent {
+	
   state = {
     hours: 0,
     min: 0,
@@ -26,9 +27,9 @@ class CountDown extends PureComponent {
     };
   }
 
-  start() {
+  start(duration) {
     this.intervalId = setInterval(_ => {
-      const date = this.calculateCountdown(this.props.duration);
+      const date = this.calculateCountdown(duration);
       this.setState(date);
     }, 1000);
   }
@@ -43,19 +44,36 @@ class CountDown extends PureComponent {
       : '' + value;
   }
 
-  render() {
-    const {hours, min, sec} = this.state;
-
-    console.log(this.props)
-    return this.props.styled ?
-      <div className="countdown-element">
-        <strong>{this.makeDoubleDigitString(hours)} : </strong>
-        <strong>{this.makeDoubleDigitString(min)} : </strong>
-        <strong>{this.makeDoubleDigitString(sec)}</strong>
+  getWinner(winner) {
+    return (
+          <Typography className="details__winner-team">
+            The winner is {winner} !!!
+          </Typography>
+    )
+  }
+  
+  getCountDown(hours, min, sec, duration){
+  	this.start(duration);
+  	return !this.props.styled 
+  		? <div>
+     		{ this.makeDoubleDigitString(hours) } : { this.makeDoubleDigitString(min) } : { this.makeDoubleDigitString(sec) }
+    	</div>
+    	: <div className="countdown-element">
+        <strong> {this.makeDoubleDigitString(hours)} : </strong>
+        <strong> {this.makeDoubleDigitString(min)} : </strong>
+        <strong> {this.makeDoubleDigitString(sec)} </strong>
       </div>
-      : <div>
-        {this.makeDoubleDigitString(hours)} : {this.makeDoubleDigitString(min)} : {this.makeDoubleDigitString(sec)}
-      </div>;
+  }
+
+  render() {
+    const { hours, min, sec } = this.state;
+		const {  duration, startDate,  winner } = this.props;
+		const started = true, finished = true;
+
+		return started && !finished
+						? this.getCountDown(hours, min, sec, duration, startDate)
+	  				: !started && !finished ? null : this.getWinner(winner)
+    					
   }
 }
 
