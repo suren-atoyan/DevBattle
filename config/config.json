@@ -1,6 +1,5 @@
 {
   "port": 8080,
-  "uws_port": 9000,
   "exclude_from_auth": [
     "/login",
     "/check_token",
