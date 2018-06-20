@@ -52,7 +52,7 @@ class LoginDialog extends PureComponent {
           onClose={this.handleClose}
           aria-labelledby="create-team-dialog"
         >
-          <DialogTitle>Crate Team</DialogTitle>
+          <DialogTitle>Create Team</DialogTitle>
           {
             isLoading
             ? (

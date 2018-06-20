@@ -21,20 +21,29 @@
       box-shadow:0 12px 15px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
     }
   }
+
   &__winner-team{
     text-align: center;
-		color: #fff !important;
+    color: #fff !important;
     font-size: 2rem !important;
   }
+
   &__team-data{
-  	text-transform: capitalize;
-  	border-bottom: 1px solid #192431;
+    text-transform: capitalize;
+    border-bottom: 1px solid #192431;
   }
+
   &__team-card {
     margin: 1rem;
   }
-}
-.challenge__solved{
-	background: cyan !important;
-}
 
+  .challenge {
+    &__solved {
+      background: cyan !important;
+    }
+
+    &__info {
+      margin: 4px;
+    }
+  }
+}
