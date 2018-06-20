@@ -55,7 +55,7 @@ class AuthProvider extends Component {
       case LOGIN:
       case LOGIN_AS_GUEST:
       case CHECK_TOKEN:
-          this.setState(response);
+        this.setState(response);
       break;
       case LOGOUT:
         this.setState(defaultAuthState);
