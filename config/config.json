@@ -1,5 +1,6 @@
 {
   "port": 8080,
+  "uws_port": 9000,
   "exclude_from_auth": [
     "/login",
     "/check_token",
@@ -15,5 +16,12 @@
   },
   "db_path": ".db.json",
   "default_salt_rounds": 10,
-  "default_admin_password": "adminonaly"
+  "default_admin_password": "adminonaly",
+  "uws_server": {
+    "port": 9000,
+    "action_types": {
+      "BROADCAST": "BROADCAST"
+    },
+    "child_process_parameters": []
+  }
 }

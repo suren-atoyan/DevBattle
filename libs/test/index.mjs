@@ -30,7 +30,7 @@ export default ({ tests, fnName, fnLength, points, exclude }, source) => {
       result.success = true;
 
       if (points && fnLength) {
-        const currentPoints = points/2 + ((fnLength - source.length) / fnLength * points / 2);
+        const currentPoints = points / 2 + ((fnLength - source.length) / fnLength * points / 2);
         result.points = currentPoints;
       }
     } else {

@@ -18,6 +18,8 @@ import errorHandler from './errorHandler';
 
 import { connectMessage } from './libs/utils';
 
+import './ws'; // Initialize uws websocket server in a child process.
+
 (async _ => {
   await db.connect();
 
