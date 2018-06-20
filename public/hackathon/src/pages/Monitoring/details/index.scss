@@ -1,5 +1,4 @@
 .details {
-
   max-height: 100%;
   overflow: scroll;
 
@@ -23,7 +22,28 @@
     }
   }
 
+  &__winner-team{
+    text-align: center;
+    color: #fff !important;
+    font-size: 2rem !important;
+  }
+
+  &__team-data{
+    text-transform: capitalize;
+    border-bottom: 1px solid #192431;
+  }
+
   &__team-card {
     margin: 1rem;
+  }
+
+  .challenge {
+    &__solved {
+      background: cyan !important;
+    }
+
+    &__info {
+      margin: 4px;
+    }
   }
 }

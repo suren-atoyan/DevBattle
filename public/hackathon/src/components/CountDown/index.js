@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import Typography from '@material-ui/core/Typography';
 
 import './index.scss';
 
@@ -10,22 +11,20 @@ class CountDown extends PureComponent {
     sec: 0,
   };
 
-  componentDidMount() {
-    this.intervalId = setInterval(_ => {
-      const date = this.calculateCountdown(this.props.duration);
-      this.setState(date);
-    }, 1000);
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
   }
 
-  componentWillUnmount() {
-    this.stop();
+  componentDidMount() {
+    this.start(this.props.duration);
   }
 
   calculateCountdown() {
-    const { startDate, duration: dur } = this.props;
+    const { startTime, duration: dur } = this.props;
     const [hours, minutes] = dur.split(':');
     const duration = hours * 3600 + minutes * 60;
-    const diff = Math.floor((startDate + duration * 1000 - new Date().valueOf()) / 1000);
+    // TODO ::: Move to utils
+    const diff = Math.floor((startTime + duration * 1000 - new Date().valueOf()) / 1000);
 
     return {
       hours: Math.floor(diff / 3600),
@@ -34,8 +33,11 @@ class CountDown extends PureComponent {
     };
   }
 
-  stop() {
-    clearInterval(this.intervalId);
+  start(duration) {
+    this.intervalId = setInterval(_ => {
+      const date = this.calculateCountdown(duration);
+      this.setState(date);
+    }, 1000);
   }
 
   makeDoubleDigitString(value) {
@@ -44,16 +46,37 @@ class CountDown extends PureComponent {
       : '' + value;
   }
 
-  render() {
-    const {hours, min, sec} = this.state;
-
+  getWinner(winner) {
     return (
-      <div className="countdown-element">
-        <strong>{this.makeDoubleDigitString(hours)} : </strong>
-        <strong>{this.makeDoubleDigitString(min)} : </strong>
-        <strong>{this.makeDoubleDigitString(sec)}</strong>
-      </div>
-    );
+      <Typography className="details__winner-team">
+        The winner is {this.props.winner} !!!
+      </Typography>
+    )
+  }
+  
+  getCountDown(hours, min, sec, duration){
+    return !this.props.styled 
+      ? (
+        <div>
+          { this.makeDoubleDigitString(hours) } : { this.makeDoubleDigitString(min) } : { this.makeDoubleDigitString(sec) }
+        </div>
+      )
+      : (
+        <div className="countdown-element">
+          <strong> {this.makeDoubleDigitString(hours)} : </strong>
+          <strong> {this.makeDoubleDigitString(min)} : </strong>
+          <strong> {this.makeDoubleDigitString(sec)} </strong>
+        </div>
+      )
+  }
+
+  render() {
+    const { hours, min, sec } = this.state;
+    const { started, finished, duration, startDate } = this.props;
+
+    return started && !finished
+      ? this.getCountDown(hours, min, sec, duration, startDate)
+      : null;
   }
 }
 
