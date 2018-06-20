@@ -15,7 +15,11 @@ async function challengeAnswer(req, res) {
   const role = await auth.getRoleByToken(token);
 
   if (role) {
-
+    uWsServer.send({ actionType: 'BROADCAST', payload: {
+      type: 'RESULTS',
+      data: { result: 3 },
+      teamId: role.team && role.team._id,
+    } });
     // TODO ::: Make testRunner function execution asynchronous.
 
     const currentHackathon = await getActiveHackathon({
@@ -52,7 +56,7 @@ async function challengeAnswer(req, res) {
             .find(solution => solution.challengeId === challengeId);
 
           if (existingSolution) {
-            if (currnetChallenge.points) {
+            if (currnetChallenge.points && currnetChallenge.fnLength) {
               if (result.points > existingSolution.points) {
                 // Update challenge points
                 currentTeamResults.score += result.points - existingSolution.points;
