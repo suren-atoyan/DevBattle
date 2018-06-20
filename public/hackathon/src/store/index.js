@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { makeRequest } from 'utils';
 import { url } from 'config';
 
+import { withAuth } from 'auth';
+
 import {
   GET_ACTIVE_HACKATHON,
   CREATE_HACKATHON,
@@ -9,6 +11,7 @@ import {
   CREATE_TEAM,
   START_HACKATHON,
   FINISH_HACKATHON,
+  GET_RESULTS,
 } from 'constants/action-types/store';
 
 import ws from './ws';
@@ -51,6 +54,7 @@ class AppStateProvider extends Component {
       case CREATE_HACKATHON:
         this.setState({ activeHackathon: payload });
       break;
+      case GET_RESULTS:
       case SEND_CHALLENGE_ANSWER:
         this.setState({
           activeHackathon: {
@@ -148,6 +152,11 @@ class AppStateProvider extends Component {
     START_HACKATHON,
   );
 
+  updateResults = async _ => this.handleResponse(
+    makeRequest(`${url.base_url}${url.get_results}`, 'GET'),
+    GET_RESULTS,
+  );
+
   finishHackathon = async _ => {
     if (!this.state.activeHackathon.started) {
       this.showError('Bro You can\'t finish something that hasn\'t been started!');
@@ -175,6 +184,16 @@ class AppStateProvider extends Component {
 
   handleWsBroadcast = ({ data }) => {
     const { type, payload } = JSON.parse(data);
+
+    if (type === SEND_CHALLENGE_ANSWER) {
+
+      const { isTeamMember, isAdmin } = this.props.authState;
+
+      if (isTeamMember || isAdmin) {
+        this.updateResults();
+        return;
+      }
+    }
 
     this.reduce(payload, type);
   };
@@ -221,4 +240,4 @@ class AppStateProvider extends Component {
 
 export { withStore };
 
-export default AppStateProvider;
+export default withAuth(AppStateProvider);
