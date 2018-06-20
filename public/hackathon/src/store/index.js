@@ -187,9 +187,11 @@ class AppStateProvider extends Component {
 
     if (type === SEND_CHALLENGE_ANSWER) {
 
-      const { isTeamMember, isAdmin } = this.props.authState;
+      const { isTeamMember, isAdmin, team } = this.props.authState;
 
-      if (isTeamMember || isAdmin) {
+      const broadcasterId = Object.keys(payload)[0];
+
+      if ((isTeamMember && broadcasterId === team._id) || isAdmin) {
         this.updateResults();
         return;
       }
