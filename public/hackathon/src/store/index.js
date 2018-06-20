@@ -9,6 +9,11 @@ import {
   START_HACKATHON,
   FINISH_HACKATHON,
 } from 'constants/action-types/store';
+
+import { withAuth } from 'auth';
+
+import ws from './ws';
+
 import StatusMessage from 'components/StatusMessage';
 
 const defaultState = {
@@ -38,6 +43,7 @@ class AppStateProvider extends Component {
 
   componentDidMount() {
     this.getActiveHackathon();
+    ws.onmessage = this.handleWsBroadcast;
   };
 
   async handleResponse(request, action) {
@@ -144,6 +150,18 @@ class AppStateProvider extends Component {
     );
   }
 
+  handleWsBroadcast = ({ data: dataString }) => {
+    const { type, data, teamId } = JSON.parse(dataString);
+
+    const { team } = this.props.authState;
+
+    if (team) {
+      if (team._id === teamId) return;
+    }
+
+    // Update dependence on type
+  };
+
   handleStatusMessageClose = _ => this.setState({ showStatusMessage: false });
 
   render() {
@@ -186,4 +204,4 @@ class AppStateProvider extends Component {
 
 export { withStore };
 
-export default AppStateProvider;
+export default withAuth(AppStateProvider);

@@ -7,14 +7,15 @@ const WebSocketServer = uws.Server;
 
 const wss = new WebSocketServer({ port });
 
-process.on('message', ({ actionType, data }) => {
+wss.broadcast = data => wss.clients.forEach(client => client.send(JSON.stringify(data)));
+
+process.on('message', ({ actionType, payload }) => {
 
   switch(actionType) {
     case BROADCAST:
-        // Broadcast logic should be here ...
+        wss.broadcast(payload);
       break;
     default:
       break;
   }
-
 });
