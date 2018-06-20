@@ -34,7 +34,7 @@ export default ({ tests, fnName, fnLength, points, exclude }, source) => {
           ? points / 2 + ((fnLength - source.length) / fnLength * points / 2)
           : points;
 
-        result.points = currentPoints;
+        result.points = +currentPoints.toFixed(2);
       }
     } else {
       result = { errorMessage: 'Solution is wrong' };
