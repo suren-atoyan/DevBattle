@@ -14,7 +14,9 @@ async function _challengeAnswer(req, res) {
 
     const currentHackathon = await getActiveHackathon(false, true);
 
-    const currnetChallenge = currentHackathon.challenges.find(challenge => challenge._id === challengeId);
+    const currnetChallenge = currentHackathon
+      .challenges
+      .find(challenge => challenge._id === challengeId);
 
     if (currnetChallenge) {
       const result = testRunner(currnetChallenge, source);
@@ -36,7 +38,9 @@ async function _challengeAnswer(req, res) {
             ? guests
             : currentHackathon.results[rTeamId];
 
-          const existingSolution = currentTeam.confirmedSolutions.find(solution => solution.challengeId === challengeId);
+          const existingSolution = currentTeam
+            .confirmedSolutions
+            .find(solution => solution.challengeId === challengeId);
 
           if (existingSolution) {
             if (currnetChallenge.points) {
@@ -47,9 +51,10 @@ async function _challengeAnswer(req, res) {
                 existingSolution.source = source;
                 await updateActiveHackathon(currentHackathon);
                 const currentHackathonWithoutPasswords = await getActiveHackathon();
+                
                 res.status(200).send(currentHackathonWithoutPasswords);
               } else {
-                res.status(422).send({ errorMessage: 'The previus version of your team is better' })
+                res.status(422).send({ errorMessage: 'The previus version of your team is better' });
               }
             } else {
               res.status(422).send({ errorMessage: 'This challenge have already solved by your team' });
