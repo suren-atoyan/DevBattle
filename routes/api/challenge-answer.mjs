@@ -4,22 +4,25 @@ import testRunner from '../../libs/test';
 
 import { getActiveHackathon, updateActiveHackathon } from '../../models/helpers';
 
-const getSuccessfulResult = async role => {
+import { broadcast } from '../../ws/helpers';
+import config from '../../config';
+
+const { action_types: { SEND_CHALLENGE_ANSWER } } = config.get('uws_server');
+
+const sendSuccessfulResult = async (res, role) => {
   const hackathon = await getActiveHackathon({ role });
   const currentTeamId = role.isGuest ? 'guests' : role.team._id;
-  return { [currentTeamId]: hackathon.results[currentTeamId] };
-};
+  const payload = { [currentTeamId]: hackathon.results[currentTeamId] };
+
+  res.status(200).send(payload);
+  broadcast(SEND_CHALLENGE_ANSWER, payload);
+}
 
 async function challengeAnswer(req, res) {
   const { cookies : { token }, body: { challengeId, source, teamId: rTeamId }, body } = req;
   const role = await auth.getRoleByToken(token);
 
   if (role) {
-    uWsServer.send({ actionType: 'BROADCAST', payload: {
-      type: 'RESULTS',
-      data: { result: 3 },
-      teamId: role.team && role.team._id,
-    } });
     // TODO ::: Make testRunner function execution asynchronous.
 
     const currentHackathon = await getActiveHackathon({
@@ -64,7 +67,7 @@ async function challengeAnswer(req, res) {
                 existingSolution.source = source;
                 await updateActiveHackathon(currentHackathon);
 
-                res.status(200).send(await getSuccessfulResult(role));
+                sendSuccessfulResult(res, role);
               } else {
                 res.status(422).send({ errorMessage: 'The previus version of your team is better' });
               }
@@ -84,7 +87,7 @@ async function challengeAnswer(req, res) {
             currentTeamResults.confirmedSolutions.push(currentSolution);
             await updateActiveHackathon(currentHackathon);
 
-            res.status(200).send(await getSuccessfulResult(role));
+            sendSuccessfulResult(res, role);
           }
         }
       } else {

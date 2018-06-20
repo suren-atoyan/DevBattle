@@ -27,7 +27,9 @@ async function getActiveHackathon({
 
   const activeHackathon = activeHackathonWrapped.value() || null;
 
-  const results = filterResultsByRole(activeHackathon.results, role);
+  const results = activeHackathon
+    ? filterResultsByRole(activeHackathon.results, role)
+    : null;
 
   return withPasswords
     ? activeHackathon

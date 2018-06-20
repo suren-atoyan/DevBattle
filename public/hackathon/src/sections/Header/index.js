@@ -88,8 +88,6 @@ class TopBar extends PureComponent {
         team,
       },
       authActions: {
-        login,
-        logout,
         loginAsGuest,
       },
       store: {

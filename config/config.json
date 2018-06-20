@@ -20,8 +20,14 @@
   "uws_server": {
     "port": 9000,
     "action_types": {
-      "BROADCAST": "BROADCAST"
+      "BROADCAST": "BROADCAST",
+      "CREATE_HACKATHON": "CREATE_HACKATHON",
+      "SEND_CHALLENGE_ANSWER": "SEND_CHALLENGE_ANSWER",
+      "CREATE_TEAM": "CREATE_TEAM",
+      "START_HACKATHON": "START_HACKATHON",
+      "FINISH_HACKATHON": "FINISH_HACKATHON"
     },
     "child_process_parameters": []
   }
 }
+
