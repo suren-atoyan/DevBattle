@@ -44,6 +44,9 @@
 
     &__info {
       margin: 4px;
+      > div {
+        font-size: 0.7rem;
+      }
     }
   }
 }
