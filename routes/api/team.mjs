@@ -4,6 +4,11 @@ import team from '../../models/team';
 import auth from '../../libs/auth';
 import { createNewTeam } from '../../models/helpers';
 
+import { broadcast } from '../../ws/helpers';
+import config from '../../config';
+
+const { action_types: { CREATE_TEAM } } = config.get('uws_server');
+
 async function _createTeam(req, res) {
   const { body } = req;
 
@@ -18,6 +23,7 @@ async function _createTeam(req, res) {
       
       if (result.success) {
         res.status(200).send(result.team);
+        broadcast(CREATE_TEAM, result.team);
       } else {
         res.status(422).send({ errorMessage: result.errorMessage });
       }

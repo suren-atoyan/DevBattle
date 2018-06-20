@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { makeRequest } from 'utils';
 import { url } from 'config';
+
 import {
   GET_ACTIVE_HACKATHON,
   CREATE_HACKATHON,
@@ -9,8 +10,6 @@ import {
   START_HACKATHON,
   FINISH_HACKATHON,
 } from 'constants/action-types/store';
-
-import { withAuth } from 'auth';
 
 import ws from './ws';
 
@@ -46,6 +45,64 @@ class AppStateProvider extends Component {
     ws.onmessage = this.handleWsBroadcast;
   };
 
+  reduce(payload, action) {
+    switch(action) {
+      case GET_ACTIVE_HACKATHON:
+      case CREATE_HACKATHON:
+        this.setState({ activeHackathon: payload });
+      break;
+      case SEND_CHALLENGE_ANSWER:
+        this.setState({
+          activeHackathon: {
+            ...this.state.activeHackathon,
+            ...{
+              results: {
+                ...this.state.activeHackathon.results,
+                ...payload,
+              },
+            },
+          },
+        });
+      break;
+      case CREATE_TEAM:
+
+        if (
+          // TODO ::: About this case there is a todo in root/ws/uws-server.js
+          this.state.activeHackathon.teams.some(({ _id }) => _id === payload._id )
+        ) {
+          return;
+        }
+
+        this.setState({
+          activeHackathon: {
+            ...this.state.activeHackathon,
+            teams: [
+              ...this.state.activeHackathon.teams,
+              payload,
+            ],
+          },
+        });
+      break;
+      case START_HACKATHON:
+        this.setState({
+          activeHackathon: {
+            ...this.state.activeHackathon,
+            ...payload,
+          },
+        });
+      break;
+      case FINISH_HACKATHON:
+        this.setState({
+          activeHackathon: {
+            ...this.state.activeHackathon,
+            ...payload,
+          },
+        });
+      break;
+      default: break;
+    }
+  }
+
   async handleResponse(request, action) {
     this.setState({ isLoading: true });
     const response = await request;
@@ -55,53 +112,7 @@ class AppStateProvider extends Component {
       return false;
     }
 
-    switch(action) {
-      case GET_ACTIVE_HACKATHON:
-      case CREATE_HACKATHON:
-        this.setState({ activeHackathon: response });
-      break;
-      case SEND_CHALLENGE_ANSWER:
-        this.setState({
-          activeHackathon: {
-            ...this.state.activeHackathon,
-            ...{
-              results: {
-                ...this.state.activeHackathon.results,
-                ...response,
-              },
-            },
-          },
-        });
-      break;
-      case CREATE_TEAM:
-        this.setState({
-          activeHackathon: {
-            ...this.state.activeHackathon,
-            teams: [
-              ...this.state.activeHackathon.teams,
-              response,
-            ],
-          },
-        });
-      break;
-      case START_HACKATHON:
-        this.setState({
-          activeHackathon: {
-            ...this.state.activeHackathon,
-            ...response,
-          },
-        });
-      break;
-      case FINISH_HACKATHON:
-        this.setState({
-          activeHackathon: {
-            ...this.state.activeHackathon,
-            ...response,
-          },
-        });
-      break;
-      default: break;
-    }
+    this.reduce(response, action);
 
     this.setState({
       isLoading: false,
@@ -162,16 +173,10 @@ class AppStateProvider extends Component {
     );
   }
 
-  handleWsBroadcast = ({ data: dataString }) => {
-    const { type, data, teamId } = JSON.parse(dataString);
+  handleWsBroadcast = ({ data }) => {
+    const { type, payload } = JSON.parse(data);
 
-    const { team } = this.props.authState;
-
-    if (team) {
-      if (team._id === teamId) return;
-    }
-
-    // Update dependence on type
+    this.reduce(payload, type);
   };
 
   handleStatusMessageClose = _ => this.setState({ showStatusMessage: false });
@@ -216,4 +221,4 @@ class AppStateProvider extends Component {
 
 export { withStore };
 
-export default withAuth(AppStateProvider);
+export default AppStateProvider;

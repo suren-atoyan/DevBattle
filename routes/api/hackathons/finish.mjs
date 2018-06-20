@@ -2,6 +2,11 @@ import auth from '../../../libs/auth';
 import { asyncWrapper } from '../../../libs/utils';
 import { getActiveHackathon, finishHackathon } from '../../../models/helpers';
 
+import { broadcast } from '../../../ws/helpers';
+import config from '../../../config';
+
+const { action_types: { FINISH_HACKATHON } } = config.get('uws_server');
+
 async function finish(req, res) {
   const { cookies : { token }, body } = req;
   const role = await auth.getRoleByToken(token);
@@ -20,7 +25,8 @@ async function finish(req, res) {
       res.status(422).send({ errorMessage: 'Hackathon hasn\'t yet started.' });
     } else {
       const { finished } = await finishHackathon();
-      res.send({ finished });
+      res.status(200).send({ finished });
+      broadcast(FINISH_HACKATHON, { finished });
     }
   }
 }

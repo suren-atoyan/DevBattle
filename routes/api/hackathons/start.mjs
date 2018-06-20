@@ -2,6 +2,11 @@ import auth from '../../../libs/auth';
 import { asyncWrapper } from '../../../libs/utils';
 import { getActiveHackathon, startHackathon } from '../../../models/helpers';
 
+import { broadcast } from '../../../ws/helpers';
+import config from '../../../config';
+
+const { action_types: { START_HACKATHON } } = config.get('uws_server');
+
 async function start(req, res) {
   const { cookies : { token }, body } = req;
   const role = await auth.getRoleByToken(token);
@@ -16,7 +21,8 @@ async function start(req, res) {
     else if (activeHackathon.started) res.status(422).send({ errorMessage: 'Hackathon has already started' });
     else {
       const { started, startTime } = await startHackathon();
-      res.send({ started, startTime });
+      res.status(200).send({ started, startTime });
+      broadcast(START_HACKATHON, { started, startTime });
     }
   }
 }

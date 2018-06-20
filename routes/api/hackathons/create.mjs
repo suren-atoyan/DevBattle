@@ -7,6 +7,11 @@ import {
   addNewHackathon,
 } from '../../../models/helpers';
 
+import { broadcast } from '../../../ws/helpers';
+import config from '../../../config';
+
+const { action_types: { CREATE_HACKATHON } } = config.get('uws_server');
+
 async function createHackathon(req, res) {
   const { cookies : { token }, body } = req;
   const role = await auth.getRoleByToken(token);
@@ -21,6 +26,7 @@ async function createHackathon(req, res) {
         await addNewHackathon(currentHackathon);
         await updateActiveHackathonId(currentHackathon._id);
         res.status(200).send(currentHackathon);
+        broadcast(CREATE_HACKATHON, currentHackathon);
       }
     } else {
       res.status(422).send({ errorMessage: 'Data is not passed' });
