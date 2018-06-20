@@ -1,18 +1,6 @@
 import db from '../db';
 import omit from 'lodash/omit';
 
-const filterResultsByRole = (results, role) => Object.keys(results).reduce((acc, key) => (
-  acc[key] = {
-    ...results[key],
-    confirmedSolutions: results[key].confirmedSolutions.map(solution => (!role || role.isGuest)
-      ? omit(solution, 'source')
-      : (
-        role.isTeamMember
-          ? role.team._id === key ? solution : omit(solution, 'source')
-          : solution
-        ))
-}, acc), {});
-
 async function updateActiveHackathonId(id) {
   await db.set('active_hackathon_id', id);
   return id;
@@ -98,6 +86,20 @@ async function finishHackathon() {
 
 async function addNewHackathon(hackathon) {
   return await db.insert('hackathons', hackathon);
+}
+
+function filterResultsByRole(results, role) {
+  return Object.keys(results).reduce((acc, key) => (
+    acc[key] = {
+      ...results[key],
+      confirmedSolutions: results[key].confirmedSolutions.map(solution => (!role || role.isGuest)
+        ? omit(solution, 'source')
+        : (
+          role.isTeamMember
+            ? role.team._id === key ? solution : omit(solution, 'source')
+            : solution
+          ))
+  }, acc), {});
 }
 
 export {
