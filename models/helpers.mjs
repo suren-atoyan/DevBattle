@@ -33,15 +33,13 @@ async function getActiveHackathon({
     ? activeHackathon
     : (activeHackathon && ({
       ...activeHackathon,
-      ...{
-        teams: activeHackathon.teams.map(team => omit(team, 'password')),
-        results,
-      }
+      teams: activeHackathon.teams.map(team => omit(team, 'password')),
+      results,
     }));
 }
 
 async function createNewTeam(team) {
-  const currentHackathon = await getActiveHackathon({withLodashWrapper: true});
+  const currentHackathon = await getActiveHackathon({ withLodashWrapper: true });
 
   const teams = currentHackathon.get('teams');
 
@@ -63,14 +61,14 @@ async function createNewTeam(team) {
 }
 
 async function getTeamByName(name) {
-  return (await getActiveHackathon({withLodashWrapper: true}))
+  return (await getActiveHackathon({ withLodashWrapper: true }))
     .get('teams')
     .find({ name })
     .value();
 }
 
 async function startHackathon() {
-  const activeHackathon = await getActiveHackathon({withLodashWrapper: true});
+  const activeHackathon = await getActiveHackathon({ withLodashWrapper: true });
   return activeHackathon.assign({
     startTime: Date.now(),
     started: true,
@@ -78,7 +76,7 @@ async function startHackathon() {
 }
 
 async function finishHackathon() {
-  const activeHackathon = await getActiveHackathon({withLodashWrapper: true});
+  const activeHackathon = await getActiveHackathon({ withLodashWrapper: true });
   return activeHackathon
     .set('finished', true)
     .write();
