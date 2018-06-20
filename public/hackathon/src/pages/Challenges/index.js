@@ -11,12 +11,6 @@ import './index.scss';
 
 class Challenges extends PureComponent {
 
-  componentDidMount() {
-    const { match, history } = this.props;
-
-    !match.params.id && history.push(`${match.url}/1`);
-  }
-
   sendResult = (source, challengeId) => {
 
     const { isGuest, isAdmin, team } = this.props.authState;

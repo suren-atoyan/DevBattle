@@ -15,7 +15,8 @@ const Content = ({ match, authState: { isAdmin, isGuest, isTeamMember, isLoading
         <Switch>
           <Route exact path="/" component={Monitoring} />
           <Route path="/monitoring" component={Monitoring} />
-          <PrivateRoute path="/challenges/:id?" isLoading={isLoading} hasAccess={isAdmin || isGuest || isTeamMember} component={Challenges} />
+          <PrivateRoute path="/challenges/:id" exact isLoading={isLoading} hasAccess={isAdmin || isGuest || isTeamMember} component={Challenges} />
+          <Redirect from="/challenges" exact to="/challenges/1" />
           <PrivateRoute path="/admin" isLoading={isLoading} hasAccess={isAdmin} component={Admin} />
           <Route exact path="/404" component={NoMatch} />
           <Redirect to="/404" />
