@@ -7,15 +7,27 @@ import { getActiveHackathon, updateActiveHackathon } from '../../models/helpers'
 import { broadcast } from '../../ws/helpers';
 import config from '../../config';
 
+import omit from 'lodash/omit';
+
 const { action_types: { SEND_CHALLENGE_ANSWER } } = config.get('uws_server');
 
 const sendSuccessfulResult = async (res, role) => {
   const hackathon = await getActiveHackathon({ role });
   const currentTeamId = role.isGuest ? 'guests' : role.team._id;
-  const payload = { [currentTeamId]: hackathon.results[currentTeamId] };
+
+  const result = hackathon.results[currentTeamId];
+
+  const { confirmedSolutions } = result;
+
+  const payload = { [currentTeamId]: result };
+
+  const payloadForBroadcast = { [currentTeamId]: {
+    ...result,
+    confirmedSolutions: confirmedSolutions.map(solution => omit(solution, 'source')),
+  } };
 
   res.status(200).send(payload);
-  broadcast(SEND_CHALLENGE_ANSWER, payload);
+  broadcast(SEND_CHALLENGE_ANSWER, payloadForBroadcast);
 }
 
 async function challengeAnswer(req, res) {
