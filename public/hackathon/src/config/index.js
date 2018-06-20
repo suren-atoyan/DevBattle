@@ -17,6 +17,7 @@ const url = {
   finish_hackathon: '/hackathons/finish',
   monaco_loader: '/monaco-editor/vs/loader.js',
   monaco_base: '/monaco-editor/vs',
+  ws: 'ws://localhost:9000',
 }
 
 export {

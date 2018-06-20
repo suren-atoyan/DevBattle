@@ -29,8 +29,11 @@ export default ({ tests, fnName, fnLength, points, exclude }, source) => {
     if (hasPassedTest) {
       result.success = true;
 
-      if (points && fnLength) {
-        const currentPoints = points / 2 + ((fnLength - source.length) / fnLength * points / 2);
+      if (points) {
+        const currentPoints = fnLength
+          ? points / 2 + ((fnLength - source.length) / fnLength * points / 2)
+          : points;
+
         result.points = currentPoints;
       }
     } else {

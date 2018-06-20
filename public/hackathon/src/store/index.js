@@ -9,6 +9,11 @@ import {
   START_HACKATHON,
   FINISH_HACKATHON,
 } from 'constants/action-types/store';
+
+import { withAuth } from 'auth';
+
+import ws from './ws';
+
 import StatusMessage from 'components/StatusMessage';
 
 const defaultState = {
@@ -38,6 +43,7 @@ class AppStateProvider extends Component {
 
   componentDidMount() {
     this.getActiveHackathon();
+    ws.onmessage = this.handleWsBroadcast;
   };
 
   async handleResponse(request, action) {
@@ -52,8 +58,20 @@ class AppStateProvider extends Component {
     switch(action) {
       case GET_ACTIVE_HACKATHON:
       case CREATE_HACKATHON:
-      case SEND_CHALLENGE_ANSWER:
         this.setState({ activeHackathon: response });
+      break;
+      case SEND_CHALLENGE_ANSWER:
+        this.setState({
+          activeHackathon: {
+            ...this.state.activeHackathon,
+            ...{
+              results: {
+                ...this.state.activeHackathon.results,
+                ...response,
+              },
+            },
+          },
+        });
       break;
       case CREATE_TEAM:
         this.setState({
@@ -65,13 +83,13 @@ class AppStateProvider extends Component {
             ],
           },
         });
-        break;
+      break;
       case START_HACKATHON:
         this.setState({
           activeHackathon: {
             ...this.state.activeHackathon,
             ...response,
-          }
+          },
         });
       break;
       case FINISH_HACKATHON:
@@ -79,7 +97,7 @@ class AppStateProvider extends Component {
           activeHackathon: {
             ...this.state.activeHackathon,
             ...response,
-          }
+          },
         });
       break;
       default: break;
@@ -144,6 +162,18 @@ class AppStateProvider extends Component {
     );
   }
 
+  handleWsBroadcast = ({ data: dataString }) => {
+    const { type, data, teamId } = JSON.parse(dataString);
+
+    const { team } = this.props.authState;
+
+    if (team) {
+      if (team._id === teamId) return;
+    }
+
+    // Update dependence on type
+  };
+
   handleStatusMessageClose = _ => this.setState({ showStatusMessage: false });
 
   render() {
@@ -186,4 +216,4 @@ class AppStateProvider extends Component {
 
 export { withStore };
 
-export default AppStateProvider;
+export default withAuth(AppStateProvider);
