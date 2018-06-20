@@ -65,6 +65,17 @@ class TopBar extends PureComponent {
 
   closeCreateTeamDialog = _ => this.setState({ isOpenCreateTeamDialog: false });
 
+  // TODO :: Move this logic to 'store'
+  handleLogout = async _ => {
+    await this.props.authActions.logout();
+    await this.props.storeActions.getActiveHackathon();
+  }
+
+  handleLogin = async data => {
+    await this.props.authActions.login(data);
+    await this.props.storeActions.getActiveHackathon();
+  }
+
   render() {
     const {
       classes,
@@ -136,7 +147,7 @@ class TopBar extends PureComponent {
 
             <Button
               color="inherit"
-              onClick={this.state.isAuth ? logout : this.handleLoginDialogOpen }
+              onClick={this.state.isAuth ? this.handleLogout : this.handleLoginDialogOpen }
             >
               {
                 this.state.isAuth
@@ -151,7 +162,7 @@ class TopBar extends PureComponent {
         <LoginDialog
           open={this.state.isLoginDialogOpen}
           handleClose={this.handleLoginDialogClose}
-          login={login}
+          login={this.handleLogin}
           loginAsGuest={loginAsGuest}
           isLoading={isLoading}
           openCreateTeamDialog={this.openCreateTeamDialog}

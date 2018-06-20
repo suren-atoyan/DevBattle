@@ -58,8 +58,20 @@ class AppStateProvider extends Component {
     switch(action) {
       case GET_ACTIVE_HACKATHON:
       case CREATE_HACKATHON:
-      case SEND_CHALLENGE_ANSWER:
         this.setState({ activeHackathon: response });
+      break;
+      case SEND_CHALLENGE_ANSWER:
+        this.setState({
+          activeHackathon: {
+            ...this.state.activeHackathon,
+            ...{
+              results: {
+                ...this.state.activeHackathon.results,
+                ...response,
+              },
+            },
+          },
+        });
       break;
       case CREATE_TEAM:
         this.setState({
@@ -71,13 +83,13 @@ class AppStateProvider extends Component {
             ],
           },
         });
-        break;
+      break;
       case START_HACKATHON:
         this.setState({
           activeHackathon: {
             ...this.state.activeHackathon,
             ...response,
-          }
+          },
         });
       break;
       case FINISH_HACKATHON:
@@ -85,7 +97,7 @@ class AppStateProvider extends Component {
           activeHackathon: {
             ...this.state.activeHackathon,
             ...response,
-          }
+          },
         });
       break;
       default: break;
