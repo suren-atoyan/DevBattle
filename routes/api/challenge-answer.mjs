@@ -4,7 +4,13 @@ import testRunner from '../../libs/test';
 
 import { getActiveHackathon, updateActiveHackathon } from '../../models/helpers';
 
-async function _challengeAnswer(req, res) {
+const getSuccessfulResult = async role => {
+  const hackathon = await getActiveHackathon({ role });
+  const currentTeamId = role.isGuest ? 'guests' : role.team._id;
+  return { [currentTeamId]: hackathon.results[currentTeamId] };
+};
+
+async function challengeAnswer(req, res) {
   const { cookies : { token }, body: { challengeId, source, teamId: rTeamId }, body } = req;
   const role = await auth.getRoleByToken(token);
 
@@ -12,7 +18,10 @@ async function _challengeAnswer(req, res) {
 
     // TODO ::: Make testRunner function execution asynchronous.
 
-    const currentHackathon = await getActiveHackathon(false, true);
+    const currentHackathon = await getActiveHackathon({
+      withLodashWrapper: false,
+      withPasswords: true,
+    });
 
     const currnetChallenge = currentHackathon.challenges.find(challenge => challenge._id === challengeId);
 
@@ -32,22 +41,22 @@ async function _challengeAnswer(req, res) {
             });
           }
 
-          const currentTeam = role.isGuest
+          const currentTeamResults = role.isGuest
             ? guests
             : currentHackathon.results[rTeamId];
 
-          const existingSolution = currentTeam.confirmedSolutions.find(solution => solution.challengeId === challengeId);
+          const existingSolution = currentTeamResults.confirmedSolutions.find(solution => solution.challengeId === challengeId);
 
           if (existingSolution) {
             if (currnetChallenge.points) {
               if (result.points > existingSolution.points) {
                 // Update challenge points
-                currentTeam.score += result.points - existingSolution.points;
+                currentTeamResults.score += result.points - existingSolution.points;
                 existingSolution.points = result.points;
                 existingSolution.source = source;
                 await updateActiveHackathon(currentHackathon);
-                const currentHackathonWithoutPasswords = await getActiveHackathon();
-                res.status(200).send(currentHackathonWithoutPasswords);
+
+                res.status(200).send(await getSuccessfulResult(role));
               } else {
                 res.status(422).send({ errorMessage: 'The previus version of your team is better' })
               }
@@ -59,15 +68,15 @@ async function _challengeAnswer(req, res) {
 
             if (result.points) {
               currentSolution.points = result.points;
-              currentTeam.score += result.points;
+              currentTeamResults.score += result.points;
             } else {
-              currentTeam.score++;
+              currentTeamResults.score++;
             }
 
-            currentTeam.confirmedSolutions.push(currentSolution);
+            currentTeamResults.confirmedSolutions.push(currentSolution);
             await updateActiveHackathon(currentHackathon);
-            const currentHackathonWithoutPasswords = await getActiveHackathon();
-            res.status(200).send(currentHackathonWithoutPasswords);
+
+            res.status(200).send(await getSuccessfulResult(role));
           }
         }
       } else {
@@ -85,6 +94,4 @@ async function _challengeAnswer(req, res) {
   }
 }
 
-const challengeAnswer = asyncWrapper(_challengeAnswer);
-
-export default challengeAnswer;
+export default asyncWrapper(challengeAnswer);
