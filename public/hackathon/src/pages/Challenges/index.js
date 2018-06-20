@@ -11,12 +11,6 @@ import './index.scss';
 
 class Challenges extends PureComponent {
 
-  componentDidMount() {
-    const { match, history } = this.props;
-
-    !match.params.id && history.push(`${match.url}/1`);
-  }
-
   sendResult = (source, challengeId) => {
 
     const { isGuest, isAdmin, team } = this.props.authState;
@@ -76,14 +70,18 @@ class Challenges extends PureComponent {
 
     const hasActiveHackathon = !!activeHackathon;
 
+    const noActiveProps = activeHackathon && !activeHackathon.started
+      ? { value: 'Hackathon hasn\'t been started yet' }
+      : {};
+
     return (
       <div
         className="challenges__wrapper"
       >
         {
-          hasActiveHackathon
+          hasActiveHackathon && activeHackathon.started
             ? this.getChallengesContent()
-            : <NoActive />
+            : <NoActive {...noActiveProps} />
         }
       </div>
     );

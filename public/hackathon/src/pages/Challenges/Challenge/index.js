@@ -27,6 +27,13 @@ class Challenge extends PureComponent {
 
     const solvedChallenge = results.confirmedSolutions.find(({ challengeId }) => challengeId === _id );
 
+    const solvedChallengeContent = solvedChallenge && `
+      ${solvedChallenge.source || 'Solution is not available for guests'}
+      ${solvedChallenge.points
+        ? `(Points - ${solvedChallenge.points})`
+        : ''}
+    `;
+
     return (
       <Grid
         container
@@ -57,13 +64,7 @@ class Challenge extends PureComponent {
               <Info
                 titleColor="#00BCD4"
                 title="Challenge solved!"
-                content={
-                  `${solvedChallenge.source}${
-                    solvedChallenge.points
-                    ? `  (Points - ${solvedChallenge.points})`
-                    : ''
-                  }`
-                }
+                content={solvedChallengeContent}
               />
             )
           }

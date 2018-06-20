@@ -42,6 +42,11 @@ async function challengeAnswer(req, res) {
       withPasswords: true,
     });
 
+    if (!currentHackathon || !currentHackathon.started) {
+      res.status(422).send({ errorMessage: 'Can\'t submit unbegun hackathon challenges.' });
+      return false;
+    }
+
     const currnetChallenge = currentHackathon
       .challenges
       .find(challenge => challenge._id === challengeId);

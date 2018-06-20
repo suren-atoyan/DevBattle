@@ -84,7 +84,7 @@ class AuthProvider extends Component {
   );
 
   checkToken = _ => this.handleResponse(
-    makeRequest(`${url.base_url}${url.check_tocken}`, 'GET'),
+    makeRequest(`${url.base_url}${url.check_token}`, 'GET'),
     CHECK_TOKEN,
   );
 

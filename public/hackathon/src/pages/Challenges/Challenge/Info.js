@@ -84,7 +84,7 @@ function Description(props) {
                     />
                   }
                   <LineOfRequirements
-                    content={`Points - ${points / 2 || 1}`}
+                    content={`Points - ${fnLength ? points / 2 : points}`}
                     helperText={helperTexts.points}
                   />
                   {exclude &&
