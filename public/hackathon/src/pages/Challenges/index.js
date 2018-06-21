@@ -30,7 +30,12 @@ class Challenges extends PureComponent {
     const {
       match: { params },
       store: {
-        activeHackathon: { challenges, results: allResults },
+        activeHackathon: {
+          challenges,
+          results: allResults,
+          started,
+          finished,
+        },
       },
       authState: { team },
     } = this.props;
@@ -55,6 +60,8 @@ class Challenges extends PureComponent {
             {...currentChallenge}
             sendResult={this.sendResult}
             results={results}
+            started={started}
+            finished={finished}
           />
         </div>
         <div className="challenges__stepper">

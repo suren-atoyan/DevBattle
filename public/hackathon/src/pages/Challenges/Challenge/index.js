@@ -14,7 +14,7 @@ class Challenge extends PureComponent {
 
   render() {
 
-    const { results, ...challenge } = this.props;
+    const { results, started, finished, ...challenge } = this.props;
 
     const {
       hasCodeEditor,
@@ -46,6 +46,7 @@ class Challenge extends PureComponent {
               _id={_id}
               sendResult={sendResult}
               value={codeExample}
+              hackathon={{ started, finished }}
             />
           </Grid>
         }
