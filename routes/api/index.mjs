@@ -10,6 +10,7 @@ import {
   getHackathon,
   startHackathon,
   finishHackathon,
+  deleteHackathon,
 } from './hackathons/';
 import challengeAnswer from './challenge-answer';
 
@@ -21,6 +22,7 @@ router.get('/hackathons', getHackathon);
 router.post('/hackathons', createHackathon);
 router.post('/hackathons/start', startHackathon);
 router.post('/hackathons/finish', finishHackathon);
+router.delete('/hackathons', deleteHackathon);
 router.post('/challenge_answer', challengeAnswer);
 router.post('/team', createTeam);
 router.get('/results', getResults);
