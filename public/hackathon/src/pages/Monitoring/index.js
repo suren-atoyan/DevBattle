@@ -10,11 +10,13 @@ import './index.scss';
 class Monitoring extends PureComponent {  
   render() {
     const { store: { activeHackathon } } = this.props;
+
+    const hasHackathonStarted = activeHackathon && activeHackathon.started;
     
     return (
       <div className="monitoring">
         {
-          activeHackathon
+          hasHackathonStarted
             ? (
                 <Grid container spacing={24}>
                   <Grid item xs={8}>
@@ -25,7 +27,7 @@ class Monitoring extends PureComponent {
                   </Grid>
                 </Grid>
               )
-            : <NoActive />
+            : <NoActive hasActiveHackathon={!!activeHackathon} />
         }
       </div>
     );
