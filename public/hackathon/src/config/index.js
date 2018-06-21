@@ -21,8 +21,11 @@ const url = {
   ws: 'ws://localhost:9000',
 }
 
+const maximum_allowed_code_length = 500;
+
 export {
   existingRoutes,
   url,
+  maximum_allowed_code_length,
   REACT_APP_LOCAL_SERVER_URL as localServerUrl,
 };
