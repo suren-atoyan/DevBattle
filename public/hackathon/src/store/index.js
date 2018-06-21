@@ -11,6 +11,7 @@ import {
   CREATE_TEAM,
   START_HACKATHON,
   FINISH_HACKATHON,
+  DELETE_HACKATHON,
   GET_RESULTS,
 } from 'constants/action-types/store';
 
@@ -102,6 +103,9 @@ class AppStateProvider extends Component {
             ...payload,
           },
         });
+      break;
+      case DELETE_HACKATHON:
+        this.setState({ activeHackathon: null });
       break;
       default: break;
     }
