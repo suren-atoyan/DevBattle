@@ -35,6 +35,7 @@ const Details = ({
   },
   startHackathon,
   finishHackathon,
+  deleteHackathon,
   hackathon,
   isLoading,
 }) => {
@@ -83,6 +84,7 @@ const Details = ({
           <Grid item xs={4} className="hackathon-details__state">
             <Button onClick={startHackathon} disabled={started}>Start</Button>
             <Button onClick={finishHackathon} disabled={started && finished}>Finish</Button>
+            <Button onClick={deleteHackathon} color="secondary" >Delete</Button>
           </Grid>
         </Grid>
       )

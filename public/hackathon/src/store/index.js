@@ -173,6 +173,13 @@ class AppStateProvider extends Component {
     );
   };
 
+  deleteHackathon = async _ => {
+    this.handleResponse(
+      makeRequest(`${url.base_url}${url.hackathons}`, 'DELETE'),
+      DELETE_HACKATHON,
+    );
+  };
+
   sendChallengeAnswer = async data => {
 
     if (this.state.activeHackathon.finished) {
@@ -218,6 +225,7 @@ class AppStateProvider extends Component {
       createTeam,
       startHackathon,
       finishHackathon,
+      deleteHackathon,
     } = this;
 
     return(
@@ -235,6 +243,7 @@ class AppStateProvider extends Component {
             createTeam,
             startHackathon,
             finishHackathon,
+            deleteHackathon,
           },
         }}>
           {this.props.children}
