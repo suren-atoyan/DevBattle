@@ -15,6 +15,6 @@ export default app => {
     api,
   );
 
-  // TODO ::: Check is it necessary to exlude /api?
+  // TODO ::: Check if it is necessary to exlude /api
   app.use('/', exclude(['/api'], main));
 }

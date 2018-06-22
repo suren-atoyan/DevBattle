@@ -24,7 +24,7 @@ class Env {
 
     return args.reduce(
       (acc, item) => {
-        // TODO ::: Check is necessary to replace all scpaces with nothing.
+        // TODO ::: Check if it's necessary to remove all spaces
         const keyValueStr = item.replace(/ /g, '').split('=');
         const key = keyValueStr[0].slice(2);
         const value = keyValueStr[1] || true;

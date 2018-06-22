@@ -1,4 +1,4 @@
-// TODO ::: It will be removed after Node 10 LTS verion.
+// TODO ::: It will be removed after Node 10 LTS verion release.
 import __getDirname from './libs/__dirname';
 const __dirname = __getDirname(import.meta.url);
 

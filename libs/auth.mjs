@@ -8,13 +8,13 @@ import jwt from 'jsonwebtoken';
 import db from '../db';
 import { getTeamByName } from '../models/helpers';
 
-// TODO ::: It will be removed after Node 10 LTS verion.
+// TODO ::: It will be removed after Node 10 LTS verion release.
 import __getDirname from './__dirname';
 const __dirname = __getDirname(import.meta.url);
 
 class Auth {
   static genRandomCryptoString(len) {
-    // TODO ::: Replace crypto to tls.createSecureContext
+    // TODO ::: Replace crypto with tls.createSecureContext
     return crypto.randomBytes(Math.ceil(len / 2)).toString('hex').slice(0, len);
   }
 
