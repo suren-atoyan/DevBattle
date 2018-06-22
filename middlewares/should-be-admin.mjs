@@ -1,4 +1,4 @@
-import { asyncWrapper } from '../libs/utils';
+import { asyncWrapper, handleInvalidRequest } from '../libs/utils';
 import auth from '../libs/auth';
 
 const shouldBeAdmin = async (req, res, next) => {
@@ -7,7 +7,7 @@ const shouldBeAdmin = async (req, res, next) => {
 
   return role.isAdmin
     ? next()
-    : res.status(403).send({ errorMessage: 'You don\'t have permission' });
+    : handleInvalidRequest(res, 403);
 };
 
 export default asyncWrapper(shouldBeAdmin);
