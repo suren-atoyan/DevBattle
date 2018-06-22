@@ -1,35 +1,46 @@
-import React, { PureComponent } from 'react';
-import { withStore } from 'store';
+import React from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Grid from '@material-ui/core/Grid';
+
+// Components
 import NoActive from 'components/NoActive';
 import Chart from 'components/Chart';
 import Details from './details';
 
+// Decorators
+import { withStore } from 'store';
+
 import './index.scss';
 
-class Monitoring extends PureComponent {  
-  render() {
-    const { store: { activeHackathon } } = this.props;
-    
-    return (
-      <div className="monitoring">
-        {
-          activeHackathon
-            ? (
-                <Grid container spacing={24}>
-                  <Grid item xs={8}>
-                    <Chart activeHackathon={activeHackathon} />
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Details activeHackathon={activeHackathon} />
-                  </Grid>
-                </Grid>
-              )
-            : <NoActive />
-        }
-      </div>
-    );
-  }
+const Monitoring = ({ store: { activeHackathon } }) => (
+  <div className="monitoring">
+    {
+      activeHackathon
+        ? (
+            <Grid container spacing={24}>
+              <Grid item xs={8}>
+                <Chart activeHackathon={activeHackathon} />
+              </Grid>
+              <Grid item xs={4}>
+                <Details activeHackathon={activeHackathon} />
+              </Grid>
+            </Grid>
+          )
+        : <NoActive />
+    }
+  </div>
+);
+
+Monitoring.propTypes = {
+  store: PropTypes.object.isRequired,
 }
 
-export default withStore(Monitoring);
+const DecoratedMonitoring = withStore(Monitoring);
+
+DecoratedMonitoring.propTypes = {
+  // This component doesn't expect any props from outside (until nowadays)
+}
+
+export default DecoratedMonitoring;
