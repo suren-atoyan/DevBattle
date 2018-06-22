@@ -34,7 +34,7 @@ async function challengeAnswer(req, res) {
   const { cookies : { token }, body: { challengeId, source, teamId: rTeamId }, body } = req;
   const role = await auth.getRoleByToken(token);
 
-  // TODO ::: Make testRunner function execution asynchronous.
+  // TODO ::: Make testRunner asynchronous.
 
   const currentHackathon = await getActiveHackathon({
     withLodashWrapper: false,
