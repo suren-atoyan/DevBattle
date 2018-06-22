@@ -1,7 +1,12 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
+import Grid from '@material-ui/core/Grid';
+
+// Components
 import CodeEditor from '../CodeEditor/';
 import Info from './Info';
-import Grid from '@material-ui/core/Grid';
 
 class Challenge extends PureComponent {
 
@@ -14,16 +19,20 @@ class Challenge extends PureComponent {
 
   render() {
 
-    const { results, started, finished, ...challenge } = this.props;
-
     const {
-      hasCodeEditor,
-      description,
-      name,
-      codeExample,
+      results,
+      started,
+      finished,
       sendResult,
-      _id,
-    } = challenge;
+      challenge: {
+        hasCodeEditor,
+        description,
+        name,
+        codeExample,
+        _id,
+      },
+      challenge,
+    } = this.props;
 
     const solvedChallenge = results.confirmedSolutions.find(({ challengeId }) => challengeId === _id );
 
@@ -73,6 +82,14 @@ class Challenge extends PureComponent {
       </Grid>
     );
   }
+}
+
+Challenge.propTypes = {
+  sendResult: PropTypes.func.isRequired,
+  results: PropTypes.object.isRequired,
+  started: PropTypes.bool.isRequired,
+  finished: PropTypes.bool.isRequired,
+  challenge: PropTypes.object.isRequired,
 }
 
 export default Challenge;
