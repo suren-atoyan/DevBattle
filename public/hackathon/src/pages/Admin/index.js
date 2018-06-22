@@ -1,12 +1,20 @@
 import React, { PureComponent, Fragment } from 'react';
+import PropTypes from 'prop-types';
 
+// Third-Party Components
 import Typography from '@material-ui/core/Typography'
-import { removeItem } from 'utils/';
+
+// Components
 import Form from './Form';
 import Challenges from './Challenges';
 import Details from './Details';
 
+// Utils
+import { removeItem } from 'utils/';
+
+// Decorators
 import { withStore } from 'store';
+
 import './index.scss';
 
 class Admin extends PureComponent {
@@ -81,4 +89,15 @@ class Admin extends PureComponent {
   }
 }
 
-export default withStore(Admin);
+Admin.propTypes = {
+  store: PropTypes.object.isRequired,
+  storeActions: PropTypes.object.isRequired,
+}
+
+const DecoratedAdmin = withStore(Admin);
+
+DecoratedAdmin.propTypes = {
+  // This component doesn't expect any props from outside (until nowadays)
+}
+
+export default DecoratedAdmin;
