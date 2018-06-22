@@ -1,16 +1,22 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import CountDown from '../../../components/CountDown/index';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 
+// Components
+import CountDown from '../CountDown/';
+
+// Third-Party Libraries
 import classNames from 'classnames';
 
 import './index.scss';
 
-export default class Details extends PureComponent {
+class Details extends PureComponent {
 
   getChallenges(challenges, results, teamId) {
     return challenges.map(({ name, _id }) => {
@@ -86,3 +92,9 @@ export default class Details extends PureComponent {
     )
   }
 }
+
+Details.propTypes = {
+  activeHackathon: PropTypes.object.isRequired,
+};
+
+export default Details;

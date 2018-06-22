@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Typography from '@material-ui/core/Typography';
 
 import './index.scss';
@@ -17,5 +20,9 @@ const NoActive = props => (
     </Typography>
   </div>
 );
+
+NoActive.propTypes = {
+  hasActiveHackathon: PropTypes.bool,
+};
 
 export default NoActive;

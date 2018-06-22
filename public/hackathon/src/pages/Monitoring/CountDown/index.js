@@ -1,4 +1,7 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Typography from '@material-ui/core/Typography';
 
 import './index.scss';
@@ -79,5 +82,14 @@ class CountDown extends PureComponent {
       : null;
   }
 }
+
+CountDown.propTypes = {
+  styled: PropTypes.bool,
+  winner: PropTypes.string,
+  started: PropTypes.bool.isRequired,
+  duration: PropTypes.string.isRequired,
+  finished: PropTypes.bool.isRequired,
+  startTime: PropTypes.number.isRequired,
+};
 
 export default CountDown;

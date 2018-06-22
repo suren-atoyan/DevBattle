@@ -1,8 +1,12 @@
 import React, { PureComponent, Fragment } from 'react';
+import PropTypes from 'prop-types';
+
+// Components
 import Challenge from './Challenge/';
 import Stepper from 'components/Stepper';
 import NoActive from 'components/NoActive';
 
+// Decorators
 import { withStore } from 'store';
 import { withAuth } from 'auth';
 import { withRouter } from 'react-router-dom';
@@ -52,12 +56,11 @@ class Challenges extends PureComponent {
 
     if (!currentChallenge) return <NoActive value="There is no such kind of challenge" />;
 
-
     return (
       <Fragment>
         <div className="challenge__wrapper">
           <Challenge
-            {...currentChallenge}
+            challenge={currentChallenge}
             sendResult={this.sendResult}
             results={results}
             started={started}
@@ -91,4 +94,16 @@ class Challenges extends PureComponent {
   }
 }
 
-export default withRouter(withStore(withAuth(Challenges)));
+Challenges.propTypes = {
+  store: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  authState: PropTypes.object.isRequired,
+};
+
+const DecoratedChallenges = withRouter(withStore(withAuth(Challenges)));
+
+DecoratedChallenges.propTypes = {
+  // This component doesn't expect any props from outside (until nowadays)
+};
+
+export default DecoratedChallenges;

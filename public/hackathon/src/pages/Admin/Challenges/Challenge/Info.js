@@ -1,4 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -6,7 +9,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-export default class Info extends PureComponent {
+class Info extends PureComponent {
 
   state = {
     open: false,
@@ -52,3 +55,18 @@ export default class Info extends PureComponent {
     );
   }
 };
+
+Info.propTypes = {
+  index: PropTypes.number.isRequired,
+  deleteChallenge: PropTypes.func.isRequired,
+  codeExample: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  fnName: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  fnLength: PropTypes.number.isRequired,
+  hasCodeEditor: PropTypes.bool.isRequired,
+  hasCodeLimitation: PropTypes.bool.isRequired,
+  tests: PropTypes.array.isRequired,
+};
+
+export default Info;

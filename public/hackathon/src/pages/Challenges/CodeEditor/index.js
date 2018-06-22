@@ -1,9 +1,13 @@
 import React, { PureComponent, Fragment } from 'react';
+import PropTypes from 'prop-types';
 
+// Third-Party Components
 import Button from '@material-ui/core/Button';
 
+// Components
 import Editor from 'components/Editor';
 
+// Config
 import { maximum_allowed_code_length } from 'config';
 
 // Example
@@ -17,7 +21,7 @@ const codeExample = `class Auth {
 }
 `;
 
-export default class CodeEditor extends PureComponent {
+class CodeEditor extends PureComponent {
 
   state = {
     isEditorMounted: false,
@@ -73,3 +77,12 @@ export default class CodeEditor extends PureComponent {
     );
   }
 }
+
+CodeEditor.propTypes = {
+  _id: PropTypes.string.isRequired,
+  sendResult: PropTypes.func.isRequired,
+  value: PropTypes.string,
+  hackathon: PropTypes.object.isRequired,
+};
+
+export default CodeEditor;

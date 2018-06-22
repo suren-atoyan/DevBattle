@@ -1,12 +1,15 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
-import monaco from 'utils/monaco-editor';
-
+// Third-Party Components
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+// Utils
+import monaco from 'utils/monaco-editor';
 
 import './index.scss';
 
-export default class Editor extends PureComponent {
+class Editor extends PureComponent {
 
   static defaultProps = {
     width: '100%',
@@ -98,3 +101,11 @@ export default class Editor extends PureComponent {
   }
 }
 
+Editor.propTypes = {
+  value: PropTypes.string,
+  valueGetter: PropTypes.func.isRequired,
+  editorDidMount: PropTypes.func.isRequired,
+  theme: PropTypes.string.isRequired,
+};
+
+export default Editor;

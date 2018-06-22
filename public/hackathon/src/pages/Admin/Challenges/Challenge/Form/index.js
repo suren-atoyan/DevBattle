@@ -1,8 +1,12 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
+// Third-Party Components
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+// Components
 import Form from 'components/Form';
 
 import './index.scss';
@@ -34,7 +38,7 @@ const challengeSchema = {
   },
 };
 
-export default class ChallengeForm extends PureComponent {
+class ChallengeForm extends PureComponent {
 
   render() {
 
@@ -48,11 +52,12 @@ export default class ChallengeForm extends PureComponent {
       canSubmit,
       points,
       exclude,
+      submit,
     } = this.props;
 
     return (
       <Form
-        submit={this.props.submit}
+        submit={submit}
         validation={challengeSchema}
         canSubmit={canSubmit}
         className="challenge__form"
@@ -114,3 +119,18 @@ export default class ChallengeForm extends PureComponent {
     );
   }
 }
+
+ChallengeForm.propTypes = {
+  canSubmit: PropTypes.bool.isRequired,
+  submit: PropTypes.func.isRequired,
+  codeExample: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  fnName: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  fnLength: PropTypes.number,
+  hasCodeEditor: PropTypes.bool.isRequired,
+  hasCodeLimitation: PropTypes.bool.isRequired,
+  tests: PropTypes.array.isRequired,
+};
+
+export default ChallengeForm;

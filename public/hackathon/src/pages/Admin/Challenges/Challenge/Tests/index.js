@@ -1,7 +1,8 @@
 /* eslint-disable no-sequences */
 import React, { PureComponent } from 'react';
-import Test from './Test';
-import TestInfo from './Test/Info';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -9,14 +10,13 @@ import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 import List from '@material-ui/core/List';
 
+// Components
+import Test from './Test';
+import TestInfo from './Test/Info';
+
 import './index.scss';
 
-const emptyTest = {
-  name: '',
-  length: null,
-};
-
-export default class Tests extends PureComponent {
+class Tests extends PureComponent {
 
   state = {
     isOpenAddTestDialog: false,
@@ -78,7 +78,6 @@ export default class Tests extends PureComponent {
       <div className="admin__tests">
         {this.getTests()}
         <Test
-          {...emptyTest}
           open={this.state.isOpenAddTestDialog}
           submit={this.addTest}
           onClose={this.closeAddTestDialog}
@@ -97,3 +96,11 @@ export default class Tests extends PureComponent {
     );
   }
 }
+
+Tests.propTypes = {
+  tests: PropTypes.array.isRequired,
+  addTest: PropTypes.func.isRequired,
+  deleteTest: PropTypes.func.isRequired,
+};
+
+export default Tests;

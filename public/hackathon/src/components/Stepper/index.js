@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+
+// Third-Party Components
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 
+// Decorators
+import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 
 const styles = {
@@ -62,6 +65,13 @@ class DotsMobileStepper extends React.Component {
 
 DotsMobileStepper.propTypes = {
   classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(styles)(DotsMobileStepper));
+const DecoratedDotsMobileStepper = withRouter(withStyles(styles)(DotsMobileStepper));
+
+DecoratedDotsMobileStepper.propTypes = {
+  steps: PropTypes.number,
+};
+
+export default DecoratedDotsMobileStepper;

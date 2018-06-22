@@ -1,14 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
+import Paper from '@material-ui/core/Paper';
 import { Route, Switch, Redirect } from 'react-router-dom';
+
+// Components
 import { Admin, Monitoring, Challenges } from 'pages';
 import NoMatch from 'components/NoMatch';
-import Paper from '@material-ui/core/Paper';
+
+// Store provider
 import PrivateRoute from 'auth/PrivateRoute';
+
+// Decorators
 import { withAuth } from 'auth';
 
 import './index.scss';
 
-const Content = ({ match, authState: { isAdmin, isGuest, isTeamMember, isLoading } }) => {
+const Content = ({ authState: { isAdmin, isGuest, isTeamMember, isLoading } }) => {
   return (
     <div className="main__wrapper">
       <Paper className="main__wrapper--paper" elevation={8}>
@@ -26,4 +35,14 @@ const Content = ({ match, authState: { isAdmin, isGuest, isTeamMember, isLoading
   );
 }
 
-export default withAuth(Content);
+Content.propTypes = {
+  authState: PropTypes.object.isRequired,
+};
+
+const DecoratedContent = withAuth(Content);
+
+DecoratedContent.propTypes = {
+  // This component doesn't expect any props from outside (until nowadays)
+};
+
+export default DecoratedContent;

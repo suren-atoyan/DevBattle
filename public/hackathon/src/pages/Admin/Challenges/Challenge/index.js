@@ -1,20 +1,38 @@
 import React, { PureComponent } from 'react';
-import Form from './Form';
-import Tests from './Tests';
-import { removeItem } from 'utils';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+// Components
+import Form from './Form';
+import Tests from './Tests';
+
+// Utils
+import { removeItem } from 'utils';
+
 import './index.scss';
 
-export default class Challenge extends PureComponent {
+class Challenge extends PureComponent {
 
   state = {
     tests: [],
-  }
+  };
+
+  static defaultProps = {
+    name: '',
+    description: '',
+    codeExample: '',
+    fnName: '',
+    fnLength: null,
+    hasCodeLimitation: false,
+    hasCodeEditor: true,
+    tests: [],
+  };
 
   addTest = test => this.setState({
     tests: [ ...this.state.tests, { ...test, input: [test.input] } ],
@@ -33,7 +51,7 @@ export default class Challenge extends PureComponent {
     }
 
     this.props.submit(currentChallenge);
-  }
+  };
 
   render() {
     const {
@@ -70,3 +88,18 @@ export default class Challenge extends PureComponent {
     );
   }
 }
+
+Challenge.propTypes = {
+  submit: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  codeExample: PropTypes.string,
+  description: PropTypes.string,
+  fnName: PropTypes.string,
+  name: PropTypes.string,
+  fnLength: PropTypes.number,
+  hasCodeEditor: PropTypes.bool,
+  hasCodeLimitation: PropTypes.bool,
+  tests: PropTypes.array,
+};
+
+export default Challenge;
