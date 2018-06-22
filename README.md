@@ -20,7 +20,7 @@ For organizing hackathons or quizzes for developers in IT companies we need an a
 
  - NodeJs ( version 10+ )
   - Express ( version 4 )
-  - SocketIo
+  - [µWS](https://github.com/uNetworking/uWebSockets)
   - V8 virtual machine for executing and testing js code ( at this moment we can create and test only js code )
   - Some new features from Nodejs version 10
       - ES modules ( .mjs )
