@@ -1,5 +1,8 @@
 /* eslint-disable no-sequences */
 import React from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -7,6 +10,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
+
+// Components
 import Loading from 'components/Loading';
 
 import './index.scss';
@@ -87,6 +92,13 @@ const Details = ({
         </Grid>
       )
   );
+}
+
+Details.propTypes = {
+  hackathon: PropTypes.object.isRequired,
+  startHackathon: PropTypes.func.isRequired,
+  finishHackathon: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 }
 
 export default Details;
