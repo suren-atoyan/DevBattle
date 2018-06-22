@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+
+// Third-Party Components
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -8,14 +9,17 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ChartIcon from '@material-ui/icons/ShowChart';
 import Tooltip from '@material-ui/core/Tooltip';
+
+// Components
 import LoginDialog from 'components/Dialogs/Login/';
 import CreateTeamDialog from 'components/Dialogs/CreateTeam/';
 import NavigationButtons from 'components/NavigationButtons';
 
+// Decorators
+import { withStyles } from '@material-ui/core/styles';
 import { withRouter, Link } from 'react-router-dom';
 import { getRouteTitle } from 'utils';
 import { withAuth } from 'auth';
-
 import { withStore } from 'store';
 
 const styles = {
@@ -179,7 +183,17 @@ class TopBar extends PureComponent {
 }
 
 TopBar.propTypes = {
-  classes: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  authState: PropTypes.object.isRequired,
+  authActions: PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired,
+  storeActions: PropTypes.object.isRequired,
 };
 
-export default withRouter(withAuth(withStore(withStyles(styles)(TopBar))));
+const DecoratedTopBar = withRouter(withAuth(withStore(withStyles(styles)(TopBar))));
+
+DecoratedTopBar.propTypes = {
+  // This component doesn't expect any props from outside (until nowadays)
+}
+
+export default DecoratedTopBar;
