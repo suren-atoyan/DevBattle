@@ -90,6 +90,6 @@ Challenge.propTypes = {
   started: PropTypes.bool.isRequired,
   finished: PropTypes.bool.isRequired,
   challenge: PropTypes.object.isRequired,
-}
+};
 
 export default Challenge;

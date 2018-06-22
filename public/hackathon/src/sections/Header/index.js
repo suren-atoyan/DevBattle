@@ -195,6 +195,6 @@ const DecoratedTopBar = withRouter(withAuth(withStore(withStyles(styles)(TopBar)
 
 DecoratedTopBar.propTypes = {
   // This component doesn't expect any props from outside (until nowadays)
-}
+};
 
 export default DecoratedTopBar;

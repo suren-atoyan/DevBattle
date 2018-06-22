@@ -114,6 +114,6 @@ LoginDialog.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   createTeam: PropTypes.func.isRequired,
-}
+};
 
 export default LoginDialog;

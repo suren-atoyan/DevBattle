@@ -18,6 +18,6 @@ const NoActive = props => (
 
 NoActive.propTypes = {
   hasActiveHackathon: PropTypes.bool,
-}
+};
 
 export default NoActive;

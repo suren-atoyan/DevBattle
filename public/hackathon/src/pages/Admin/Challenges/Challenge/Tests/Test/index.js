@@ -73,7 +73,7 @@ const Test = ({
 Test.defaultProps = {
   input: '',
   output: '',
-}
+};
 
 Test.propTypes = {
   open: PropTypes.bool.isRequired,
@@ -82,6 +82,6 @@ Test.propTypes = {
   errorMessage: PropTypes.string,
   input: PropTypes.any,
   output: PropTypes.any,
-}
+};
 
 export default Test;

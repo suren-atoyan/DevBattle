@@ -128,6 +128,6 @@ LoginDialog.propTypes = {
   login: PropTypes.func.isRequired,
   loginAsGuest: PropTypes.func.isRequired,
   activeHackathon: PropTypes.object,
-}
+};
 
 export default LoginDialog;

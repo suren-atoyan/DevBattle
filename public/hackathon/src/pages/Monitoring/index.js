@@ -35,12 +35,12 @@ const Monitoring = ({ store: { activeHackathon } }) => (
 
 Monitoring.propTypes = {
   store: PropTypes.object.isRequired,
-}
+};
 
 const DecoratedMonitoring = withStore(Monitoring);
 
 DecoratedMonitoring.propTypes = {
   // This component doesn't expect any props from outside (until nowadays)
-}
+};
 
 export default DecoratedMonitoring;

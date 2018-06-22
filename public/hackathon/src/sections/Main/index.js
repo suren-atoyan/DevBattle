@@ -37,12 +37,12 @@ const Content = ({ authState: { isAdmin, isGuest, isTeamMember, isLoading } }) =
 
 Content.propTypes = {
   authState: PropTypes.object.isRequired,
-}
+};
 
 const DecoratedContent = withAuth(Content);
 
 DecoratedContent.propTypes = {
   // This component doesn't expect any props from outside (until nowadays)
-}
+};
 
 export default DecoratedContent;

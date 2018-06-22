@@ -131,6 +131,6 @@ ChallengeForm.propTypes = {
   hasCodeEditor: PropTypes.bool.isRequired,
   hasCodeLimitation: PropTypes.bool.isRequired,
   tests: PropTypes.array.isRequired,
-}
+};
 
 export default ChallengeForm;

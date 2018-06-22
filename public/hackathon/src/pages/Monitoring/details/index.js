@@ -95,6 +95,6 @@ class Details extends PureComponent {
 
 Details.propTypes = {
   activeHackathon: PropTypes.object.isRequired,
-}
+};
 
 export default Details;

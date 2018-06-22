@@ -106,6 +106,6 @@ Editor.propTypes = {
   valueGetter: PropTypes.func.isRequired,
   editorDidMount: PropTypes.func.isRequired,
   theme: PropTypes.string.isRequired,
-}
+};
 
 export default Editor;

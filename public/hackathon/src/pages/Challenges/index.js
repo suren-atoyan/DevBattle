@@ -102,12 +102,12 @@ Challenges.propTypes = {
   store: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   authState: PropTypes.object.isRequired,
-}
+};
 
 const DecoratedChallenges = withRouter(withStore(withAuth(Challenges)));
 
 DecoratedChallenges.propTypes = {
   // This component doesn't expect any props from outside (until nowadays)
-}
+};
 
 export default DecoratedChallenges;

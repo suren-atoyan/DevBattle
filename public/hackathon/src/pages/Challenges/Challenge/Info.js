@@ -112,7 +112,7 @@ Description.propTypes = {
 
 Description.defaultProps = {
   challenge: {},
-}
+};
 
 const DecoratedDescription = withStyles(styles)(Description);
 
@@ -120,6 +120,6 @@ DecoratedDescription.propTypes = {
   title: PropTypes.string.isRequired,
   requirements: PropTypes.bool,
   challenge: PropTypes.object,
-}
+};
 
 export default DecoratedDescription;

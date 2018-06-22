@@ -99,6 +99,6 @@ Details.propTypes = {
   startHackathon: PropTypes.func.isRequired,
   finishHackathon: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
-}
+};
 
 export default Details;

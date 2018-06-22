@@ -87,6 +87,6 @@ Challenges.propTypes = {
   challenges: PropTypes.array.isRequired,
   addChallenge: PropTypes.func.isRequired,
   deleteChallenge: PropTypes.func.isRequired,
-}
+};
 
 export default Challenges;

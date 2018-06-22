@@ -101,6 +101,6 @@ Tests.propTypes = {
   tests: PropTypes.array.isRequired,
   addTest: PropTypes.func.isRequired,
   deleteTest: PropTypes.func.isRequired,
-}
+};
 
 export default Tests;

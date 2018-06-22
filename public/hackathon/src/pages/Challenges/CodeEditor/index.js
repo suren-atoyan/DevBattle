@@ -83,6 +83,6 @@ CodeEditor.propTypes = {
   sendResult: PropTypes.func.isRequired,
   value: PropTypes.string,
   hackathon: PropTypes.object.isRequired,
-}
+};
 
 export default CodeEditor;

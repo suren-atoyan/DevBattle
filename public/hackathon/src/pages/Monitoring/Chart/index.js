@@ -55,12 +55,12 @@ class Charts extends PureComponent {
 
 Charts.propTypes = {
   activeHackathon: PropTypes.object.isRequired,
-}
+};
 
 const DecoratedCharts = withHighcharts(Charts, Highcharts);
 
 DecoratedCharts.propTypes = {
   activeHackathon: PropTypes.object.isRequired,
-}
+};
 
 export default DecoratedCharts;

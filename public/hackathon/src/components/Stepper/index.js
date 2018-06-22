@@ -72,6 +72,6 @@ const DecoratedDotsMobileStepper = withRouter(withStyles(styles)(DotsMobileStepp
 
 DecoratedDotsMobileStepper.propTypes = {
   steps: PropTypes.number,
-}
+};
 
 export default DecoratedDotsMobileStepper;

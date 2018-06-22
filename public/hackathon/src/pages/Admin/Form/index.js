@@ -61,6 +61,6 @@ const AdminForm = ({ submit, canSubmit }) => (
 AdminForm.propTypes = {
   submit: PropTypes.func.isRequired,
   canSubmit: PropTypes.bool.isRequired,
-}
+};
 
 export default AdminForm;

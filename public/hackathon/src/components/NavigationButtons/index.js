@@ -32,6 +32,6 @@ NavigationButtons.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
   isGuest: PropTypes.bool.isRequired,
   isTeamMember: PropTypes.bool.isRequired,
-}
+};
 
 export default NavigationButtons;

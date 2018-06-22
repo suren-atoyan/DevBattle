@@ -92,12 +92,12 @@ class Admin extends PureComponent {
 Admin.propTypes = {
   store: PropTypes.object.isRequired,
   storeActions: PropTypes.object.isRequired,
-}
+};
 
 const DecoratedAdmin = withStore(Admin);
 
 DecoratedAdmin.propTypes = {
   // This component doesn't expect any props from outside (until nowadays)
-}
+};
 
 export default DecoratedAdmin;

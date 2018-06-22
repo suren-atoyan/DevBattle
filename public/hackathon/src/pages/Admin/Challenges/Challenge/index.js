@@ -100,6 +100,6 @@ Challenge.propTypes = {
   hasCodeEditor: PropTypes.bool,
   hasCodeLimitation: PropTypes.bool,
   tests: PropTypes.array,
-}
+};
 
 export default Challenge;

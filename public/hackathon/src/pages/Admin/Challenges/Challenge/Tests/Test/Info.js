@@ -51,6 +51,6 @@ Info.propTypes = {
   deleteTest: PropTypes.func.isRequired,
   input: PropTypes.any.isRequired,
   output: PropTypes.any.isRequired,
-}
+};
 
 export default Info;
