@@ -73,12 +73,12 @@ class TopBar extends PureComponent {
   handleLogout = async _ => {
     await this.props.authActions.logout();
     await this.props.storeActions.getActiveHackathon();
-  }
+  };
 
   handleLogin = async data => {
     await this.props.authActions.login(data);
     await this.props.storeActions.getActiveHackathon();
-  }
+  };
 
   render() {
     const {

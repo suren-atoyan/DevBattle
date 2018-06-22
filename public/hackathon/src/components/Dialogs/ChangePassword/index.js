@@ -30,7 +30,7 @@ class ChangePasswordDialog extends PureComponent {
     const keycode = (ev.keyCode || ev.which);
 
     (keycode === 13) && this.canSubmit() && this.changePassword();
-  }
+  };
 
   handleClose = _ => this.props.handleClose() & this.clearTextFieldValues();
 
