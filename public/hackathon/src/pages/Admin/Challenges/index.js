@@ -15,17 +15,6 @@ import ChallengeInfo from './Challenge/Info';
 
 import './index.scss';
 
-const emptyChallenge = {
-  name: '',
-  description: '',
-  codeExample: '',
-  fnName: '',
-  fnLength: '',
-  hasCodeLimitation: false,
-  hasCodeEditor: true,
-  tests: [],
-};
-
 class Challenges extends PureComponent {
 
   state = {
@@ -77,7 +66,6 @@ class Challenges extends PureComponent {
       <div className="admin__challenges">
         {this.getChallenges()}
         {this.state.isOpenAddChallengeDialog && <Challenge
-          {...emptyChallenge}
           submit={this.addChallenge}
           onClose={this.closeAddChallengeDialog}
         />}
