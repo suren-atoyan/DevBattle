@@ -1,4 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -105,5 +108,12 @@ class LoginDialog extends PureComponent {
     );
   }
 };
+
+LoginDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  createTeam: PropTypes.func.isRequired,
+}
 
 export default LoginDialog;
