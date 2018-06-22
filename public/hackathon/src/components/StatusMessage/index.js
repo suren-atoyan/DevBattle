@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Snackbar from '@material-ui/core/Snackbar';
 
 // TODO ::: Add messages for all kind of statuses
@@ -22,5 +25,10 @@ const StatusMessage = props => {
     />
   );
 }
+
+StatusMessage.propTypes = {
+  statusData: PropTypes.object,
+  handleClose: PropTypes.func.isRequired,
+};
 
 export default StatusMessage;
