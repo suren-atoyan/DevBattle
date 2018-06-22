@@ -43,7 +43,7 @@ class Charts extends PureComponent {
               <ColumnSeries  key={_id} name={name} data={[chartData[i]]} />
             )
           }
-          <PieSeries name="Total consumption" data={chartData} showInLegend={false} center={pieSeriesPosition} />
+          <PieSeries name="Total consumption" size={100} data={chartData} showInLegend={false} center={pieSeriesPosition} />
         </YAxis>
       </HighchartsChart>
     )
