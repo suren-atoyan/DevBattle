@@ -1,4 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,8 +10,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-import { withStore } from 'store';
 
 const defaultState = {
   name: '',
@@ -42,7 +43,8 @@ class LoginDialog extends PureComponent {
     const {
       open,
       isLoading,
-      store: { activeHackathon }
+      openCreateTeamDialog,
+      activeHackathon,
     } = this.props;
 
     return (
@@ -102,7 +104,7 @@ class LoginDialog extends PureComponent {
                           <Button onClick={this.loginAsGuest} color="primary">
                             Login as Guest
                           </Button>
-                          <Button onClick={this.props.openCreateTeamDialog}>
+                          <Button onClick={openCreateTeamDialog}>
                             Create Your Team
                           </Button>
                         </Fragment>
@@ -118,4 +120,14 @@ class LoginDialog extends PureComponent {
   }
 };
 
-export default withStore(LoginDialog);
+LoginDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  openCreateTeamDialog: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  loginAsGuest: PropTypes.func.isRequired,
+  activeHackathon: PropTypes.object,
+}
+
+export default LoginDialog;

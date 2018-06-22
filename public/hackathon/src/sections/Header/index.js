@@ -168,6 +168,7 @@ class TopBar extends PureComponent {
           loginAsGuest={loginAsGuest}
           isLoading={isLoading}
           openCreateTeamDialog={this.openCreateTeamDialog}
+          activeHackathon={activeHackathon}
         />
 
         <CreateTeamDialog
