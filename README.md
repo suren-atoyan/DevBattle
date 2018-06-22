@@ -60,6 +60,14 @@ For running server with client in development environment run:
 npm run start-dev-with-hackathon-client
 ```
 
+##### Production
+
+For running hackathon in production environment run:
+
+```bash
+npm run start-hackathon-prod
+```
+
 ## Usage
 
 After running you can check 8080 (which was declared in config.json file) port in your browser.
