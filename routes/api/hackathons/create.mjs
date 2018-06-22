@@ -13,26 +13,21 @@ import config from '../../../config';
 const { action_types: { CREATE_HACKATHON } } = config.get('uws_server');
 
 async function createHackathon(req, res) {
-  const { cookies : { token }, body } = req;
-  const role = await auth.getRoleByToken(token);
+  const { body } = req;
 
-  if (role && role.isAdmin) {
-    if (body) {
-      const currentHackathon = hackathon.create(body);
+  if (body) {
+    const currentHackathon = hackathon.create(body);
 
-      if (currentHackathon._error) {
-        res.status(422).send({ errorMessage: currentHackathon._error });
-      } else {
-        await addNewHackathon(currentHackathon);
-        await updateActiveHackathonId(currentHackathon._id);
-        res.status(200).send(currentHackathon);
-        broadcast(CREATE_HACKATHON, currentHackathon);
-      }
+    if (currentHackathon._error) {
+      res.status(422).send({ errorMessage: currentHackathon._error });
     } else {
-      res.status(422).send({ errorMessage: 'Data is not passed' });
+      await addNewHackathon(currentHackathon);
+      await updateActiveHackathonId(currentHackathon._id);
+      res.status(200).send(currentHackathon);
+      broadcast(CREATE_HACKATHON, currentHackathon);
     }
   } else {
-    res.status(401).send({ errorMessage: 'Authentication failed.' });
+    res.status(422).send({ errorMessage: 'Data is not passed' });
   }
 }
 

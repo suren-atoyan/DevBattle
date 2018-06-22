@@ -1,5 +1,7 @@
 import express from 'express';
 
+import shouldBeAdmin from '../../middlewares/should-be-admin';
+
 import login from './login';
 import logout from './logout';
 import checkToken from './check-token';
@@ -19,10 +21,10 @@ const router = express.Router();
 router.post('/login', login);
 router.post('/logout', logout);
 router.get('/hackathons', getHackathon);
-router.post('/hackathons', createHackathon);
-router.post('/hackathons/start', startHackathon);
-router.post('/hackathons/finish', finishHackathon);
-router.delete('/hackathons', deleteHackathon);
+router.post('/hackathons', shouldBeAdmin, createHackathon);
+router.post('/hackathons/start', shouldBeAdmin, startHackathon);
+router.post('/hackathons/finish', shouldBeAdmin, finishHackathon);
+router.delete('/hackathons', shouldBeAdmin, deleteHackathon);
 router.post('/challenge_answer', challengeAnswer);
 router.post('/team', createTeam);
 router.get('/results', getResults);
