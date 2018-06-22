@@ -1,5 +1,8 @@
 /* eslint-disable no-sequences */
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Highcharts from 'highcharts/js/highcharts';
 import {
   HighchartsChart,
@@ -50,4 +53,14 @@ class Charts extends PureComponent {
   }
 };
 
-export default withHighcharts(Charts, Highcharts);
+Charts.propTypes = {
+  activeHackathon: PropTypes.object.isRequired,
+}
+
+const DecoratedCharts = withHighcharts(Charts, Highcharts);
+
+DecoratedCharts.propTypes = {
+  activeHackathon: PropTypes.object.isRequired,
+}
+
+export default DecoratedCharts;
