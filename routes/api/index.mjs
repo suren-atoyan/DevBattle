@@ -1,4 +1,5 @@
 import express from 'express';
+import { handleInvalidRequest } from '../../libs/utils';
 
 import shouldBeAdmin from '../../middlewares/should-be-admin';
 
@@ -31,8 +32,6 @@ router.get('/results', getResults);
 
 router.get('/check_token', checkToken);
 
-router.use('/', (req, res) => res.status(404).send({
-  errorMessage: 'Oops! You tried to get something that does not exist in this universe.',
-}));
+router.use('/', (req, res) => handleInvalidRequest(res, 404));
 
 export default router;
