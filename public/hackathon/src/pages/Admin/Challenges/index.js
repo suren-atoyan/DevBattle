@@ -1,12 +1,17 @@
 import React, { PureComponent } from 'react';
-import Challenge from './Challenge';
-import ChallengeInfo from './Challenge/Info';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 import List from '@material-ui/core/List';
+
+// Components
+import Challenge from './Challenge';
+import ChallengeInfo from './Challenge/Info';
 
 import './index.scss';
 
@@ -21,7 +26,7 @@ const emptyChallenge = {
   tests: [],
 };
 
-export default class Challenges extends PureComponent {
+class Challenges extends PureComponent {
 
   state = {
     isOpenAddChallengeDialog: false,
@@ -89,3 +94,11 @@ export default class Challenges extends PureComponent {
     );
   }
 }
+
+Challenges.propTypes = {
+  challenges: PropTypes.array.isRequired,
+  addChallenge: PropTypes.func.isRequired,
+  deleteChallenge: PropTypes.func.isRequired,
+}
+
+export default Challenges;
