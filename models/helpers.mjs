@@ -92,6 +92,10 @@ async function addNewHackathon(hackathon) {
   return await db.insert('hackathons', hackathon);
 }
 
+async function updateAdminPassword(hashedPassword) {
+  return db.set('admin', { password: hashedPassword });
+}
+
 function filterResultsByRole(results, role) {
   return Object.keys(results).reduce((acc, key) => (
     acc[key] = {
@@ -116,4 +120,5 @@ export {
   finishHackathon,
   addNewHackathon,
   deleteActiveHackathon,
+  updateAdminPassword,
 };

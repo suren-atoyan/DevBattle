@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import Form from './Form';
 import Challenges from './Challenges';
 import Details from './Details';
+import Settings from './Settings';
 
 // Utils
 import { removeItem } from 'utils/';
@@ -58,6 +59,7 @@ class Admin extends PureComponent {
 
     return (
       <div className="admin">
+        <Settings />
         {
           activeHackathon
           ? (

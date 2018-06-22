@@ -62,6 +62,7 @@ class AuthProvider extends Component {
       break;
       default: break;
     }
+
     this.setState({
       isLoading: false,
       showStatusMessage: false,
@@ -81,6 +82,10 @@ class AuthProvider extends Component {
   loginAsGuest = _ => this.handleResponse(
     makeRequest(`${url.base_url}${url.login}`, 'POST', { isGuest: true }),
     LOGIN_AS_GUEST,
+  );
+
+  changeAdminPassword = data => this.handleResponse(
+    makeRequest(`${url.base_url}${url.admin}`, 'PUT', data),
   );
 
   checkToken = _ => this.handleResponse(
@@ -106,6 +111,7 @@ class AuthProvider extends Component {
       login,
       logout,
       loginAsGuest,
+      changeAdminPassword,
       handleAuthMessageClose,
     } = this;
 
@@ -121,6 +127,7 @@ class AuthProvider extends Component {
             login,
             logout,
             loginAsGuest,
+            changeAdminPassword,
           },
         }}>
           {this.props.children}
