@@ -7,7 +7,7 @@ const shouldBeAdmin = async (req, res, next) => {
 
   return role.isAdmin
     ? next()
-    : handleInvalidRequest(res, 403);
+    : handleInvalidRequest(res, 403, 'not_admin');
 };
 
 export default asyncWrapper(shouldBeAdmin);

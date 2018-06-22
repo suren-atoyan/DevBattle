@@ -49,7 +49,7 @@ async function challengeAnswer(req, res) {
     .find(challenge => challenge._id === challengeId);
 
   if (!currnetChallenge) return handleInvalidRequest(res, 400, 'no_challenge');
-  if (role.isAdmin) return handleInvalidRequest(res, 400, 'admin_challenge');
+  if (role.isAdmin) return handleInvalidRequest(res, 403, 'admin_challenge');
 
   const result = testRunner(currnetChallenge, source);
 
