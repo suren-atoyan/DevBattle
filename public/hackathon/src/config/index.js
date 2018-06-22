@@ -10,6 +10,7 @@ const url = {
   login: '/login',
   logout: '/logout',
   check_token: '/check_token',
+  admin: '/admin',
   hackathons: '/hackathons',
   challenge_answer: '/challenge_answer',
   create_team: '/team',

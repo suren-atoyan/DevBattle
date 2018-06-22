@@ -12,7 +12,7 @@ class Fetch {
         credentials: 'include',
       };
 
-      if (method === 'POST') {
+      if (method === 'POST' || method === 'PUT') {
         options.body = JSON.stringify(data);
       }
 

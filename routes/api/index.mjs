@@ -15,6 +15,7 @@ import {
   finishHackathon,
   deleteHackathon,
 } from './hackathons/';
+import { changePassword } from './admin';
 import challengeAnswer from './challenge-answer';
 
 const router = express.Router();
@@ -26,6 +27,7 @@ router.post('/hackathons', shouldBeAdmin, createHackathon);
 router.post('/hackathons/start', shouldBeAdmin, startHackathon);
 router.post('/hackathons/finish', shouldBeAdmin, finishHackathon);
 router.delete('/hackathons', shouldBeAdmin, deleteHackathon);
+router.put('/admin', shouldBeAdmin, changePassword);
 router.post('/challenge_answer', challengeAnswer);
 router.post('/team', createTeam);
 router.get('/results', getResults);
