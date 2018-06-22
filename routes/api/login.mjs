@@ -1,6 +1,6 @@
 import auth from '../../libs/auth';
 import db from '../../db/';
-import { asyncWrapper } from '../../libs/utils';
+import { asyncWrapper, handleInvalidRequest } from '../../libs/utils';
 
 const login = async (req, res) => {
   const { name, password, isGuest } = req.body;
@@ -17,8 +17,7 @@ const login = async (req, res) => {
     if (role) {
       token = await auth.sign(role);
     } else {
-      res.status(401).send({ errorMessage: 'Authentication failed.' });
-      return;
+      return handleInvalidRequest(res, 401, 'auth_fail');
     }
   }
 

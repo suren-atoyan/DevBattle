@@ -17,7 +17,7 @@ import './index.scss';
 const Monitoring = ({ store: { activeHackathon } }) => (
   <div className="monitoring">
     {
-      activeHackathon
+      activeHackathon && activeHackathon.started
         ? (
             <Grid container spacing={24}>
               <Grid item xs={8}>
@@ -28,7 +28,7 @@ const Monitoring = ({ store: { activeHackathon } }) => (
               </Grid>
             </Grid>
           )
-        : <NoActive />
+        : <NoActive hasActiveHackathon={!!activeHackathon} />
     }
   </div>
 );

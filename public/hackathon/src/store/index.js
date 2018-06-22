@@ -11,6 +11,7 @@ import {
   CREATE_TEAM,
   START_HACKATHON,
   FINISH_HACKATHON,
+  DELETE_HACKATHON,
   GET_RESULTS,
 } from 'constants/action-types/store';
 
@@ -103,6 +104,9 @@ class AppStateProvider extends Component {
           },
         });
       break;
+      case DELETE_HACKATHON:
+        this.setState({ activeHackathon: null });
+      break;
       default: break;
     }
   }
@@ -169,6 +173,13 @@ class AppStateProvider extends Component {
     );
   };
 
+  deleteHackathon = async _ => {
+    this.handleResponse(
+      makeRequest(`${url.base_url}${url.hackathons}`, 'DELETE'),
+      DELETE_HACKATHON,
+    );
+  };
+
   sendChallengeAnswer = async data => {
 
     if (this.state.activeHackathon.finished) {
@@ -214,6 +225,7 @@ class AppStateProvider extends Component {
       createTeam,
       startHackathon,
       finishHackathon,
+      deleteHackathon,
     } = this;
 
     return(
@@ -231,6 +243,7 @@ class AppStateProvider extends Component {
             createTeam,
             startHackathon,
             finishHackathon,
+            deleteHackathon,
           },
         }}>
           {this.props.children}

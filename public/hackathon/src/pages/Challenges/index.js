@@ -78,20 +78,16 @@ class Challenges extends PureComponent {
 
     const { store: { activeHackathon } } = this.props;
 
-    const hasActiveHackathon = !!activeHackathon;
-
-    const noActiveProps = activeHackathon && !activeHackathon.started
-      ? { value: 'Hackathon hasn\'t been started yet' }
-      : {};
+    const hasHackathonStarted = activeHackathon && activeHackathon.started;
 
     return (
       <div
         className="challenges__wrapper"
       >
         {
-          hasActiveHackathon && activeHackathon.started
+          hasHackathonStarted
             ? this.getChallengesContent()
-            : <NoActive {...noActiveProps} />
+            : <NoActive hasActiveHackathon={!!activeHackathon} />
         }
       </div>
     );

@@ -84,6 +84,10 @@ async function finishHackathon() {
     .write();
 }
 
+async function deleteActiveHackathon() {
+  return db.set('active_hackathon_id', null);
+}
+
 async function addNewHackathon(hackathon) {
   return await db.insert('hackathons', hackathon);
 }
@@ -111,4 +115,5 @@ export {
   startHackathon,
   finishHackathon,
   addNewHackathon,
+  deleteActiveHackathon,
 };

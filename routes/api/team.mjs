@@ -1,4 +1,4 @@
-import { asyncWrapper } from '../../libs/utils';
+import { asyncWrapper, handleInvalidRequest } from '../../libs/utils';
 
 import team from '../../models/team';
 import auth from '../../libs/auth';
@@ -12,25 +12,19 @@ const { action_types: { CREATE_TEAM } } = config.get('uws_server');
 async function _createTeam(req, res) {
   const { body } = req;
 
-  if (body) {
-    const currentTeam = team.create(body);
+  if (!body) return handleInvalidRequest(res, 400, 'invalid_data');
 
-    if (currentTeam._error) {
-      res.status(422).send({ errorMessage: currentTeam._error });
-    } else {
-      currentTeam.password = await auth.genPassword(currentTeam.password);
-      const result = await createNewTeam(currentTeam);
-      
-      if (result.success) {
-        res.status(200).send(result.team);
-        broadcast(CREATE_TEAM, result.team);
-      } else {
-        res.status(422).send({ errorMessage: result.errorMessage });
-      }
-    }
-  } else {
-    res.status(422).send({ errorMessage: 'Invalid Data' });
-  }
+  const currentTeam = team.create(body);
+
+  if (currentTeam._error) return handleInvalidRequest(res, 400, currentTeam._error);
+
+  currentTeam.password = await auth.genPassword(currentTeam.password);
+  const result = await createNewTeam(currentTeam);
+
+  if (!result.success) return handleInvalidRequest(res, 400, result.errorMessage);
+
+  res.status(200).send(result.team);
+  broadcast(CREATE_TEAM, result.team);
 }
 
 const createTeam = asyncWrapper(_createTeam);

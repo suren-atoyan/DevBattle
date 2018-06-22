@@ -1,5 +1,9 @@
 import figlet from 'figlet';
 import fs from './promisify-fs';
+import config from '../config';
+
+const httpErrorMessages = config.get('http_error_messages');
+const generalErrorMessages = config.get('general_error_messages');
 
 const connectMessage = _ => figlet.text('connect', (err, data) => {
   err && console.error(err); // TODO ::: Create ErrorHandler
@@ -23,8 +27,17 @@ const readFile = async (path, format = 'json', defaultValue = {}) => {
   }
 };
 
+const handleInvalidRequest = (res, status, customMessage) => {
+  return res.status(status).send({
+    errorMessage: customMessage
+      ? (generalErrorMessages[customMessage] || customMessage)
+      : httpErrorMessages[status],
+  });
+}
+
 export {
   connectMessage,
   asyncWrapper,
   readFile,
+  handleInvalidRequest,
 };

@@ -1,4 +1,7 @@
 import express from 'express';
+import { handleInvalidRequest } from '../../libs/utils';
+
+import shouldBeAdmin from '../../middlewares/should-be-admin';
 
 import login from './login';
 import logout from './logout';
@@ -10,6 +13,7 @@ import {
   getHackathon,
   startHackathon,
   finishHackathon,
+  deleteHackathon,
 } from './hackathons/';
 import challengeAnswer from './challenge-answer';
 
@@ -18,17 +22,16 @@ const router = express.Router();
 router.post('/login', login);
 router.post('/logout', logout);
 router.get('/hackathons', getHackathon);
-router.post('/hackathons', createHackathon);
-router.post('/hackathons/start', startHackathon);
-router.post('/hackathons/finish', finishHackathon);
+router.post('/hackathons', shouldBeAdmin, createHackathon);
+router.post('/hackathons/start', shouldBeAdmin, startHackathon);
+router.post('/hackathons/finish', shouldBeAdmin, finishHackathon);
+router.delete('/hackathons', shouldBeAdmin, deleteHackathon);
 router.post('/challenge_answer', challengeAnswer);
 router.post('/team', createTeam);
 router.get('/results', getResults);
 
 router.get('/check_token', checkToken);
 
-router.use('/', (req, res) => res.status(404).send({
-  errorMessage: 'Oops! You tried to get something that does not exist in this universe.',
-}));
+router.use('/', (req, res) => handleInvalidRequest(res, 404));
 
 export default router;

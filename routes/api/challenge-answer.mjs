@@ -1,5 +1,5 @@
 import auth from '../../libs/auth';
-import { asyncWrapper } from '../../libs/utils';
+import { asyncWrapper, handleInvalidRequest } from '../../libs/utils';
 import testRunner from '../../libs/test';
 
 import { getActiveHackathon, updateActiveHackathon } from '../../models/helpers';
@@ -34,91 +34,71 @@ async function challengeAnswer(req, res) {
   const { cookies : { token }, body: { challengeId, source, teamId: rTeamId }, body } = req;
   const role = await auth.getRoleByToken(token);
 
-  if (role) {
-    // TODO ::: Make testRunner function execution asynchronous.
+  // TODO ::: Make testRunner function execution asynchronous.
 
-    const currentHackathon = await getActiveHackathon({
-      withLodashWrapper: false,
-      withPasswords: true,
+  const currentHackathon = await getActiveHackathon({
+    withLodashWrapper: false,
+    withPasswords: true,
+  });
+
+  if (!currentHackathon) return handleInvalidRequest(res, 400, 'no_active');
+  if (!currentHackathon.started) return handleInvalidRequest(res, 400, 'challenge_not_started');
+
+  const currnetChallenge = currentHackathon
+    .challenges
+    .find(challenge => challenge._id === challengeId);
+
+  if (!currnetChallenge) return handleInvalidRequest(res, 400, 'no_challenge');
+  if (role.isAdmin) return handleInvalidRequest(res, 403, 'admin_challenge');
+
+  const result = testRunner(currnetChallenge, source);
+
+  if (result.errorMessage) return handleInvalidRequest(res, 400, result.errorMessage);
+
+  const { guests } = currentHackathon.results;
+
+  if (rTeamId) {
+    !currentHackathon.results[rTeamId] && (currentHackathon.results[rTeamId] = {
+      confirmedSolutions: [],
+      score: 0,
     });
+  }
 
-    if (!currentHackathon || !currentHackathon.started) {
-      res.status(422).send({ errorMessage: 'Can\'t submit unbegun hackathon challenges.' });
-      return false;
-    }
+  const currentTeamResults = role.isGuest
+    ? guests
+    : currentHackathon.results[rTeamId];
 
-    const currnetChallenge = currentHackathon
-      .challenges
-      .find(challenge => challenge._id === challengeId);
+  const existingSolution = currentTeamResults
+    .confirmedSolutions
+    .find(solution => solution.challengeId === challengeId);
 
-    if (currnetChallenge) {
-      const result = testRunner(currnetChallenge, source);
+  if (existingSolution) {
 
-      if (!role.isAdmin && (role.isGuest || role.isTeamMember)) {
-        if (result.errorMessage) {
-          res.status(422).send({ errorMessage: result.errorMessage });
-        } else {
-          const { guests } = currentHackathon.results;
+    if (!currnetChallenge.points || !currnetChallenge.fnLength) return handleInvalidRequest(res, 400, 'already_solved');
+    if (result.points <= existingSolution.points) return handleInvalidRequest(res, 400, 'better_sollution');
 
-          if (rTeamId) {
-            !currentHackathon.results[rTeamId] && (currentHackathon.results[rTeamId] = {
-              confirmedSolutions: [],
-              score: 0,
-            });
-          }
+    // Update challenge points
+    currentTeamResults.score += result.points - existingSolution.points;
+    existingSolution.points = result.points;
+    existingSolution.source = source;
+    await updateActiveHackathon(currentHackathon);
 
-          const currentTeamResults = role.isGuest
-            ? guests
-            : currentHackathon.results[rTeamId];
+    sendSuccessfulResult(res, role);
 
-          const existingSolution = currentTeamResults
-            .confirmedSolutions
-            .find(solution => solution.challengeId === challengeId);
-
-          if (existingSolution) {
-            if (currnetChallenge.points && currnetChallenge.fnLength) {
-              if (result.points > existingSolution.points) {
-                // Update challenge points
-                currentTeamResults.score += result.points - existingSolution.points;
-                existingSolution.points = result.points;
-                existingSolution.source = source;
-                await updateActiveHackathon(currentHackathon);
-
-                sendSuccessfulResult(res, role);
-              } else {
-                res.status(422).send({ errorMessage: 'The previus version of your team is better' });
-              }
-            } else {
-              res.status(422).send({ errorMessage: 'This challenge have already solved by your team' });
-            }
-          } else {
-            const currentSolution = { challengeId, source };
-
-            if (result.points) {
-              currentSolution.points = result.points;
-              currentTeamResults.score += result.points;
-            } else {
-              currentTeamResults.score++;
-            }
-
-            currentTeamResults.confirmedSolutions.push(currentSolution);
-            await updateActiveHackathon(currentHackathon);
-
-            sendSuccessfulResult(res, role);
-          }
-        }
-      } else {
-        if (role.isAdmin) {
-          res.status(401).send({ errorMessage: 'Admin can\'t solve challenges' });
-        } else {
-          res.status(401).send({ errorMessage: 'Authentication failed.' });
-        }
-      }
-    } else {
-      res.status(422).send({ errorMessage: 'There is no challenge mentioned by you!' });
-    }
   } else {
-    res.status(401).send({ errorMessage: 'Authentication failed.' });
+    const currentSolution = { challengeId, source };
+
+    if (result.points) {
+      currentSolution.points = result.points;
+      currentTeamResults.score += result.points;
+    } else {
+      currentTeamResults.score++;
+    }
+
+    currentTeamResults.confirmedSolutions.push(currentSolution);
+    await updateActiveHackathon(currentHackathon);
+
+    sendSuccessfulResult(res, role);
   }
 }
 
