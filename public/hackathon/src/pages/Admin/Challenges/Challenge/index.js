@@ -54,7 +54,6 @@ class Challenge extends PureComponent {
   };
 
   render() {
-    console.log(this.props)
     const {
       onClose,
       ...props
