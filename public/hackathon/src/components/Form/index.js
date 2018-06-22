@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+
+// Third-Party Components
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
 import Button from '@material-ui/core/Button';
 
 import './index.scss';
 
-export default class Form extends PureComponent {
+class Form extends PureComponent {
 
   state = {
     canSubmit: false,
@@ -67,3 +70,11 @@ export default class Form extends PureComponent {
     );
   }
 }
+
+Form.propTypes = {
+  submit: PropTypes.func,
+  validation: PropTypes.object,
+  canSubmit: PropTypes.bool,
+};
+
+export default Form;
