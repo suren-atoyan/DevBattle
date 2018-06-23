@@ -46,7 +46,7 @@
     "finished": "Hackathon has already finished.",
     "invalid_data": "Invalid Data.",
     "no_data": "Data is not passed.",
-    "not_admin": "Our admin has all possible, 4 incredeble and 2 impossible rights, but you arn't our admin.",
+    "not_admin": "Our admin has all possible, 4 incredible and 2 impossible rights, but you aren't our admin.",
     "challenge_not_started": "Can't submit unbegun hackathon challenges.",
     "admin_challenge": "Admin can't solve challenges.",
     "already_solved": "This challenge has already been solved by your team.",
