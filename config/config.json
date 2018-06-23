@@ -50,7 +50,7 @@
     "challenge_not_started": "Can't submit unbegun hackathon challenges.",
     "admin_challenge": "Admin can't solve challenges.",
     "already_solved": "This challenge has already been solved by your team.",
-    "better_sollution": "The previous vesrion of your team is better.",
+    "better_solution": "The previous vesrion of your team is better.",
     "no_challenge": "There is no challenge mentioned by you!",
     "auth_fail": "Authentication failed.",
     "short_password": "Password should be at least 6 chars long."
