@@ -39,11 +39,13 @@ const Test = ({
     <DialogTitle>Create a Test</DialogTitle>
     <DialogContent>
       <DialogContentText>
-        Please write input/output for your function
+        Write input/output for your function.
         Note ::: type of input/output should be JSON
-        So, eg. if you want to write 2 as number in input field
-        just write 2. If you want to write 2 as string, write "2".
-        They are boght valid JSONs.
+        So, if you want to write 2 as a number in input field just write 2.
+        If you want to write 2 as a string, write "2". They both are valid JSONs.
+        If you want to give to your function more than one argument,
+        then separate them by using # symbol. E.g, if you want to give to the function two arguments,
+        first of them is an array like [1, 2, 3] and the second is a number like 5, just write [1, 2, 3] # 5
       </DialogContentText>
       {errorMessage && <Typography color="error">{errorMessage}</Typography>}
       <Form
