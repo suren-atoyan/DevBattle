@@ -59,13 +59,13 @@ class Info extends PureComponent {
 Info.propTypes = {
   index: PropTypes.number.isRequired,
   deleteChallenge: PropTypes.func.isRequired,
-  codeExample: PropTypes.string.isRequired,
+  codeExample: PropTypes.string,
   description: PropTypes.string.isRequired,
   fnName: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  fnLength: PropTypes.number.isRequired,
-  hasCodeEditor: PropTypes.bool.isRequired,
-  hasCodeLimitation: PropTypes.bool.isRequired,
+  fnLength: PropTypes.number,
+  hasCodeEditor: PropTypes.bool,
+  hasCodeLimitation: PropTypes.bool,
   tests: PropTypes.array.isRequired,
 };
 

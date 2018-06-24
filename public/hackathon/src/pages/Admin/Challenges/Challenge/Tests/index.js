@@ -57,12 +57,15 @@ class Tests extends PureComponent {
         );
   }
 
-  addTest = data => {
-    let result;
+  addTest = ({ input, output }) => {
+    const result = { input: null, output: null };
+
     try {
-      result = Object
-        .keys(data)
-        .reduce((acc, key) => (acc[key] = JSON.parse(data[key]), acc), {});
+      result.input = input.includes('#')
+        ? input.split('#').map(item => JSON.parse(item))
+        : [JSON.parse(input)]
+
+      result.output = JSON.parse(output);
 
       this.closeAddTestDialog();
     } catch(e) {

@@ -35,7 +35,7 @@ class Challenge extends PureComponent {
   };
 
   addTest = test => this.setState({
-    tests: [ ...this.state.tests, { ...test, input: [test.input] } ],
+    tests: [ ...this.state.tests, test ],
     isOpenAddTestDialog: false,
   });
 

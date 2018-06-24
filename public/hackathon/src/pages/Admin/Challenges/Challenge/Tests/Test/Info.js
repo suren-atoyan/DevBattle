@@ -38,8 +38,8 @@ class Info extends PureComponent {
           timeout="auto"
           unmountOnExit
         >
-          <ListItem>Input - {input}</ListItem>
-          <ListItem>Output - {output}</ListItem>
+          <ListItem>Input - {JSON.stringify(input).slice(1, -1)}</ListItem>
+          <ListItem>Output - {JSON.stringify(output)}</ListItem>
         </Collapse>
       </Fragment>
     );
