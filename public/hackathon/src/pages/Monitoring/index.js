@@ -20,10 +20,10 @@ const Monitoring = ({ store: { activeHackathon } }) => (
       activeHackathon && activeHackathon.started
         ? (
             <Grid container spacing={24}>
-              <Grid item xs={8}>
+              <Grid item xs={8} className="monitoring__column">
                 <Chart activeHackathon={activeHackathon} />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={4} className="monitoring__column">
                 <Details activeHackathon={activeHackathon} />
               </Grid>
             </Grid>
