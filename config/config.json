@@ -6,14 +6,16 @@
     "/hackathons:get",
     "/team"
   ],
-  "default_data": {
-    "hackathons": [],
-    "active_hackathon_id": null,
-    "admin": {},
-    "secret": "",
-    "active_tokens": []
+  "db": {
+    "default_data": {
+      "hackathons": [],
+      "active_hackathon_id": null,
+      "admin": {},
+      "secret": "",
+      "active_tokens": []
+    },
+    "path": ".db.json"
   },
-  "db_path": ".db.json",
   "default_salt_rounds": 10,
   "default_admin_password": "adminonaly",
   "uws_server": {

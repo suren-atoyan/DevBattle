@@ -3,33 +3,31 @@ import lowDB from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync';
 import lodashId from 'lodash-id';
 
-import config from '../config';
-
 class DB {
 
-  constructor({ lowDB, FileAsync, config }) {
-    this.lowDB = lowDB;
-    this.FileAsync = FileAsync;
-    this.config = config;
+  config({ path, default_data }) {
+    this.db_path = path;
+    this.default_data = default_data;
+    return this;
   }
 
   async connect() {
-    const adapter = new FileAsync(config.get('db_path'));
+    const adapter = new FileAsync(this.db_path);
 
     this.db = await lowDB(adapter);
 
     this.db._.mixin(lodashId);
     this.db._.id = '_id';
 
-    await this.setDefaults();
+    await this.setDefaults(this.default_data);
 
     return this.db;
   }
 
   async setDefaults() {
     return await this.db
-                    .defaults(config.get('default_data'))
-                    .write();
+      .defaults()
+      .write();
   }
 
   get(key, withLodashWrapper) {
@@ -40,26 +38,22 @@ class DB {
 
   async insert(key, value) {
     return await this.db
-                    .get(key)
-                    .push(value)
-                    .write();
+      .get(key)
+      .push(value)
+      .write();
   }
 
   async set(...args) {
     return await this.db
-                    .set(...args)
-                    .write();
+      .set(...args)
+      .write();
   }
 
   async update(...args) {
     return await this.db
-                    .update(...args)
-                    .write()
+      .update(...args)
+      .write();
   }
 }
 
-export default new DB({
-  lowDB,
-  FileAsync,
-  config,
-});
+export default new DB;

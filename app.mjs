@@ -21,7 +21,7 @@ import { connectMessage } from './libs/utils';
 import './ws'; // Initialize uws websocket server in a child process.
 
 (async _ => {
-  await db.connect();
+  await db.config(config.get('db')).connect();
 
   await auth.run();
 
