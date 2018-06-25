@@ -28,7 +28,7 @@ class Info extends PureComponent {
       codeExample,
       hasCodeLimitation,
       fnName,
-      fnLength,
+      sourceLength,
     } = this.props;
 
     return (
@@ -49,7 +49,7 @@ class Info extends PureComponent {
           <ListItem>Code Example - {codeExample || 'N/A'}</ListItem>
           <ListItem>hasCodeLimitation - {hasCodeLimitation ? 'Yes' : 'No'}</ListItem>
           <ListItem>Function name - {fnName}</ListItem>
-          <ListItem>Function length - {fnLength}</ListItem>
+          <ListItem>Source length - {sourceLength}</ListItem>
         </Collapse>
       </Fragment>
     );
@@ -63,7 +63,7 @@ Info.propTypes = {
   description: PropTypes.string.isRequired,
   fnName: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  fnLength: PropTypes.number,
+  sourceLength: PropTypes.number,
   hasCodeEditor: PropTypes.bool,
   hasCodeLimitation: PropTypes.bool,
   tests: PropTypes.array.isRequired,

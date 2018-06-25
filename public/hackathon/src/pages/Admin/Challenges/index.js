@@ -54,8 +54,8 @@ class Challenges extends PureComponent {
 
   addChallenge = data => {
     this.closeAddChallengeDialog();
-    const { fnLength, points, exclude } = data; // Should be converted
-    fnLength && (data.fnLength = parseInt(fnLength, 10));
+    const { sourceLength, points, exclude } = data; // Should be converted
+    sourceLength && (data.sourceLength = parseInt(sourceLength, 10));
     points && (data.points = parseInt(points, 10));
     exclude && (data.exclude = exclude.split(','));
     this.props.addChallenge(data);

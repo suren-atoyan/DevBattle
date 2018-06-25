@@ -29,7 +29,7 @@ const styles = {
 
 const helperTexts = {
   fnName: 'Function name should be declated ...',
-  fnLength: 'The maximum length of source is ...',
+  sourceLength: 'The maximum length of source is ...',
   exclude: 'Those symboles or fragment ...',
   points: 'You can get mentioned points if ...',
 }
@@ -54,7 +54,7 @@ const Description = ({
   requirements,
   challenge: {
     fnName,
-    fnLength,
+    sourceLength,
     exclude,
     points,
   }
@@ -77,14 +77,14 @@ const Description = ({
                   content={`Function name - ${fnName}`}
                   helperText={helperTexts.fnName}
                 />
-                {fnLength &&
+                {sourceLength &&
                   <LineOfRequirements
-                    content={`Maximum source length - ${fnLength}`}
-                    helperText={helperTexts.fnLength}
+                    content={`Maximum source length - ${sourceLength}`}
+                    helperText={helperTexts.sourceLength}
                   />
                 }
                 <LineOfRequirements
-                  content={`Points - ${fnLength ? points / 2 : points}`}
+                  content={`Points - ${sourceLength ? points / 2 : points}`}
                   helperText={helperTexts.points}
                 />
                 {exclude &&

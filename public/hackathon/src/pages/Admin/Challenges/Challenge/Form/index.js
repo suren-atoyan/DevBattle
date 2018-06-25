@@ -27,7 +27,7 @@ const challengeSchema = {
   fnName: {
     required: true,
   },
-  fnLength: {
+  sourceLength: {
     required: false,
   },
   points: {
@@ -48,7 +48,7 @@ class ChallengeForm extends PureComponent {
       codeExample,
       hasCodeEditor,
       fnName,
-      fnLength,
+      sourceLength,
       canSubmit,
       points,
       exclude,
@@ -100,9 +100,9 @@ class ChallengeForm extends PureComponent {
         />
         <TextField
           type="number"
-          name="fnLength"
-          label="Function length (optional)"
-          defaultValue={fnLength}
+          name="sourceLength"
+          label="Source length (optional)"
+          defaultValue={sourceLength}
         />
         <TextField
           type="number"
@@ -127,7 +127,7 @@ ChallengeForm.propTypes = {
   description: PropTypes.string.isRequired,
   fnName: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  fnLength: PropTypes.number,
+  sourceLength: PropTypes.number,
   hasCodeEditor: PropTypes.bool.isRequired,
   hasCodeLimitation: PropTypes.bool.isRequired,
   tests: PropTypes.array.isRequired,
