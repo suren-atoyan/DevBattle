@@ -11,6 +11,9 @@ import HelpIcon from '@material-ui/icons/Help';
 // Decorators
 import { withStyles } from '@material-ui/core/styles';
 
+// Utils
+import { helperTexts } from 'config';
+
 import './index.scss';
 
 const styles = {
@@ -26,13 +29,6 @@ const styles = {
     marginBottom: 12,
   },
 };
-
-const helperTexts = {
-  fnName: 'Function name should be declated ...',
-  sourceLength: 'The maximum length of source is ...',
-  exclude: 'Those symboles or fragment ...',
-  points: 'You can get mentioned points if ...',
-}
 
 const LineOfRequirements = ({ content, helperText }) => (
   <Typography>

@@ -74,7 +74,7 @@ async function challengeAnswer(req, res) {
 
   if (existingSolution) {
 
-    if (!currnetChallenge.points || !currnetChallenge.fnLength) return handleInvalidRequest(res, 400, 'already_solved');
+    if (!currnetChallenge.points || !currnetChallenge.sourceLength) return handleInvalidRequest(res, 400, 'already_solved');
     if (result.points <= existingSolution.points) return handleInvalidRequest(res, 400, 'better_solution');
 
     // Update challenge points

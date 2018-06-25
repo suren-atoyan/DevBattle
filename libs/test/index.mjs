@@ -1,7 +1,7 @@
 import vm from 'vm';
 import assert from './assert';
 
-export default ({ tests, fnName, fnLength, points, exclude }, source) => {
+export default ({ tests, fnName, sourceLength, points, exclude }, source) => {
 
   const sandbox = Object.create(null); // Write Object.create(null) instead of {}
   // or Object.create({}) or by other declaration of object, for avoiding
@@ -14,7 +14,7 @@ export default ({ tests, fnName, fnLength, points, exclude }, source) => {
   vm.createContext(sandbox);
 
   try {
-    if (fnLength && source.length > fnLength) throw new Error('Your code is too long');
+    if (sourceLength && source.length > sourceLength) throw new Error('Your code is too long');
 
     vm.runInContext(`${source}; this.fnName=${fnName};`, sandbox, {
       timeout: 500, // Timeout is set to avoid long executions and/or infinite loops or recursions
@@ -32,8 +32,8 @@ export default ({ tests, fnName, fnLength, points, exclude }, source) => {
       result.success = true;
 
       if (points) {
-        const currentPoints = fnLength
-          ? points / 2 + ((fnLength - source.length) / fnLength * points / 2)
+        const currentPoints = sourceLength
+          ? points / 2 + ((sourceLength - source.length) / sourceLength * points / 2)
           : points;
 
         result.points = +currentPoints.toFixed(2);
