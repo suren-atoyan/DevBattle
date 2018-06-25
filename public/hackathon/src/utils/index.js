@@ -57,6 +57,8 @@ const consoleImage = url => {
   image.src = url;
 }
 
+const getTeamScore = (results, team) => (results[team._id] && results[team._id].score) || 0;
+
 export {
   getRouteTitle,
   omit,
@@ -64,4 +66,5 @@ export {
   removeItem,
   consoleImage,
   consoleWarnText,
+  getTeamScore,
 };

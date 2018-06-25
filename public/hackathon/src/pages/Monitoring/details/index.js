@@ -7,12 +7,16 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
+import StarIcon from '@material-ui/icons/Star';
 
 // Components
 import CountDown from '../CountDown/';
 
 // Third-Party Libraries
 import classNames from 'classnames';
+
+// Utils
+import { getTeamScore } from 'utils';
 
 import './index.scss';
 
@@ -43,16 +47,21 @@ class Details extends PureComponent {
     });
   }
 
-  getTeams(challenges, teams, results) {
-    return teams.map(({ name, _id: teamId }) => (
-      <Card className="details__team-card" key={teamId}>
-        <CardContent>
-          <Typography gutterBottom variant="headline" component="h2" className="details__team-data">
-            {name} - Score {results[teamId] ? results[teamId].score : '0'}
-          </Typography>
-          {this.getChallenges(challenges, results, teamId)}
-        </CardContent>
-      </Card>
+  getTeams(challenges, teams, results, finished) {
+    const renderingTeams = finished
+      ? [...teams].sort((teamA, teamB) => getTeamScore(results, teamB) - getTeamScore(results, teamA))
+      : teams;
+
+    return renderingTeams.map(({ name, _id: teamId }, index) => (
+        <Card className="details__team-card" key={teamId}>
+          <CardContent>
+            <Typography gutterBottom variant="headline" component="h2" className="details__team-data">
+              {!index && finished && <StarIcon className="details__team-data__winner-star" />}
+              {name} - Score {results[teamId] ? results[teamId].score : '0'}
+            </Typography>
+            {this.getChallenges(challenges, results, teamId)}
+          </CardContent>
+        </Card>
     ));
   }
 
@@ -77,17 +86,21 @@ class Details extends PureComponent {
         </Typography>
         <Card className="details__count-down">
           <CardContent>
-            <CountDown
+            {finished
+            ? (<Typography variant="headline" className="details__heading">
+              The hackathon is finished
+              </Typography>)
+            : (<CountDown
               styled
               winner={winner}
               started={started}
               duration={duration}
               finished={finished}
               startTime={startTime}
-            />
+            />)}
           </CardContent>
         </Card>
-        {this.getTeams(challenges, teams, results)}
+        {this.getTeams(challenges, teams, results, finished)}
       </div>
     )
   }

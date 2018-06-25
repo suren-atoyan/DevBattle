@@ -1,3 +1,5 @@
+@import "~sass/main";
+
 .details {
   max-height: 100%;
   overflow: scroll;
@@ -6,6 +8,12 @@
     text-align: center;
     margin-top: 10px;
     text-transform: uppercase;
+  }
+
+  &__heading {
+    text-align: center;
+    text-transform: uppercase;
+    color: $color-grey-light-2 !important;
   }
 
   &__count-down {
@@ -29,8 +37,14 @@
   }
 
   &__team-data{
+    display: flex !important;
+    align-items: center;
     text-transform: capitalize;
     border-bottom: 1px solid #192431;
+
+    &__winner-star {
+      fill: $color-gold !important;
+    }
   }
 
   &__team-card {
