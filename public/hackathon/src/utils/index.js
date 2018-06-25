@@ -1,5 +1,5 @@
 /* eslint-disable no-sequences */
-import { existingRoutes } from 'config';
+import { existingRoutes, consoleWarnTextStyles } from 'config';
 import Fetch from 'utils/fetch';
 
 const getRouteTitle = location => {
@@ -34,4 +34,34 @@ const removeItem = (arr, i) => {
   return res;
 }
 
-export { getRouteTitle, omit, makeRequest, removeItem };
+const consoleWarnText = text => console.log(
+  `%c ${text}`,
+  consoleWarnTextStyles,
+);
+
+const consoleImage = url => {
+  const image = new Image();
+
+  image.onload = function() {
+    const styles = `
+      font-size: 1px;
+      line-height: ${this.height}px;
+      padding: ${this.height * .5 }px ${this.width * .5}px;
+      background-size:${this.width}px ${this.height}px;
+      background: url(${url});
+    `;
+
+    console.log('%c', styles);
+  };
+
+  image.src = url;
+}
+
+export {
+  getRouteTitle,
+  omit,
+  makeRequest,
+  removeItem,
+  consoleImage,
+  consoleWarnText,
+};
