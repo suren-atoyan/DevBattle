@@ -20,12 +20,29 @@ const url = {
   monaco_loader: '/monaco-editor/vs/loader.js',
   monaco_base: '/monaco-editor/vs',
   ws: `ws://${window.location.host.split(':')[0]}:9000`,
+  // TODO ::: Find more optimize and funny gif
+  console_image: 'https://media.tenor.com/images/41a0802c644036ad7f9e6830fbc8cafa/tenor.gif',
 }
 
 const maximum_allowed_code_length = 500;
 
+const consoleWarnDefaultText = 'What are you doing here man? Maybe, it\'ll be better to solve challenges?';
+
+const consoleWarnTextStyles = `
+  font-family:  'Hoefler Text', Georgia, 'Times New Roman', serif;
+  font-weight: normal;
+  font-size: 1.75em;
+  letter-spacing: .2em;
+  line-height: 1.1em;
+  margin:0px;
+  text-align: center;
+  text-transform: uppercase;
+`;
+
 export {
   existingRoutes,
+  consoleWarnDefaultText,
+  consoleWarnTextStyles,
   url,
   maximum_allowed_code_length,
   REACT_APP_LOCAL_SERVER_URL as localServerUrl,

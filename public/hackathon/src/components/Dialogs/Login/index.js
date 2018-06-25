@@ -101,9 +101,12 @@ class LoginDialog extends PureComponent {
                     {
                       activeHackathon && (
                         <Fragment>
-                          <Button onClick={this.loginAsGuest} color="primary">
-                            Login as Guest
-                          </Button>
+                          {
+                            activeHackathon.isGuestTeam &&
+                              <Button onClick={this.loginAsGuest} color="primary">
+                                Login as Guest
+                              </Button>
+                          }
                           <Button onClick={openCreateTeamDialog}>
                             Create Your Team
                           </Button>
