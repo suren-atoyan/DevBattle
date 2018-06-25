@@ -22,6 +22,8 @@ import { getRouteTitle } from 'utils';
 import { withAuth } from 'auth';
 import { withStore } from 'store';
 
+import './index.scss';
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -119,7 +121,7 @@ class TopBar extends PureComponent {
     return (
       <div className={classes.root}>
         <AppBar color="default" position="static">
-          <Toolbar>
+          <Toolbar className="header__toolbar">
             <Link to="/monitoring" className="link">
               <Tooltip title="Monitoring">
                 <IconButton variant="fab" className={classes.menuButton} color="secondary" aria-label="charts">

@@ -39,6 +39,9 @@ class CountDown extends PureComponent {
   start(duration) {
     this.intervalId = setInterval(_ => {
       const date = this.calculateCountdown(duration);
+
+      if (Object.values(date).every(value => value <= 0)) clearInterval(this.intervalId);
+
       this.setState(date);
     }, 1000);
   }
