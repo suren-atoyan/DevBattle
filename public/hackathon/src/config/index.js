@@ -19,7 +19,7 @@ const url = {
   finish_hackathon: '/hackathons/finish',
   monaco_loader: '/monaco-editor/vs/loader.js',
   monaco_base: '/monaco-editor/vs',
-  ws: 'ws://localhost:9000',
+  ws: `ws://${window.location.host.split(':')[0]}:9000`,
 }
 
 const maximum_allowed_code_length = 500;
