@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 // Components
 import NoActive from 'components/NoActive';
 import Chart from './Chart';
-import Details from './details';
+import Details from './Details';
 
 // Decorators
 import { withStore } from 'store';

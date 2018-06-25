@@ -86,18 +86,24 @@ class Details extends PureComponent {
         </Typography>
         <Card className="details__count-down">
           <CardContent>
-            {finished
-            ? (<Typography variant="headline" className="details__heading">
-              The hackathon is finished
-              </Typography>)
-            : (<CountDown
-              styled
-              winner={winner}
-              started={started}
-              duration={duration}
-              finished={finished}
-              startTime={startTime}
-            />)}
+            {
+              finished
+                ? (
+                  <Typography variant="headline" className="details__heading">
+                    The hackathon is finished
+                  </Typography>
+                )
+                : (
+                  <CountDown
+                    styled
+                    winner={winner}
+                    started={started}
+                    duration={duration}
+                    finished={finished}
+                    startTime={startTime}
+                  />
+                )
+            }
           </CardContent>
         </Card>
         {this.getTeams(challenges, teams, results, finished)}
