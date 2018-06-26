@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "hackathon",
+      "script": "npm",
+      "args": "run start-hackathon-prod"
+    }
+  ]
+}
