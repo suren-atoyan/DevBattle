@@ -19,7 +19,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 process.env.NODE_ENV === 'production' && Promise.resolve().then(_ => (
   consoleWarnText(consoleWarnDefaultText),
-  consoleImage(url.console_image)
+  consoleImage(url.console_image_why)
 ));
 
 ReactDOM.render(
