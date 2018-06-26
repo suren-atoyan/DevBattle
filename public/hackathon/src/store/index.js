@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { makeRequest } from 'utils';
-import { url } from 'config';
+import { url, messages } from 'config';
 
 import { withAuth } from 'auth';
 
@@ -9,6 +9,7 @@ import {
   CREATE_HACKATHON,
   SEND_CHALLENGE_ANSWER,
   CREATE_TEAM,
+  DELETE_TEAM,
   START_HACKATHON,
   FINISH_HACKATHON,
   DELETE_HACKATHON,
@@ -70,14 +71,6 @@ class AppStateProvider extends Component {
         });
       break;
       case CREATE_TEAM:
-
-        if (
-          // TODO ::: About this case there is a todo in root/ws/uws-server.js
-          this.state.activeHackathon.teams.some(({ _id }) => _id === payload._id )
-        ) {
-          return;
-        }
-
         this.setState({
           activeHackathon: {
             ...this.state.activeHackathon,
@@ -85,6 +78,14 @@ class AppStateProvider extends Component {
               ...this.state.activeHackathon.teams,
               payload,
             ],
+          },
+        });
+      break;
+      case DELETE_TEAM:
+        this.setState({
+          activeHackathon: {
+            ...this.state.activeHackathon,
+            ...payload.changes,
           },
         });
       break;
@@ -147,8 +148,13 @@ class AppStateProvider extends Component {
   );
 
   createTeam = async data => this.handleResponse(
-    makeRequest(`${url.base_url}${url.create_team}`, 'POST', data),
+    makeRequest(`${url.base_url}${url.team}`, 'POST', data),
     CREATE_TEAM,
+  );
+
+  deleteTeam = async teamId => this.handleResponse(
+    makeRequest(`${url.base_url}${url.team}/${teamId}`, 'DELETE'),
+    DELETE_TEAM,
   );
 
   startHackathon = async _ => this.handleResponse(
@@ -196,16 +202,27 @@ class AppStateProvider extends Component {
   handleWsBroadcast = ({ data }) => {
     const { type, payload } = JSON.parse(data);
 
-    if (type === SEND_CHALLENGE_ANSWER) {
+    const { isTeamMember, isAdmin, team } = this.props.authState;
 
-      const { isTeamMember, isAdmin, team } = this.props.authState;
+    switch (type) {
+      case SEND_CHALLENGE_ANSWER:
+        const broadcasterId = Object.keys(payload)[0];
 
-      const broadcasterId = Object.keys(payload)[0];
-
-      if ((isTeamMember && broadcasterId === team._id) || isAdmin) {
-        this.updateResults();
-        return;
-      }
+        if ((isTeamMember && broadcasterId === team._id) || isAdmin) {
+          this.updateResults();
+          return;
+        }
+      break;
+      case CREATE_TEAM:
+        // TODO ::: About this case there is a todo in root/ws/uws-server.js
+        if (this.state.activeHackathon.teams.some(({ _id }) => _id === payload._id )) return;
+      break;
+      case DELETE_TEAM:
+        if (isTeamMember && team._id === payload.teamId) {
+          alert(messages.deletedTeamAlert);
+        };
+      break;
+      default: break;
     }
 
     this.reduce(payload, type);
@@ -226,6 +243,7 @@ class AppStateProvider extends Component {
       startHackathon,
       finishHackathon,
       deleteHackathon,
+      deleteTeam,
     } = this;
 
     return(
@@ -244,6 +262,7 @@ class AppStateProvider extends Component {
             startHackathon,
             finishHackathon,
             deleteHackathon,
+            deleteTeam,
           },
         }}>
           {this.props.children}

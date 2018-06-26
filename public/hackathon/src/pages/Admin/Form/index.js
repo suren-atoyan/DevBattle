@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 // Third-Party Components
@@ -8,6 +8,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 // Components
 import Form from 'components/Form';
+
+// Config
+import { messages } from 'config';
 
 import './index.scss';
 
@@ -25,38 +28,62 @@ const hackathonSchema = {
   },
 };
 
-const AdminForm = ({ submit, canSubmit }) => (
-  <Form
-    validation={hackathonSchema}
-    submit={submit}
-    canSubmit={canSubmit}
-    className="admin__form"
-  >
-    <TextField
-      required
-      label="Name"
-      name="name"
-    />
-    <TextField
-      required
-      label="Duration"
-      type="time"
-      name="duration"
-      InputLabelProps={{
-        shrink: true,
-      }}
-      inputProps={{
-        step: 300, // 5 min
-      }}
-    />
-    <FormControlLabel
-      control={
-        <Checkbox color="primary" name="isGuestTeam" />
-      }
-      label="Is guest team"
-    />
-  </Form>
-);
+const durationPattern = /^(\d+:[0-5]\d)$/g;
+
+class AdminForm extends PureComponent {
+
+  state = {
+    durationError: '',
+  };
+
+  handleDurationKeyUp = event => {
+    const { value } = event.target;
+
+    this.setState({
+      durationError: !value.match(durationPattern)
+        ? messages.durationWarning
+        : '',
+    });
+  };
+
+  render() {
+    const { submit, canSubmit } = this.props;
+
+    return (
+      <Form
+        validation={hackathonSchema}
+        submit={submit}
+        canSubmit={canSubmit}
+        className="admin__form"
+      >
+        <TextField
+          required
+          label="Name"
+          name="name"
+        />
+        <TextField
+          required
+          error={!!this.state.durationError}
+          helperText={this.state.durationError}
+          label="Duration"
+          type="text"
+          placeholder="HH:MM"
+          name="duration"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onKeyUp={this.handleDurationKeyUp}
+        />
+        <FormControlLabel
+          control={
+            <Checkbox color="primary" name="isGuestTeam" />
+          }
+          label="Is guest team"
+        />
+      </Form>
+    );
+  }
+}
 
 AdminForm.propTypes = {
   submit: PropTypes.func.isRequired,
