@@ -22,9 +22,10 @@ import './index.scss';
 
 class Details extends PureComponent {
 
-  getChallenges(challenges, results, teamId) {
+  getChallenges(challenges, results, teamId, isGuestTeam) {
+    const id = !teamId && isGuestTeam ? 'guests' : teamId;
     return challenges.map(({ name, _id }) => {
-      const currentChallenge = results[teamId] && results[teamId]
+      const currentChallenge = results[id] && results[id]
         .confirmedSolutions.find(({ challengeId }) => challengeId === _id);
 
       const solved = currentChallenge && currentChallenge.points !== 0;
@@ -47,19 +48,23 @@ class Details extends PureComponent {
     });
   }
 
-  getTeams(challenges, teams, results, finished) {
-    const renderingTeams = finished
+  getTeams(challenges, teams, results, finished, isGuestTeam) {
+    let renderingTeams = finished
       ? [...teams].sort((teamA, teamB) => getTeamScore(results, teamB) - getTeamScore(results, teamA))
-      : teams;
+      : [...teams];
+
+    isGuestTeam && renderingTeams.push({ ...results.guests });
 
     return renderingTeams.map(({ name, _id: teamId }, index) => (
-        <Card className="details__team-card" key={teamId}>
+        <Card className="details__team-card" key={teamId || 1}>
           <CardContent>
             <Typography gutterBottom variant="headline" component="h2" className="details__team-data">
               {!index && finished && <StarIcon className="details__team-data__winner-star" />}
-              {name} - Score {results[teamId] ? results[teamId].score : '0'}
+              {name || 'Guests'} - Score {
+                teamId ? results[teamId] ? results[teamId].score : '0' : results.guests.score
+              }
             </Typography>
-            {this.getChallenges(challenges, results, teamId)}
+            {this.getChallenges(challenges, results, teamId, isGuestTeam)}
           </CardContent>
         </Card>
     ));
@@ -73,6 +78,7 @@ class Details extends PureComponent {
         started,
         finished,
         winner,
+        isGuestTeam,
         challenges,
         teams,
         results,
@@ -106,7 +112,7 @@ class Details extends PureComponent {
             }
           </CardContent>
         </Card>
-        {this.getTeams(challenges, teams, results, finished)}
+        {this.getTeams(challenges, teams, results, finished, isGuestTeam)}
       </div>
     )
   }
