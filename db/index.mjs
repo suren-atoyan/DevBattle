@@ -24,9 +24,9 @@ class DB {
     return this.db;
   }
 
-  async setDefaults() {
+  async setDefaults(defaults) {
     return await this.db
-      .defaults()
+      .defaults(defaults)
       .write();
   }
 
