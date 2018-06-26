@@ -46,11 +46,17 @@ const helperTexts = {
   points: 'These are the points that are given for the challenge. If the challenge has a source limitation, it means that when you satisfy to the specified limitations you get the points mentioned here and if you write the code shorter you can get bonus with the size of the points mentioned here.',
 }
 
+const messages = {
+  durationWarning: 'Please match the following pattern <HOURS>:<MINUTES>',
+  deletedTeamAlert: 'UFO came and has stolen your team from our DB',
+};
+
 export {
   existingRoutes,
   consoleWarnDefaultText,
   consoleWarnTextStyles,
   helperTexts,
+  messages,
   url,
   maximum_allowed_code_length,
   REACT_APP_LOCAL_SERVER_URL as localServerUrl,

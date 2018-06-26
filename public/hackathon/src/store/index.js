@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { makeRequest } from 'utils';
-import { url } from 'config';
+import { url, messages } from 'config';
 
 import { withAuth } from 'auth';
 
@@ -219,7 +219,7 @@ class AppStateProvider extends Component {
       break;
       case DELETE_TEAM:
         if (isTeamMember && team._id === payload.teamId) {
-          alert('UFO came and has stolen you team from our DB');
+          alert(messages.deletedTeamAlert);
         };
       break;
       default: break;

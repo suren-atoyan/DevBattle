@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 // Third-Party Components
@@ -8,6 +8,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 // Components
 import Form from 'components/Form';
+
+// Config
+import { messages } from 'config';
 
 import './index.scss';
 
@@ -27,7 +30,7 @@ const hackathonSchema = {
 
 const durationPattern = /^(\d+:[0-5]\d)$/g;
 
-class AdminForm extends Component {
+class AdminForm extends PureComponent {
 
   state = {
     durationError: '',
@@ -38,7 +41,7 @@ class AdminForm extends Component {
 
     this.setState({
       durationError: !value.match(durationPattern)
-        ? 'Please match the following pattern <HOURS>:<MINUTeS>'
+        ? messages.durationWarning
         : '',
     });
   };
