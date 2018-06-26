@@ -53,6 +53,7 @@ class Challenge extends PureComponent {
           hasCodeEditor && <Grid item xs={6}>
             <CodeEditor
               _id={_id}
+              key={_id}
               sendResult={sendResult}
               value={codeExample}
               hackathon={{ started, finished }}
