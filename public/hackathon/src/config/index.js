@@ -21,7 +21,8 @@ const url = {
   monaco_base: '/monaco-editor/vs',
   ws: `ws://${window.location.host.split(':')[0]}:9000`,
   // TODO ::: Find more optimize and funny gif
-  console_image: 'https://media.tenor.com/images/41a0802c644036ad7f9e6830fbc8cafa/tenor.gif',
+  console_image_panda: 'https://image.ibb.co/bGH04o/console_panda.gif',
+  console_image_why: 'https://image.ibb.co/bAtCH8/why.jpg',
 }
 
 const maximum_allowed_code_length = 500;
