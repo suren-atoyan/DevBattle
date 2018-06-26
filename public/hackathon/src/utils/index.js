@@ -15,7 +15,6 @@ const pick = (obj, picks) =>
     (picks.includes(item) && (acc[item] = obj[item]), acc), {});
 
 async function makeRequest(url, method, data) {
-
   try {
     const response = await Fetch.request(url, method, data);
 
@@ -59,6 +58,19 @@ const consoleImage = url => {
 
 const getTeamScore = (results, team) => (results[team._id] && results[team._id].score) || 0;
 
+const getResultsWithNames = (results, teams) => Object.keys(results).reduce(
+  (acc, key) => (acc.push(
+    key === 'guests'
+      ? {
+        name: 'Guests',
+        _id: 1,
+        ...results.guests,
+      }
+      : { ...teams.find(team => team._id === key), ...results[key] }
+  ), acc),
+  [],
+);
+
 export {
   getRouteTitle,
   omit,
@@ -67,4 +79,5 @@ export {
   consoleImage,
   consoleWarnText,
   getTeamScore,
+  getResultsWithNames,
 };

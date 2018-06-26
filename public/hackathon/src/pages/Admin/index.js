@@ -54,6 +54,7 @@ class Admin extends PureComponent {
         startHackathon,
         finishHackathon,
         deleteHackathon,
+        deleteTeam,
       },
     } = this.props;
 
@@ -68,6 +69,7 @@ class Admin extends PureComponent {
               startHackathon={startHackathon}
               finishHackathon={finishHackathon}
               deleteHackathon={deleteHackathon}
+              deleteTeam={deleteTeam}
               isLoading={isLoading}
             />
           )

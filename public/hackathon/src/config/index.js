@@ -13,7 +13,7 @@ const url = {
   admin: '/admin',
   hackathons: '/hackathons',
   challenge_answer: '/challenge_answer',
-  create_team: '/team',
+  team: '/team',
   get_results: '/results',
   start_hackathon: '/hackathons/start',
   finish_hackathon: '/hackathons/finish',
