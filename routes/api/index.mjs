@@ -6,7 +6,7 @@ import shouldBeAdmin from '../../middlewares/should-be-admin';
 import login from './login';
 import logout from './logout';
 import checkToken from './check-token';
-import { createTeam } from './team';
+import { createTeam, deleteTeam } from './team';
 import { getResults } from './results';
 import {
   createHackathon,
@@ -30,6 +30,7 @@ router.delete('/hackathons', shouldBeAdmin, deleteHackathon);
 router.put('/admin', shouldBeAdmin, changePassword);
 router.post('/challenge_answer', challengeAnswer);
 router.post('/team', createTeam);
+router.delete('/team/:id', shouldBeAdmin, deleteTeam);
 router.get('/results', getResults);
 
 router.get('/check_token', checkToken);

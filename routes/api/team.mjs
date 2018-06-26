@@ -2,12 +2,12 @@ import { asyncWrapper, handleInvalidRequest } from '../../libs/utils';
 
 import team from '../../models/team';
 import auth from '../../libs/auth';
-import { createNewTeam } from '../../models/helpers';
+import { createNewTeam, deleteTeamById } from '../../models/helpers';
 
 import { broadcast } from '../../ws/helpers';
 import config from '../../config';
 
-const { action_types: { CREATE_TEAM } } = config.get('uws_server');
+const { action_types: { CREATE_TEAM, DELETE_TEAM } } = config.get('uws_server');
 
 async function _createTeam(req, res) {
   const { body } = req;
@@ -27,5 +27,26 @@ async function _createTeam(req, res) {
   broadcast(CREATE_TEAM, result.team);
 }
 
+async function _deleteTeam(req, res) {
+  const { params: { id } } = req;
+
+  if (!id) return handleInvalidRequest(res, 400, 'invalid_data');
+
+  const changes = await deleteTeamById(id);
+
+  const payload = {
+    teamId: id,
+    changes,
+  }
+
+  res.status(200).send(payload);
+  broadcast(DELETE_TEAM, payload);
+}
+
 const createTeam = asyncWrapper(_createTeam);
-export { createTeam };
+const deleteTeam = asyncWrapper(_deleteTeam);
+
+export {
+  createTeam,
+  deleteTeam,
+};

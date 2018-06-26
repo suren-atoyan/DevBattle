@@ -62,6 +62,15 @@ async function createNewTeam(team) {
   }
 }
 
+async function deleteTeamById(id) {
+  const currentHackathon = await getActiveHackathon({ withLodashWrapper: true });
+
+  await currentHackathon.get('teams').removeById(id).write();
+  await currentHackathon.get('results').unset(id).write();
+
+  return currentHackathon.pick(['teams', 'results']);
+}
+
 async function getTeamByName(name) {
   return (await getActiveHackathon({ withLodashWrapper: true }))
     .get('teams')
@@ -115,6 +124,7 @@ export {
   updateActiveHackathon,
   getActiveHackathon,
   createNewTeam,
+  deleteTeamById,
   getTeamByName,
   startHackathon,
   finishHackathon,
