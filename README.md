@@ -60,21 +60,22 @@ For running server with client in development environment run:
 npm run start-dev-with-hackathon-client
 ```
 
-##### Production
+And check http://localhost:3000 in you browser.
 
-For running hackathon in production environment run:
+##### For Demo or Production Build
+
+For running hackathon in production environment ( or just for demo ) run:
 
 ```bash
 npm run start-hackathon-prod
 ```
 
-## Usage
+And check http://localhost:8080 in you browser.
 
-After running you can check 8080 (which was declared in config.json file) port in your browser.
-Or for just client side testing check 3000 port.
+## Usage
 
 For creating hackathon you should log in as an Admin, which name is 'admin' and the default password for admin was declared in config.json.
 
 ## License
 
-MIT
+[MIT](./LICENSE)
