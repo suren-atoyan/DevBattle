@@ -71,6 +71,10 @@ class AppStateProvider extends Component {
         });
       break;
       case CREATE_TEAM:
+
+        // TODO ::: About this case there is a todo in root/ws/uws-server.js
+        if (this.state.activeHackathon.teams.some(({ _id }) => _id === payload._id )) return;
+
         this.setState({
           activeHackathon: {
             ...this.state.activeHackathon,
@@ -212,10 +216,6 @@ class AppStateProvider extends Component {
           this.updateResults();
           return;
         }
-      break;
-      case CREATE_TEAM:
-        // TODO ::: About this case there is a todo in root/ws/uws-server.js
-        if (this.state.activeHackathon.teams.some(({ _id }) => _id === payload._id )) return;
       break;
       case DELETE_TEAM:
         if (isTeamMember && team._id === payload.teamId) {
