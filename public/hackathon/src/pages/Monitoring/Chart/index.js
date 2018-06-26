@@ -30,7 +30,7 @@ class Charts extends PureComponent {
   render() {
     const { activeHackathon: { teams, challenges, results } } = this.props;
 
-    const chartData = teams.reduce((res, { _id }) => (res.push(results[_id] ? results[_id].score : 0), res), []);
+    const chartData = teams.map(({ _id }) => [ results[_id] ? results[_id].score : 0 ]);
 
     const maxYValue = challenges.reduce((sum, challenge) => sum + challenge.points, 0);
 
