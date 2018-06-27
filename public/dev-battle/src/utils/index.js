@@ -1,4 +1,6 @@
 /* eslint-disable no-sequences */
+import React from 'react';
+
 import { existingRoutes, consoleWarnTextStyles } from 'config';
 import Fetch from 'utils/fetch';
 
@@ -71,6 +73,8 @@ const getResultsWithNames = (results, teams) => Object.keys(results).reduce(
   [],
 );
 
+const withNewLinens = (str = '', initial = '') => `${initial}${str}`.split('\n').map((item, i) => <span key={i}>{item}</span>);
+
 export {
   getRouteTitle,
   omit,
@@ -80,4 +84,5 @@ export {
   consoleWarnText,
   getTeamScore,
   getResultsWithNames,
+  withNewLinens,
 };

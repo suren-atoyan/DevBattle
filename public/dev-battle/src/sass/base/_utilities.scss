@@ -17,3 +17,9 @@
 .link { text-decoration: none; }
 
 .block { display: block;  }
+
+.multiline {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important; // TODO ::: It should be removed
+}
