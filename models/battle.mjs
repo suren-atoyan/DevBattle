@@ -7,7 +7,7 @@ import { challengeSchema } from './challenge';
 import Joi from 'joi';
 
 const battleSchema = Joi.object().keys({
-  name: Joi.string().min(4).max(30).required(),
+  name: Joi.string().min(3).max(40).required(),
   duration: Joi.string().required(),
 
   teams: Joi.array().items(teamSchema).empty().default([]),

@@ -4,8 +4,8 @@ import uuid from 'uuid/v1';
 import Joi from 'joi';
 
 const challengeSchema = Joi.object().keys({
-  name: Joi.string().min(4).max(30).required(),
-  description: Joi.string().min(1).max(500).required(),
+  name: Joi.string().min(3).max(70).required(),
+  description: Joi.string().min(1).max(1500).required(),
   hasCodeEditor: Joi.boolean(),
   fnName: Joi.string().required(),
   sourceLength: Joi.number(),
