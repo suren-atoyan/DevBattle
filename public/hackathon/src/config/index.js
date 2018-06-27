@@ -3,7 +3,7 @@ const existingRoutes = {
   // TODO ::: Add all routes here
 }
 
-const { NODE_ENV, REACT_APP_LOCAL_SERVER_URL } = process.env;
+const { NODE_ENV, REACT_APP_LOCAL_SERVER_URL, REACT_APP_IS_SSL } = process.env;
 
 const hostName = window.location.host.split(':')[0];
 
@@ -21,7 +21,7 @@ const url = {
   finish_hackathon: '/hackathons/finish',
   monaco_loader: '/monaco-editor/vs/loader.js',
   monaco_base: '/monaco-editor/vs',
-  ws: `${NODE_ENV === 'development' ? `ws://${hostName}:9000` : `wss://${hostName}/ws`}`,
+  ws: `${REACT_APP_IS_SSL ? `wss://${hostName}/ws/` : `ws://${hostName}:9000`}`,
   // TODO ::: Find more optimize and funny gif
   console_image_panda: 'https://image.ibb.co/bGH04o/console_panda.gif',
   console_image_why: 'https://image.ibb.co/bAtCH8/why.jpg',

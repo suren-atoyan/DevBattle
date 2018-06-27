@@ -8,7 +8,8 @@
     "start-hackathon-client": "cd ./public/hackathon && npm start",
     "start-dev-with-hackathon-client": "npm run start-dev & npm run start-hackathon-client",
     "create-react-app": "cd ./public && create-react-app",
-    "start-hackathon-prod": "./kill_ports.sh && cd ./public/hackathon && npm run build && cd ../.. && node --experimental-modules app"
+    "start-hackathon-prod": "./kill_ports.sh && cd ./public/hackathon && npm run build && cd ../.. && node --experimental-modules app",
+    "start-hackathon-prod-ssl": "REACT_APP_IS_SSL=true npm run start-hackathon-prod"
   },
   "repository": {
     "type": "git",

@@ -3,7 +3,7 @@
     {
       "name": "hackathon",
       "script": "npm",
-      "args": "run start-hackathon-prod"
+      "args": "run start-hackathon-prod-ssl"
     }
   ]
 }
