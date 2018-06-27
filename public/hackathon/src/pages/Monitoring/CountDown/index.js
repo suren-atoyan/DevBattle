@@ -40,7 +40,10 @@ class CountDown extends PureComponent {
     this.intervalId = setInterval(_ => {
       const date = this.calculateCountdown(duration);
 
-      if (Object.values(date).every(value => value <= 0)) clearInterval(this.intervalId);
+      if (Object.values(date).some(value => value < 0)) {
+        clearInterval(this.intervalId);
+        return;
+      }
 
       this.setState(date);
     }, 1000);

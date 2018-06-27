@@ -228,8 +228,8 @@ class AppStateProvider extends Component {
       break;
       case DELETE_TEAM:
         if (isTeamMember && team._id === payload.teamId) {
-          alert(messages.deletedTeamAlert);
           logout();
+          alert(messages.deletedTeamAlert);
         };
       break;
       default: break;
