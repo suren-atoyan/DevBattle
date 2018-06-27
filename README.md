@@ -1,4 +1,4 @@
-# Hackathon
+# DevBattle
 
 ### Disclaimer
 
@@ -8,11 +8,11 @@ Please don't use it now.
 
 ## Synopsys
 
-This is a simple project for helping to organize simple local hackathons in IT companies.
+This is a simple project for helping to organize simple local dev contests in IT companies.
 
 ## Motivation
 
-For organizing hackathons or quizzes for developers in IT companies we need an app, which can give us an opportunity for creating teams, challenges, tasks and at the same time follow the whole process in real time.
+For organizing dev contests for developers in IT companies we need an app, which can give us an opportunity for creating teams, challenges, tasks and at the same time follow the whole process in real time.
 
 ## Technical stack
 
@@ -57,24 +57,24 @@ npm run start-dev
 For running server with client in development environment run:
 
 ```bash
-npm run start-dev-with-hackathon-client
+npm run start-dev-with-dev-battle-client ( script name should be changed )
 ```
 
 And check http://localhost:3000 in you browser.
 
 ##### For Demo or Production Build
 
-For running hackathon in production environment ( or just for demo ) run:
+For running DevBattle in production environment ( or just for demo ) run:
 
 ```bash
-npm run start-hackathon-prod
+npm run start-dev-battle-prod
 ```
 
 And check http://localhost:8080 in you browser.
 
 ## Usage
 
-For creating hackathon you should log in as an Admin, which name is 'admin' and the default password for admin was declared in config.json.
+For creating battle you should log in as an Admin, which name is 'admin' and the default password for admin was declared in config.json.
 
 ## License
 
