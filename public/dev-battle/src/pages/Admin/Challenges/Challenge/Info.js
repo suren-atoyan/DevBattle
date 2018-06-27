@@ -9,6 +9,8 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+import { withNewLinens } from 'utils';
+
 class Info extends PureComponent {
 
   state = {
@@ -44,7 +46,7 @@ class Info extends PureComponent {
           unmountOnExit
         >
           <ListItem>Name - {name}</ListItem>
-          <ListItem>Description - {description}</ListItem>
+          <ListItem className="multiline">{withNewLinens(description, 'Description - ')}</ListItem>
           <ListItem>Has Code Editor - {hasCodeEditor ? 'Yes' : 'No'}</ListItem>
           <ListItem>Code Example - {codeExample || 'N/A'}</ListItem>
           <ListItem>hasCodeLimitation - {hasCodeLimitation ? 'Yes' : 'No'}</ListItem>

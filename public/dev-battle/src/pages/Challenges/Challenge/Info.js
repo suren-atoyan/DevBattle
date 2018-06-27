@@ -12,6 +12,9 @@ import HelpIcon from '@material-ui/icons/Help';
 import { withStyles } from '@material-ui/core/styles';
 
 // Utils
+import { withNewLinens } from 'utils';
+
+// Config
 import { helperTexts } from 'config';
 
 import './index.scss';
@@ -27,12 +30,14 @@ const styles = {
   },
   pos: {
     marginBottom: 12,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
 };
 
 const LineOfRequirements = ({ content, helperText }) => (
   <Typography>
-    {content}
+    {withNewLinens(content)}
     <Tooltip
       title={<Typography className="helper-text" variant="body1">{helperText}</Typography>}
       noWrap
@@ -93,7 +98,7 @@ const Description = ({
             )
             : (
               <Typography className={classes.pos} variant="body1">
-                {content}
+                {withNewLinens(content)}
               </Typography>
             )
         }
