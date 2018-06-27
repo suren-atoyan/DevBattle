@@ -206,7 +206,16 @@ class AppStateProvider extends Component {
   handleWsBroadcast = ({ data }) => {
     const { type, payload } = JSON.parse(data);
 
-    const { isTeamMember, isAdmin, team } = this.props.authState;
+    const {
+      authState: {
+        isTeamMember,
+        isAdmin,
+        team,
+      },
+      authActions: {
+        logout,
+      },
+    } = this.props;
 
     switch (type) {
       case SEND_CHALLENGE_ANSWER:
@@ -220,6 +229,7 @@ class AppStateProvider extends Component {
       case DELETE_TEAM:
         if (isTeamMember && team._id === payload.teamId) {
           alert(messages.deletedTeamAlert);
+          logout();
         };
       break;
       default: break;
