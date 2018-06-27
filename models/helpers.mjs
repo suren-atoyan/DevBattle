@@ -1,49 +1,49 @@
 import db from '../db';
 import omit from 'lodash/omit';
 
-async function updateActiveHackathonId(id) {
-  await db.set('active_hackathon_id', id);
+async function updateActiveBattleId(id) {
+  await db.set('active_battle_id', id);
   return id;
 }
 
-async function updateActiveHackathon(hackathon) {
-  return await db.get('hackathons', true).find({
-    _id: db.get('active_hackathon_id')
-  }).update(hackathon).write();
+async function updateActiveBattle(battle) {
+  return await db.get('battles', true).find({
+    _id: db.get('active_battle_id')
+  }).update(battle).write();
 }
 
-async function getActiveHackathon({
+async function getActiveBattle({
   withLodashWrapper,
   withPasswords,
   role = {},
 } = {}) {
-  // FIXME ::: Properly handle case when active_hackathon_id is null
-  const activeHackathonId = db.get('active_hackathon_id') || '';
-  const activeHackathonWrapped = db.get('hackathons', true).getById(activeHackathonId);
+  // FIXME ::: Properly handle case when active_battle_id is null
+  const activeBattleId = db.get('active_battle_id') || '';
+  const activeBattleWrapped = db.get('battles', true).getById(activeBattleId);
 
   if (withLodashWrapper) {
-    return activeHackathonWrapped;
+    return activeBattleWrapped;
   }
 
-  const activeHackathon = activeHackathonWrapped.value() || null;
+  const activeBattle = activeBattleWrapped.value() || null;
 
-  const results = activeHackathon
-    ? filterResultsByRole(activeHackathon.results, role)
+  const results = activeBattle
+    ? filterResultsByRole(activeBattle.results, role)
     : null;
 
   return withPasswords
-    ? activeHackathon
-    : (activeHackathon && ({
-      ...activeHackathon,
-      teams: activeHackathon.teams.map(team => omit(team, 'password')),
+    ? activeBattle
+    : (activeBattle && ({
+      ...activeBattle,
+      teams: activeBattle.teams.map(team => omit(team, 'password')),
       results,
     }));
 }
 
 async function createNewTeam(team) {
-  const currentHackathon = await getActiveHackathon({ withLodashWrapper: true });
+  const currentBattle = await getActiveBattle({ withLodashWrapper: true });
 
-  const teams = currentHackathon.get('teams');
+  const teams = currentBattle.get('teams');
 
   const isTeamNameUnique = await !teams.find({ name: team.name.trim() }).value();
 
@@ -63,42 +63,42 @@ async function createNewTeam(team) {
 }
 
 async function deleteTeamById(id) {
-  const currentHackathon = await getActiveHackathon({ withLodashWrapper: true });
+  const currentBattle = await getActiveBattle({ withLodashWrapper: true });
 
-  await currentHackathon.get('teams').removeById(id).write();
-  await currentHackathon.get('results').unset(id).write();
+  await currentBattle.get('teams').removeById(id).write();
+  await currentBattle.get('results').unset(id).write();
 
-  return currentHackathon.pick(['teams', 'results']);
+  return currentBattle.pick(['teams', 'results']);
 }
 
 async function getTeamByName(name) {
-  return (await getActiveHackathon({ withLodashWrapper: true }))
+  return (await getActiveBattle({ withLodashWrapper: true }))
     .get('teams')
     .find({ name })
     .value();
 }
 
-async function startHackathon() {
-  const activeHackathon = await getActiveHackathon({ withLodashWrapper: true });
-  return activeHackathon.assign({
+async function startBattle() {
+  const activeBattle = await getActiveBattle({ withLodashWrapper: true });
+  return activeBattle.assign({
     startTime: Date.now(),
     started: true,
   }).write();
 }
 
-async function finishHackathon() {
-  const activeHackathon = await getActiveHackathon({ withLodashWrapper: true });
-  return activeHackathon
+async function finishBattle() {
+  const activeBattle = await getActiveBattle({ withLodashWrapper: true });
+  return activeBattle
     .set('finished', true)
     .write();
 }
 
-async function deleteActiveHackathon() {
-  return db.set('active_hackathon_id', null);
+async function deleteActiveBattle() {
+  return db.set('active_battle_id', null);
 }
 
-async function addNewHackathon(hackathon) {
-  return await db.insert('hackathons', hackathon);
+async function addNewBattle(battle) {
+  return await db.insert('battles', battle);
 }
 
 async function updateAdminPassword(hashedPassword) {
@@ -120,15 +120,15 @@ function filterResultsByRole(results, role) {
 }
 
 export {
-  updateActiveHackathonId,
-  updateActiveHackathon,
-  getActiveHackathon,
+  updateActiveBattleId,
+  updateActiveBattle,
+  getActiveBattle,
   createNewTeam,
   deleteTeamById,
   getTeamByName,
-  startHackathon,
-  finishHackathon,
-  addNewHackathon,
-  deleteActiveHackathon,
+  startBattle,
+  finishBattle,
+  addNewBattle,
+  deleteActiveBattle,
   updateAdminPassword,
 };

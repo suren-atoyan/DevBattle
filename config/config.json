@@ -3,13 +3,13 @@
   "exclude_from_auth": [
     "/login",
     "/check_token",
-    "/hackathons:get",
+    "/battles:get",
     "/team"
   ],
   "db": {
     "default_data": {
-      "hackathons": [],
-      "active_hackathon_id": null,
+      "battles": [],
+      "active_battle_id": null,
       "admin": {},
       "secret": "",
       "active_tokens": []
@@ -22,13 +22,13 @@
     "port": 9000,
     "action_types": {
       "BROADCAST": "BROADCAST",
-      "CREATE_HACKATHON": "CREATE_HACKATHON",
+      "CREATE_BATTLE": "CREATE_BATTLE",
       "SEND_CHALLENGE_ANSWER": "SEND_CHALLENGE_ANSWER",
       "CREATE_TEAM": "CREATE_TEAM",
       "DELETE_TEAM": "DELETE_TEAM",
-      "START_HACKATHON": "START_HACKATHON",
-      "FINISH_HACKATHON": "FINISH_HACKATHON",
-      "DELETE_HACKATHON": "DELETE_HACKATHON"
+      "START_BATTLE": "START_BATTLE",
+      "FINISH_BATTLE": "FINISH_BATTLE",
+      "DELETE_BATTLE": "DELETE_BATTLE"
     },
     "child_process_parameters": []
   },
@@ -43,14 +43,14 @@
     "503": "Our server is too tired now, try again after a short break."
   },
   "general_error_messages": {
-    "no_active": "No active hackathon.",
-    "not_started": "Hackathon hasn't started yet.",
-    "started": "Hackathon has already started.",
-    "finished": "Hackathon has already finished.",
+    "no_active": "No active battle.",
+    "not_started": "Battle hasn't started yet.",
+    "started": "Battle has already started.",
+    "finished": "Battle has already finished.",
     "invalid_data": "Invalid Data.",
     "no_data": "Data is not passed.",
     "not_admin": "Our admin has all possible, 4 incredible and 2 impossible rights, but you aren't our admin.",
-    "challenge_not_started": "Can't submit unbegun hackathon challenges.",
+    "challenge_not_started": "Can't submit unbegun battle challenges.",
     "admin_challenge": "Admin can't solve challenges.",
     "already_solved": "This challenge has already been solved by your team.",
     "better_solution": "The previous vesrion of your team is better.",

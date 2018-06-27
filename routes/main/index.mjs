@@ -8,7 +8,7 @@ import __getDirname from '../../libs/__dirname';
 const __dirname = __getDirname(import.meta.url);
 
 router.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../public/hackathon/build/index.html'));
+  res.sendFile(path.join(__dirname, '../../public/dev-battle/build/index.html'));
 });
 
 export default router;

@@ -39,7 +39,7 @@ import './ws'; // Initialize uws websocket server in a child process.
 
   app.use(express.static(__dirname + '/public/'));
 
-  app.use(express.static(__dirname + '/public/hackathon/build'));
+  app.use(express.static(__dirname + '/public/dev-battle/build'));
 
   routes(app);
 

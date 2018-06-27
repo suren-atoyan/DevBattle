@@ -9,12 +9,12 @@ import checkToken from './check-token';
 import { createTeam, deleteTeam } from './team';
 import { getResults } from './results';
 import {
-  createHackathon,
-  getHackathon,
-  startHackathon,
-  finishHackathon,
-  deleteHackathon,
-} from './hackathons/';
+  createBattle,
+  getBattle,
+  startBattle,
+  finishBattle,
+  deleteBattle,
+} from './battles/';
 import { changePassword } from './admin';
 import challengeAnswer from './challenge-answer';
 
@@ -22,11 +22,11 @@ const router = express.Router();
 
 router.post('/login', login);
 router.post('/logout', logout);
-router.get('/hackathons', getHackathon);
-router.post('/hackathons', shouldBeAdmin, createHackathon);
-router.post('/hackathons/start', shouldBeAdmin, startHackathon);
-router.post('/hackathons/finish', shouldBeAdmin, finishHackathon);
-router.delete('/hackathons', shouldBeAdmin, deleteHackathon);
+router.get('/battles', getBattle);
+router.post('/battles', shouldBeAdmin, createBattle);
+router.post('/battles/start', shouldBeAdmin, startBattle);
+router.post('/battles/finish', shouldBeAdmin, finishBattle);
+router.delete('/battles', shouldBeAdmin, deleteBattle);
 router.put('/admin', shouldBeAdmin, changePassword);
 router.post('/challenge_answer', challengeAnswer);
 router.post('/team', createTeam);

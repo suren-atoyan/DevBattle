@@ -1,9 +1,9 @@
 {
   "apps": [
     {
-      "name": "hackathon",
+      "name": "dev-battle",
       "script": "npm",
-      "args": "run start-hackathon-prod-ssl"
+      "args": "run start-dev-battle-prod-ssl"
     }
   ]
 }

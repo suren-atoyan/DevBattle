@@ -2,7 +2,7 @@ import auth from '../../libs/auth';
 import { asyncWrapper, handleInvalidRequest } from '../../libs/utils';
 import testRunner from '../../libs/test';
 
-import { getActiveHackathon, updateActiveHackathon } from '../../models/helpers';
+import { getActiveBattle, updateActiveBattle } from '../../models/helpers';
 
 import { broadcast } from '../../ws/helpers';
 import config from '../../config';
@@ -12,10 +12,10 @@ import omit from 'lodash/omit';
 const { action_types: { SEND_CHALLENGE_ANSWER } } = config.get('uws_server');
 
 const sendSuccessfulResult = async (res, role) => {
-  const hackathon = await getActiveHackathon({ role });
+  const battle = await getActiveBattle({ role });
   const currentTeamId = role.isGuest ? 'guests' : role.team._id;
 
-  const result = hackathon.results[currentTeamId];
+  const result = battle.results[currentTeamId];
 
   const { confirmedSolutions } = result;
 
@@ -36,15 +36,15 @@ async function challengeAnswer(req, res) {
 
   // TODO ::: Make testRunner asynchronous.
 
-  const currentHackathon = await getActiveHackathon({
+  const currentBattle = await getActiveBattle({
     withLodashWrapper: false,
     withPasswords: true,
   });
 
-  if (!currentHackathon) return handleInvalidRequest(res, 400, 'no_active');
-  if (!currentHackathon.started) return handleInvalidRequest(res, 400, 'challenge_not_started');
+  if (!currentBattle) return handleInvalidRequest(res, 400, 'no_active');
+  if (!currentBattle.started) return handleInvalidRequest(res, 400, 'challenge_not_started');
 
-  const currnetChallenge = currentHackathon
+  const currnetChallenge = currentBattle
     .challenges
     .find(challenge => challenge._id === challengeId);
 
@@ -55,10 +55,10 @@ async function challengeAnswer(req, res) {
 
   if (result.errorMessage) return handleInvalidRequest(res, 400, result.errorMessage);
 
-  const { guests } = currentHackathon.results;
+  const { guests } = currentBattle.results;
 
   if (rTeamId) {
-    !currentHackathon.results[rTeamId] && (currentHackathon.results[rTeamId] = {
+    !currentBattle.results[rTeamId] && (currentBattle.results[rTeamId] = {
       confirmedSolutions: [],
       score: 0,
     });
@@ -66,7 +66,7 @@ async function challengeAnswer(req, res) {
 
   const currentTeamResults = role.isGuest
     ? guests
-    : currentHackathon.results[rTeamId];
+    : currentBattle.results[rTeamId];
 
   const existingSolution = currentTeamResults
     .confirmedSolutions
@@ -81,7 +81,7 @@ async function challengeAnswer(req, res) {
     currentTeamResults.score += result.points - existingSolution.points;
     existingSolution.points = result.points;
     existingSolution.source = source;
-    await updateActiveHackathon(currentHackathon);
+    await updateActiveBattle(currentBattle);
 
     sendSuccessfulResult(res, role);
 
@@ -96,7 +96,7 @@ async function challengeAnswer(req, res) {
     }
 
     currentTeamResults.confirmedSolutions.push(currentSolution);
-    await updateActiveHackathon(currentHackathon);
+    await updateActiveBattle(currentBattle);
 
     sendSuccessfulResult(res, role);
   }
