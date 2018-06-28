@@ -3,7 +3,7 @@
     {
       "name": "dev-battle",
       "script": "npm",
-      "args": "run start-dev-battle-prod-ssl"
+      "args": "run start-prod-ssl"
     }
   ]
 }
