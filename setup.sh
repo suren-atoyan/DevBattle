@@ -29,9 +29,10 @@ then
       npm run build
       cd -
       echo "Setup has successfully finished..."
-      echo "For running server in development environment run - 'npm run start-dev'"
-      echo "For running server with dev-battle client in development environment run - 'npm run start-dev-with-dev-battle-client'"
-      echo "For running project in production environment run - 'npm run start-dev-battle-prod' (or by using any process manager like pm2)"
+      echo "For running server in development environment run - 'npm run start-dev-server'"
+      echo "For running client in development environment run - 'npm run start-dev-client'"
+      echo "For running server with client in development environment run - 'npm run start-dev'"
+      echo "For running project in production environment run - 'npm run start-dev-prod' (or by using any process manager like pm2)"
     else
       dependency_alert "nodejs" $node_version 10
     fi

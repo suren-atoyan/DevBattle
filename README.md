@@ -51,13 +51,19 @@ For checking dependencies' versions and for doing production build run:
 For running server in development environment run:
 
 ```bash
-npm run start-dev
+npm run start-dev-server
+```
+
+For running server in development environment run:
+
+```bash
+npm run start-dev-client
 ```
 
 For running server with client in development environment run:
 
 ```bash
-npm run start-dev-with-dev-battle-client ( script name should be changed )
+npm run start-dev
 ```
 
 And check http://localhost:3000 in you browser.
@@ -67,7 +73,7 @@ And check http://localhost:3000 in you browser.
 For running DevBattle in production environment ( or just for demo ) run:
 
 ```bash
-npm run start-dev-battle-prod
+npm run start-dev-prod
 ```
 
 And check http://localhost:8080 in you browser.

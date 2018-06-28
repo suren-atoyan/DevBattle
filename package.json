@@ -4,12 +4,12 @@
   "description": "### Warning -> This is still in early development stage.",
   "main": "app.js",
   "scripts": {
-    "start-dev": "nodemon --experimental-modules --ignore '.db.json' --ignore './public' app",
-    "start-dev-battle-client": "cd ./public/dev-battle && npm start",
-    "start-dev-with-dev-battle-client": "npm run start-dev & npm run start-dev-battle-client",
+    "start-dev-server": "nodemon --experimental-modules --ignore '.db.json' --ignore './public' app",
+    "start-dev-client": "cd ./public/dev-battle && npm start",
+    "start-dev": "npm run start-dev-server & npm run start-dev-client",
     "create-react-app": "cd ./public && create-react-app",
-    "start-dev-battle-prod": "./kill_ports.sh && cd ./public/dev-battle && npm run build && cd ../.. && node --experimental-modules app",
-    "start-dev-battle-prod-ssl": "REACT_APP_IS_SSL=true npm run start-dev-battle-prod"
+    "start-prod": "./kill_ports.sh && cd ./public/dev-battle && npm run build && cd ../.. && node --experimental-modules app",
+    "start-prod-ssl": "REACT_APP_IS_SSL=true npm run start-prod"
   },
   "repository": {
     "type": "git",
