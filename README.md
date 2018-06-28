@@ -14,6 +14,8 @@ This is a simple project for helping to organize simple local dev contests in IT
 
 For organizing dev contests for developers in IT companies we need an app, which can give us an opportunity for creating teams, challenges, tasks and at the same time follow the whole process in real time.
 
+## [Demo](https://devbattle.surenatoyan.com)
+
 ## Technical stack
 
 ### Server side
