@@ -1,11 +1,5 @@
 # DevBattle
 
-### Disclaimer
-
-This project is still in early development stage.
-After releasing stable version README.md file should be updated.
-Please don't use it now.
-
 ## Synopsys
 
 This is a simple project for helping to organize simple local dev contests in IT companies.

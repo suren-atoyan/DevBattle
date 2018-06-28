@@ -1,6 +1,6 @@
 import auth from '../../libs/auth';
 import { asyncWrapper, handleInvalidRequest } from '../../libs/utils';
-import testRunner from '../../libs/test';
+import testRunner from '../../libs/test-runner';
 
 import { getActiveBattle, updateActiveBattle } from '../../models/helpers';
 
