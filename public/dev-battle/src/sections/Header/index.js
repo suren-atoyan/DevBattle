@@ -106,17 +106,19 @@ class TopBar extends PureComponent {
     } = this.props;
 
     const title = getRouteTitle(pathname);
-    const battleName = activeBattle
+    const battleName = activeBattle && activeBattle.name
       ? `${activeBattle.name} - `
       : '';
 
-    let role;
+    // let role;
 
-    if (isGuest) (role = 'Guest');
-    if (isAdmin) (role = 'Admin');
-    if (isTeamMember) {
-      role = team.name;
-    }
+    // if (isGuest) (role = 'Guest');
+    // if (isAdmin) (role = 'Admin');
+    // if (isTeamMember) {
+    //   role = team.name;
+    // }
+
+    const role = isGuest ? 'Guest' : isAdmin ? 'Admin' : isTeamMember ? team.name : undefined;
 
     return (
       <div className={classes.root}>
