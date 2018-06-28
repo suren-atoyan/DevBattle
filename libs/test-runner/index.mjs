@@ -16,9 +16,23 @@ export default ({ tests, fnName, sourceLength, points, exclude }, source) => {
   try {
     if (sourceLength && source.length > sourceLength) throw new Error('Your code is too long');
 
-    vm.runInContext(`${source}; this.fnName=${fnName};`, sandbox, {
-      timeout: 500, // Timeout is set to avoid long executions and/or infinite loops or recursions
-    });
+    // const JSON = Object.freeze(global.JSON) is used to avoid such kind of clever things
+    // f = _ => JSON.stringify = _ => undefined
+    // or
+    // JSON = { stringify: _=> true };
+    // Assert function is using JSON.stringify during comparing tests' results
+    // and assert function is running in the same vm instance
+    // Explanation is below
+
+    vm.runInContext(`
+        const JSON = Object.freeze(this.JSON);
+        ${source};
+        this.fnName=${fnName};
+      `,
+      sandbox, {
+        timeout: 500, // Timeout is set to avoid long executions and/or infinite loops or recursions
+      },
+    );
 
     const userFunction = sandbox.fnName;
 
@@ -50,13 +64,8 @@ export default ({ tests, fnName, sourceLength, points, exclude }, source) => {
 
     // E.g. Probability to pass a challenge with 10 tests is 1/(2^10), which is about 0.1%
     // Running assert twice reduces the probability to 1/(2^20), which is about 0.0001%
-
-    // 3) Object.freeze(JSON) is used to avoid such kind of clever thing
-    // f = _ => JSON.stringify = _ => undefined
-    // ( JFY ::: assert function is using JSON.stringify during comparing tests' results )
     hasPassedTest = vm.runInContext(
       `
-        Object.freeze(JSON);
         const assert = ${assert.toString()};
         const tests = ${JSON.stringify(tests)};
         tests.every(
