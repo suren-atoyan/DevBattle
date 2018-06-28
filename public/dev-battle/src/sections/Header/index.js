@@ -110,15 +110,11 @@ class TopBar extends PureComponent {
       ? `${activeBattle.name} - `
       : '';
 
-    // let role;
-
-    // if (isGuest) (role = 'Guest');
-    // if (isAdmin) (role = 'Admin');
-    // if (isTeamMember) {
-    //   role = team.name;
-    // }
-
-    const role = isGuest ? 'Guest' : isAdmin ? 'Admin' : isTeamMember ? team.name : undefined;
+    const role =
+      isGuest ? 'Guest' :
+      isAdmin ? 'Admin' :
+      isTeamMember ? team.name :
+      undefined;
 
     return (
       <div className={classes.root}>
