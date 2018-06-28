@@ -26,7 +26,21 @@ export default ({ tests, fnName, sourceLength, points, exclude }, source) => {
 
     if (exclude && exclude.some(key => source.includes(key))) throw new Error('You are using forbidden symbols or fragments');
 
-    hasPassedTest = tests.every(({ input, output }) => assert(input, output, userFunction));
+    hasPassedTest = tests.every(
+      ({ input, output }) =>
+        // Running tests twice for decrease chances to pass
+        // tests with answers based on Math.random.
+
+        // E.g. If there is challenges which should return true or false
+        // ( or 1/0 or something else like those ), user can write answer like this:
+
+        // fn =_ => Math.round(Math.random()) && true && false
+
+        // And theoretically, tests can be passed. The count of tests exponentially decreases
+        // chances to pass challenge with random true/false. So, running tests twice decreases
+        // chances once more.
+        assert(input, output, userFunction) && assert(input, output, userFunction)
+    );
 
     if (hasPassedTest) {
       result.success = true;
@@ -46,5 +60,5 @@ export default ({ tests, fnName, sourceLength, points, exclude }, source) => {
     return { errorMessage: e.message };
   }
 
-  return result
+  return result;
 }
