@@ -25,7 +25,7 @@ class CodeEditor extends PureComponent {
 
   state = {
     isEditorMounted: false,
-    isSubmitDisabled: false,
+    canSubmit: true,
     theme: 'vs-dark',
   }
 
@@ -55,8 +55,8 @@ class CodeEditor extends PureComponent {
     // The problem is that we are trying to avoid
     // users Submit button spamming
     // So, we are blocking submit button by 800 milliseconds.
-    this.setState({ isSubmitDisabled: true }, _ =>
-      setTimeout(_ => this.setState({ isSubmitDisabled: false }), 800));
+    this.setState({ canSubmit: false }, _ =>
+      setTimeout(_ => this.setState({ canSubmit: true }), 800));
   }
 
   render() {
@@ -66,7 +66,7 @@ class CodeEditor extends PureComponent {
     const value = this.props.value || codeExample;
 
     const isDisabled = !this.state.isEditorMounted
-      || this.state.isSubmitDisabled
+      || !this.state.canSubmit
       || !started
       || finished
       || isLoading;
