@@ -1,5 +1,6 @@
 import vm from 'vm';
 import assert from './assert';
+import prepareVM from './prepare-vm';
 
 export default ({ tests, fnName, sourceLength, points, exclude }, source) => {
 
@@ -16,16 +17,8 @@ export default ({ tests, fnName, sourceLength, points, exclude }, source) => {
   try {
     if (sourceLength && source.length > sourceLength) throw new Error('Your code is too long');
 
-    // const JSON = Object.freeze(global.JSON) is used to avoid such kind of clever things
-    // f = _ => JSON.stringify = _ => undefined
-    // or
-    // JSON = { stringify: _=> true };
-    // Assert function is using JSON.stringify during comparing tests' results
-    // and assert function is running in the same vm instance
-    // Explanation is below
-
     vm.runInContext(`
-        const JSON = Object.freeze(this.JSON);
+        ${prepareVM}
         ${source};
         this.fnName=${fnName};
       `,
