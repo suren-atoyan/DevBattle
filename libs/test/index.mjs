@@ -26,20 +26,38 @@ export default ({ tests, fnName, sourceLength, points, exclude }, source) => {
 
     if (exclude && exclude.some(key => source.includes(key))) throw new Error('You are using forbidden symbols or fragments');
 
-    hasPassedTest = tests.every(
-      ({ input, output }) =>
-        // Running tests twice for decrease chances to pass
-        // tests with answers based on Math.random.
+    // 1) Why the `userFunction` is running in vm
+    // In line 21 we have executed user sources in vm
+    // and we have set timeout for avoiding infinite loops or recursions
+    // in source.
+    // E.g. user source -> `while(true) ...`
+    // But sources like `while(true) ...` can be insade of functions
+    // which should be run during tests checking.
+    // It means, that user functions also should be running
+    // inside of vm and must be under timeout
 
-        // E.g. If there is challenges which should return true or false
-        // ( or 1/0 or something else like those ), user can write answer like this:
+    // 2) Why `assert` ( which should check tests ) function is running twice?
+    // Running tests twice for decrease chances to pass
+    // tests with answers based on Math.random.
 
-        // fn =_ => Math.round(Math.random()) && true || false
+    // E.g. If there are challenges which should return true or false
+    // ( or 1/0 or something else like those ), user can write answer like this:
 
-        // And theoretically, tests can be passed. The count of tests exponentially decreases
-        // chances to pass challenge with random true/false. So, running tests twice decreases
-        // chances once more.
-        assert(input, output, userFunction) && assert(input, output, userFunction)
+    // fn =_ => Math.round(Math.random()) && true || false
+
+    // And theoretically, tests can be passed. The count of tests exponentially decreases
+    // chances to pass challenge with random true/false. So, running tests twice decreases
+    // chances once more.
+    hasPassedTest = vm.runInContext(
+      `
+        const assert = ${assert.toString()};
+        const tests = ${JSON.stringify(tests)};
+        tests.every(
+          ({ input, output }) =>
+            assert(input, output, ${fnName}) && assert(input, output, ${fnName})
+        );
+      `,
+      sandbox, { timeout: 500 }
     );
 
     if (hasPassedTest) {
