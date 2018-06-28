@@ -23,6 +23,7 @@ class Challenge extends PureComponent {
       results,
       started,
       finished,
+      isLoading,
       sendResult,
       challenge: {
         hasCodeEditor,
@@ -57,6 +58,7 @@ class Challenge extends PureComponent {
               sendResult={sendResult}
               value={codeExample}
               battle={{ started, finished }}
+              isLoading={isLoading}
             />
           </Grid>
         }
@@ -90,6 +92,7 @@ Challenge.propTypes = {
   results: PropTypes.object.isRequired,
   started: PropTypes.bool.isRequired,
   finished: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   challenge: PropTypes.object.isRequired,
 };
 

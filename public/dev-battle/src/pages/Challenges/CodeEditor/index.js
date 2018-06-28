@@ -25,6 +25,7 @@ class CodeEditor extends PureComponent {
 
   state = {
     isEditorMounted: false,
+    isSubmitDisabled: false,
     theme: 'vs-dark',
   }
 
@@ -37,22 +38,38 @@ class CodeEditor extends PureComponent {
   sendResult = _ => {
     const value = this.getEditorValue();
     if (value.length > (maximum_allowed_code_length || 1000)) {
-      alert('Bro, please write a little bit less code... You\'ll ruin your self');
+      // TODO ::: Move it to config file
+      alert('Bro, please write a little bit less code... You\'ll ruin yourself');
       return;
     }
+
+    this.temporaryDisableSubmit();
 
     this.props.sendResult(value, this.props._id);
   }
 
   toggleTheme = _ => this.setState({ theme: this.state.theme.endsWith('dark') ? 'vs' : 'vs-dark' });
 
+  temporaryDisableSubmit() {
+    // Explanation of this suspicious two lines of code
+    // The problem is that we are trying to avoid
+    // users Submit button spamming
+    // So, we are blocking submit button by 800 milliseconds.
+    this.setState({ isSubmitDisabled: true }, _ =>
+      setTimeout(_ => this.setState({ isSubmitDisabled: false }), 800));
+  }
+
   render() {
 
-    const { battle: { started, finished } } = this.props;
+    const { battle: { started, finished }, isLoading } = this.props;
 
     const value = this.props.value || codeExample;
 
-    const isDisabled = !this.state.isEditorMounted || !started || finished;
+    const isDisabled = !this.state.isEditorMounted
+      || this.state.isSubmitDisabled
+      || !started
+      || finished
+      || isLoading;
 
     return (
       <Fragment>
@@ -83,6 +100,7 @@ CodeEditor.propTypes = {
   sendResult: PropTypes.func.isRequired,
   value: PropTypes.string,
   battle: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default CodeEditor;

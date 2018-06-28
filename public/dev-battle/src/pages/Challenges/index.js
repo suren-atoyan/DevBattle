@@ -34,6 +34,7 @@ class Challenges extends PureComponent {
     const {
       match: { params },
       store: {
+        isLoading,
         activeBattle: {
           challenges,
           results: allResults,
@@ -65,6 +66,7 @@ class Challenges extends PureComponent {
             results={results}
             started={started}
             finished={finished}
+            isLoading={isLoading}
           />
         </div>
         <div className="challenges__stepper">
