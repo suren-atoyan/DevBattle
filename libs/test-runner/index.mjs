@@ -50,8 +50,13 @@ export default ({ tests, fnName, sourceLength, points, exclude }, source) => {
 
     // E.g. Probability to pass a challenge with 10 tests is 1/(2^10), which is about 0.1%
     // Running assert twice reduces the probability to 1/(2^20), which is about 0.0001%
+
+    // 3) Object.freeze(JSON) is used to avoid such kind of clever thing
+    // f = _ => JSON.stringify = _ => undefined
+    // ( JFY ::: assert function is using JSON.stringify during comparing tests' results )
     hasPassedTest = vm.runInContext(
       `
+        Object.freeze(JSON);
         const assert = ${assert.toString()};
         const tests = ${JSON.stringify(tests)};
         tests.every(
