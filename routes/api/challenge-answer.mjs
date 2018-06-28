@@ -53,7 +53,9 @@ async function challengeAnswer(req, res) {
 
   const result = testRunner(currnetChallenge, source);
 
-  if (result.errorMessage) return handleInvalidRequest(res, 400, result.errorMessage);
+  if (result.hasOwnProperty('errorMessage')) return handleInvalidRequest(
+    res, 400, result.errorMessage || 'unhandled exception'
+  );
 
   const { guests } = currentBattle.results;
 
