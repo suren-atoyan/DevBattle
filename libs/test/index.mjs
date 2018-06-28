@@ -34,7 +34,7 @@ export default ({ tests, fnName, sourceLength, points, exclude }, source) => {
         // E.g. If there is challenges which should return true or false
         // ( or 1/0 or something else like those ), user can write answer like this:
 
-        // fn =_ => Math.round(Math.random()) && true && false
+        // fn =_ => Math.round(Math.random()) && true || false
 
         // And theoretically, tests can be passed. The count of tests exponentially decreases
         // chances to pass challenge with random true/false. So, running tests twice decreases
