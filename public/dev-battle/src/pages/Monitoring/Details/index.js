@@ -61,7 +61,7 @@ class Details extends PureComponent {
             <Typography gutterBottom variant="headline" component="h2" className="details__team-data">
               {!index && finished && <StarIcon className="details__team-data__winner-star" />}
               {name || 'Guests'} - Score {
-                teamId ? results[teamId] ? results[teamId].score : '0' : results.guests.score
+                (teamId ? results[teamId] ? results[teamId].score : 0 : results.guests.score).toFixed(2)
               }
             </Typography>
             {this.getChallenges(challenges, results, teamId, isGuestTeam)}
