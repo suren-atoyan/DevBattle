@@ -2,17 +2,15 @@
 
 ### Disclaimer
 
-This project is still in early development stage.
-After releasing stable version README.md file should be updated.
-Please don't use it now.
+This project is still in development stage and is not fully supporting mobile devices.
 
 ## Synopsys
 
-This is a simple project for helping to organize simple local dev contests in IT companies.
+This is a simple project for helping to organize simple local dev competitions in IT companies.
 
 ## Motivation
 
-For organizing dev contests for developers in IT companies we need an app, which can give us an opportunity for creating teams, challenges, tasks and at the same time follow the whole process in real time.
+For organizing dev competitions for developers in IT companies we need an app, which can give us an opportunity to create teams, challenges, tasks and at the same time follow the whole process in real time.
 
 ## [Demo](https://devbattle.surenatoyan.com)
 
@@ -35,7 +33,7 @@ For organizing dev contests for developers in IT companies we need an app, which
   - ReactJs ( version 16+ )
   - Material UI ( version 1+ )
   
-  There are no store management libraries like Redux or Mobix. In this project for creating and managing stores new React context API was used.
+  There is a custom implementation of store management based on React Context API (no Redux or Mobix).
   
 ## Setup
 
@@ -56,7 +54,7 @@ For running server in development environment run:
 npm run start-dev-server
 ```
 
-For running server in development environment run:
+For running client in development environment run:
 
 ```bash
 npm run start-dev-client
@@ -82,7 +80,7 @@ And check http://localhost:8080 in you browser.
 
 ## Usage
 
-For creating battle you should log in as an Admin, which name is 'admin' and the default password for admin was declared in config.json.
+For creating a new battle you should log in as an Admin, which name is 'admin' and the default password for admin was declared in config.json.
 
 ## License
 
