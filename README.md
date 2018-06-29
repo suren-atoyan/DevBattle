@@ -54,7 +54,7 @@ For running server in development environment run:
 npm run start-dev-server
 ```
 
-For running server in development environment run:
+For running client in development environment run:
 
 ```bash
 npm run start-dev-client
