@@ -80,7 +80,7 @@ And check http://localhost:8080 in you browser.
 
 ## Usage
 
-For creating battle you should log in as an Admin, which name is 'admin' and the default password for admin was declared in config.json.
+For creating a new battle you should log in as an Admin, which name is 'admin' and the default password for admin was declared in config.json.
 
 ## License
 
