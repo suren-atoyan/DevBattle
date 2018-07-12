@@ -12,9 +12,9 @@ class Monaco {
 
     const mainScript = this.createMainScript();
 
-    const loaderScript = this.createMonacoLoaderScript(mainScript);
-
-    this.injectScripts(loaderScript);
+    this.loadScript(url.monaco_loader)
+        .then(_ => this.injectScripts(mainScript));
+        .catch(this.reject);
 
     return new Promise((res, rej) => {
       this.resolve = res;
@@ -26,34 +26,39 @@ class Monaco {
     document.body.appendChild(script);
   }
 
+  loadScript(src, body) {
+    return new Promise((res, rej) => {
+      const script = this.createScript(src, body);
+
+      script.onload = _ => resolve(script);
+      script.onerror = _ => reject(new Error('Script load error: ' + src));
+
+      this.injectScripts(script);
+    });
+  }
+
   handleMainScriptLoad = () => {
     document.removeEventListener('monaco_init', this.handleMainScriptLoad);
     this.resolve(window.monaco);
   }
 
-  createScript(src) {
+  createScript(src, body) {
     const script = document.createElement('script');
-    return (src && (script.src = src), script);
-  }
+    
+    src && (script.src = src);
 
-  createMonacoLoaderScript(mainScript) {
-    const loaderScript = this.createScript(url.monaco_loader);
-    loaderScript.onload = _ => this.injectScripts(mainScript);
+    body && (script.innerHTML = body);
 
-    loaderScript.onerror = this.reject;
-
-    return loaderScript;
+    return script;
   }
 
   createMainScript() {
-    const mainScript = this.createScript();
-
-    mainScript.innerHTML = `
+    const mainScript = this.createScript(null, `
       require.config({ paths: { 'vs': '/monaco-editor/vs' }});
       require(['vs/editor/editor.main'], function() {
         document.dispatchEvent(new Event('monaco_init'));
       });
-    `;
+    `);
 
     mainScript.onerror = this.reject;
 
