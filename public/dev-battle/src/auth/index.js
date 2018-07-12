@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { makeRequest } from 'utils';
 import { url } from 'config';
 import {
@@ -19,19 +19,17 @@ const defaultAuthState = {
 
 const AuthContext = React.createContext(defaultAuthState);
 
-const withAuth = Component => function WrappedComponent(props) {
-  return (
-    <AuthContext.Consumer>
-      {value => <Component
-        {...props}
-        authState={value.state}
-        authActions={value.actions}
-      />}
-    </AuthContext.Consumer>
-  )
-};
+const withAuth = Component => props => (
+  <AuthContext.Consumer>
+    {value => <Component
+      {...props}
+      authState={value.state}
+      authActions={value.actions}
+    />}
+  </AuthContext.Consumer>
+);
 
-class AuthProvider extends Component {
+class AuthProvider extends PureComponent {
   state = {
     ...defaultAuthState,
     showStatusMessage: false,

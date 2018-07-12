@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { makeRequest } from 'utils';
 import { url, messages } from 'config';
 
@@ -27,19 +27,17 @@ const defaultState = {
 
 const AppContext = React.createContext(defaultState);
 
-const withStore = Component => function WrappedComponent(props) {
-  return (
-    <AppContext.Consumer>
-      {value => <Component
-        {...props}
-        store={value.state}
-        storeActions={value.actions}
-      />}
-    </AppContext.Consumer>
-  )
-};
+const withStore = Component => props => (
+  <AppContext.Consumer>
+    {value => <Component
+      {...props}
+      store={value.state}
+      storeActions={value.actions}
+    />}
+  </AppContext.Consumer>
+);
 
-class AppStateProvider extends Component {
+class AppStateProvider extends PureComponent {
   state = {
     ...defaultState,
     showStatusMessage: false,
