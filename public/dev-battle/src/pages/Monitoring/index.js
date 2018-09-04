@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 
 // Components
 import NoActive from 'components/NoActive';
-import Chart from './Chart';
+import Charts from 'components/Charts';
 import Details from './Details';
 
 // Decorators
@@ -21,7 +21,7 @@ const Monitoring = ({ store: { activeBattle } }) => (
         ? (
             <Grid container spacing={24}>
               <Grid item xs={8} className="monitoring__column">
-                <Chart activeBattle={activeBattle} />
+                <Charts activeBattle={activeBattle} />
               </Grid>
               <Grid item xs={4} className="monitoring__column">
                 <Details activeBattle={activeBattle} />

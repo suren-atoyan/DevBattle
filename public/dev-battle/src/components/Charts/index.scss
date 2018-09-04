@@ -1,0 +1,17 @@
+.monitoring-charts {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  &__toggle-button {
+    position: absolute !important;
+    z-index: 10;
+    right: 5px;
+    top: 25px;
+    height: 112px !important;
+
+    span svg {
+      font-size: 48px;
+    }
+  }
+}
