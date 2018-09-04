@@ -1,14 +1,41 @@
-.challenge-info {
-  &__content {
+.challenge {
+  &-info {
+    overflow: auto;
 
-    p {
-      display: flex;
+    &__wrapper {
+      overflow: auto;
     }
 
-    .helper-icon {
-      font-size: 1.1rem;
-      margin-left: 1rem;
-      cursor: pointer;
+    &__content {
+
+      p {
+        display: flex;
+      }
+
+      .helper-icon {
+        font-size: 1.1rem;
+        margin-left: 1rem;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__container {
+    margin: 0;
+
+    > div {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+
+      &:not(:last-child) {
+        padding-left: 0;
+        padding-right: 8px;
+      }
+
+      &:not(:first-child) {
+        padding-left: 8px;
+        padding-right: 0;
+      }
     }
   }
 }

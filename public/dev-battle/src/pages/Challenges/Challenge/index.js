@@ -48,6 +48,7 @@ class Challenge extends PureComponent {
       <Grid
         container
         spacing={24}
+        className="challenge__container"
         alignItems={hasCodeEditor ? 'stretch' : 'center'}
       >
         {
@@ -62,7 +63,7 @@ class Challenge extends PureComponent {
             />
           </Grid>
         }
-        <Grid item xs={hasCodeEditor ? 6 : 12}>
+        <Grid item className="challenge-info__wrapper" xs={hasCodeEditor ? 6 : 12}>
           <Info
             title={name}
             content={description}
