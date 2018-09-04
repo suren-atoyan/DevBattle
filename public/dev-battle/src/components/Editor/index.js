@@ -11,19 +11,9 @@ import './index.scss';
 
 class Editor extends PureComponent {
 
-  static defaultProps = {
-    width: '100%',
-    height: '100%',
-    value: 'console.log(\'hello world!\')',
-    language: 'javascript',
-    theme: 'vs-dark',
-    options: {},
-    editorDidMount: _ => {}
-  }
-
   state = {
     isLoading: true,
-  }
+  };
 
   componentDidMount() {
     monaco
@@ -31,17 +21,27 @@ class Editor extends PureComponent {
       .then(monaco => (this.monaco = monaco) && this.createEditor());
   }
 
-  componentDidUpdate({ value, language, width, height, theme }) {
+  componentDidUpdate({ value, language, width, height, theme, line }) {
 
     const { editor, monaco } = this;
 
     if (editor && monaco) {
       if (value !== this.props.value) {
-        this.editor.setValue(this.props.value);
+        editor.setValue(this.props.value);
+        // `forceTokenization` is unofficial API
+        // we have to did it for avoiding flickering of editor
+        // content after .setValue
+        // See more in this discussion
+        // https://github.com/Microsoft/monaco-editor/issues/803
+        editor.model.forceTokenization(editor.model.getLineCount());
       }
 
       if (language !== this.props.language) {
         monaco.editor.setModelLanguage(this.editor.getModel(), this.props.language);
+      }
+
+      if (line !== this.props.line) {
+        editor.setScrollPosition({ scrollTop: line });
       }
 
       if (theme !== this.props.theme) {
@@ -52,10 +52,12 @@ class Editor extends PureComponent {
         this.props.width !== width ||
         this.props.height !== height
       ) {
-        this.editor.layout();
+        editor.layout();
       }
     }
   }
+
+  updateDimensions = _ => this.editor.layout();
 
   createEditor() {
 
@@ -67,14 +69,17 @@ class Editor extends PureComponent {
       ...options,
     });
 
+    editorDidMount && editorDidMount(this.editor.getValue.bind(this.editor), this.editor);
+
     theme && this.monaco.editor.setTheme(theme);
 
-    editorDidMount && editorDidMount(this.editor.getValue.bind(this.editor));
+    window.addEventListener('resize', this.updateDimensions);
 
     this.setState({ isLoading: false });
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
     this.removeEditor();
   }
 
@@ -87,14 +92,18 @@ class Editor extends PureComponent {
     const { width, height } = this.props;
 
     return (
-      <section className="monaco-editor__wrapper">
+      <section className="monaco-editor__wrapper fb">
         {this.state.isLoading && <div className="monaco-editor__preloader">
-          <CircularProgress size={100} color="primary" className="monaco-editor__preloader--circle"/>
+          <CircularProgress
+            size={100}
+            color="primary"
+            className="monaco-editor__preloader--circle"
+          />
         </div>}
         <div
           ref={monacoContainer => (this.monacoContainer = monacoContainer)}
           style={{ width, height }}
-          className="monaco-editor__content"
+          className="fb"
         />
       </section>
     );
@@ -102,10 +111,23 @@ class Editor extends PureComponent {
 }
 
 Editor.propTypes = {
+  width: PropTypes.string,
+  height: PropTypes.string,
   value: PropTypes.string,
+  language: PropTypes.string,
+  options: PropTypes.object,
   valueGetter: PropTypes.func.isRequired,
   editorDidMount: PropTypes.func.isRequired,
-  theme: PropTypes.string.isRequired,
+  theme: PropTypes.string,
+};
+
+Editor.defaultProps = {
+  width: '100%',
+  height: '100%',
+  value: 'console.log(\'Make the world a little bit better :)\')',
+  language: 'javascript',
+  options: {},
+  editorDidMount: _ => {}
 };
 
 export default Editor;
