@@ -5,12 +5,12 @@
   "dependencies": {
     "@material-ui/core": "^1.1.0",
     "@material-ui/icons": "^1.1.0",
+    "@nivo/bar": "^0.48.0",
+    "@nivo/pie": "^0.48.0",
     "classnames": "^2.2.5",
-    "highcharts": "^6.1.1",
     "monaco-editor": "^0.13.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
-    "react-jsx-highcharts": "^3.1.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "^2.0.0-next.a671462c",
     "reconnectingwebsocket": "^1.0.0"
