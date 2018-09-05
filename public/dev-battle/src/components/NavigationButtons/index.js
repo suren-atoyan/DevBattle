@@ -3,13 +3,20 @@ import PropTypes from 'prop-types';
 
 // Third-Party Components
 import Button from '@material-ui/core/Button';
-import ChallengesIcon from '@material-ui/icons/InsertChart';
+import MonitoringIcon from '@material-ui/icons/InsertChart';
+import ChallengesIcon from '@material-ui/icons/ChangeHistory';
 import AdminIcon from '@material-ui/icons/Pets';
 import { Link } from 'react-router-dom';
 
 const NavigationButtons = ({ isAdmin, isGuest, isTeamMember }) => {
   return (
     <Fragment>
+      <Link className="link" to="/monitoring" >
+        <Button>
+          <MonitoringIcon />
+          Monitoring
+        </Button>
+      </Link>
       <Link className="link" to="/challenges" >
         <Button>
           <ChallengesIcon />

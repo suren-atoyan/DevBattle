@@ -22,7 +22,7 @@ const Content = ({ authState: { isAdmin, isGuest, isTeamMember, isLoading } }) =
     <div className="main__wrapper">
       <Paper className="main__wrapper--paper" elevation={8}>
         <Switch>
-          <Route exact path="/" component={Monitoring} />
+          <Redirect exact from="/" to="/monitoring" component={Monitoring} />
           <Route path="/monitoring" component={Monitoring} />
           <PrivateRoute path="/challenges/:id" exact isLoading={isLoading} hasAccess={isAdmin || isGuest || isTeamMember} component={Challenges} />
           <Redirect from="/challenges" exact to="/challenges/1" />
