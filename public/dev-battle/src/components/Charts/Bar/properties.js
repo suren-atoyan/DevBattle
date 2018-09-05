@@ -1,7 +1,7 @@
 const barChartProperties = {
   margin: {
     top: 50,
-    right: 130,
+    right: 40,
     bottom: 50,
     left: 60,
   },
