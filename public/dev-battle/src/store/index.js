@@ -49,14 +49,21 @@ class AppStateProvider extends PureComponent {
   };
 
   reduce(payload, action) {
+    const defaultFlags = {
+      isLoading: false,
+      showStatusMessage: false,
+    };
+
+    let newState = {};
+
     switch(action) {
       case GET_ACTIVE_BATTLE:
       case CREATE_BATTLE:
-        this.setState({ activeBattle: payload });
+        newState = { activeBattle: payload };
       break;
       case GET_RESULTS:
       case SEND_CHALLENGE_ANSWER:
-        this.setState({
+        newState = {
           activeBattle: {
             ...this.state.activeBattle,
             ...{
@@ -66,14 +73,14 @@ class AppStateProvider extends PureComponent {
               },
             },
           },
-        });
+        };
       break;
       case CREATE_TEAM:
 
         // TODO ::: About this case there is a todo in root/ws/uws-server.js
         if (this.state.activeBattle.teams.some(({ _id }) => _id === payload._id )) return;
 
-        this.setState({
+        newState = {
           activeBattle: {
             ...this.state.activeBattle,
             teams: [
@@ -81,37 +88,39 @@ class AppStateProvider extends PureComponent {
               payload,
             ],
           },
-        });
+        };
       break;
       case DELETE_TEAM:
-        this.setState({
+        newState = {
           activeBattle: {
             ...this.state.activeBattle,
             ...payload.changes,
           },
-        });
+        };
       break;
       case START_BATTLE:
-        this.setState({
+        newState = {
           activeBattle: {
             ...this.state.activeBattle,
             ...payload,
           },
-        });
+        };
       break;
       case FINISH_BATTLE:
-        this.setState({
+        newState = {
           activeBattle: {
             ...this.state.activeBattle,
             ...payload,
           },
-        });
+        };
       break;
       case DELETE_BATTLE:
-        this.setState({ activeBattle: null });
+        newState = { ...defaultFlags, activeBattle: null };
       break;
       default: break;
     }
+
+    this.setState({ ...defaultFlags, ...newState });
   }
 
   async handleResponse(request, action) {
@@ -124,11 +133,6 @@ class AppStateProvider extends PureComponent {
     }
 
     this.reduce(response, action);
-
-    this.setState({
-      isLoading: false,
-      showStatusMessage: false,
-    });
   }
 
   showError(message) {
