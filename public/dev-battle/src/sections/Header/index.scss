@@ -5,7 +5,11 @@
     }
   }
 
-  .octocat-logo {
+  &__role {
+    padding: 8px 16px 8px 16px;
+  }
+
+  &__octocat-logo {
     width: 55px;
   }
 }

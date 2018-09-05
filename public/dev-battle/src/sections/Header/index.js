@@ -138,7 +138,7 @@ class TopBar extends PureComponent {
             {
               this.state.isAuth && (
                 <Fragment>
-                  <Typography variant="title">
+                  <Typography variant="title" className="header__role">
                     {role}
                   </Typography>
                   <NavigationButtons
@@ -168,7 +168,7 @@ class TopBar extends PureComponent {
             >
               <img
                 src="images/octocat.png"
-                className="octocat-logo"
+                className="header__octocat-logo"
                 alt="octocat logo"
               />
             </Button>
