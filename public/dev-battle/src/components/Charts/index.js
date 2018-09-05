@@ -31,6 +31,7 @@ class Charts extends PureComponent {
         <Button
           variant="fab"
           color="default"
+          name="charts-toggle-button"
           onClick={this.toggleCharts}
           className="monitoring-charts__toggle-button"
         >
