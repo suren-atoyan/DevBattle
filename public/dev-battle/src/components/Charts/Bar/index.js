@@ -63,7 +63,6 @@ class Bar extends PureComponent {
         animate={true}
         motionStiffness={90}
         motionDamping={15}
-        legends={chartProperties.legends}
       />
     );
   }

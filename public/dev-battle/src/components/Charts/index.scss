@@ -4,11 +4,12 @@
   height: 100%;
 
   &__toggle-button {
-    position: absolute !important;
+    position: absolute;
     z-index: 10;
     right: 5px;
     top: 25px;
-    height: 112px !important;
+    height: 84px;
+    width: 84px;
 
     span svg {
       font-size: 48px;
