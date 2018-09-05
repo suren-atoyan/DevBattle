@@ -66,4 +66,9 @@ Pie.propTypes = {
   results: PropTypes.object.isRequired,
 };
 
+// For dynamic import
+const creator = props => <Pie {...props} />;
+
+export { creator };
+
 export default Pie;
