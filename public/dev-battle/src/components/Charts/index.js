@@ -18,15 +18,8 @@ class Charts extends PureComponent {
   constructor(props) {
     super(props);
 
-    Promise.all(
-      [
-        import('./Bar'),
-        import('./Pie'),
-      ]
-    )
-    .then(([bar, pie]) => this.setState({
-      charts: [ bar.creator, pie.creator ]
-    }));
+    import('./dynamic~import')
+      .then(({ _Bar, _Pie }) => this.setState({ charts: [ _Bar, _Pie ] }));
   }
 
   toggleCharts = _ =>
@@ -41,8 +34,6 @@ class Charts extends PureComponent {
     const { results, teams, challenges } = this.props.activeBattle;
 
     const { charts, chartType } = this.state;
-
-    console.log(charts, chartType);
 
     const chartsData = {
       results, teams, challenges,
