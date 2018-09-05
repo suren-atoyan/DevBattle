@@ -22,6 +22,9 @@ import { getRouteTitle } from 'utils';
 import { withAuth } from 'auth';
 import { withStore } from 'store';
 
+// config
+import { url } from 'config';
+
 import './index.scss';
 
 const styles = {
@@ -118,7 +121,7 @@ class TopBar extends PureComponent {
 
     return (
       <div className={classes.root}>
-        <AppBar color="default" position="static">
+        <AppBar color="default" position="static" className="header">
           <Toolbar className="header__toolbar">
             <Link to="/monitoring" className="link">
               <Tooltip title="Monitoring">
@@ -156,6 +159,18 @@ class TopBar extends PureComponent {
                   ? 'Logout'
                   : 'Login'
               }
+            </Button>
+            <Button
+              color="inherit"
+              component="a"
+              href={url.github_repo}
+              target="_black"
+            >
+              <img
+                src="images/octocat.png"
+                className="octocat-logo"
+                alt="octocat logo"
+              />
             </Button>
 
           </Toolbar>

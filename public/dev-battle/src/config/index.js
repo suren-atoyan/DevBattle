@@ -25,6 +25,9 @@ const url = {
   // TODO ::: Find more optimize and funny gif
   console_image_panda: 'https://image.ibb.co/bGH04o/console_panda.gif',
   console_image_why: 'https://image.ibb.co/bAtCH8/why.jpg',
+
+  // Github
+  github_repo: 'https://github.com/SurenAt93/DevBattle',
 }
 
 const maximum_allowed_code_length = 500;
