@@ -3,6 +3,14 @@
     > * {
       margin-left: 0.5rem;
     }
+
+    button {
+      svg {
+        margin-right: 5px;
+      }
+
+      padding: 8px 8px;
+    }
   }
 
   &__role {
