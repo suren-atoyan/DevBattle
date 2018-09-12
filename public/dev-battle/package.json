@@ -13,13 +13,16 @@
     "react-dom": "^16.4.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "^2.0.0-next.a671462c",
-    "reconnectingwebsocket": "^1.0.0"
+    "reconnectingwebsocket": "^1.0.0",
+    "snyk": "^1.95.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "devDependencies": {
     "node-sass": "^4.9.0"
@@ -36,5 +39,6 @@
       "Firefox ESR",
       "not ie < 11"
     ]
-  }
+  },
+  "snyk": true
 }
