@@ -20,3 +20,19 @@ patch:
         patched: '2018-09-12T10:02:36.676Z'
     - react-scripts > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
         patched: '2018-09-12T10:02:36.676Z'
+    - react-scripts > fsevents > node-pre-gyp > hawk > hoek:
+        patched: '2018-09-19T10:01:28.600Z'
+    - react-scripts > fsevents > node-pre-gyp > hawk > boom > hoek:
+        patched: '2018-09-19T10:01:28.600Z'
+    - react-scripts > fsevents > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2018-09-19T10:01:28.600Z'
+    - react-scripts > fsevents > node-pre-gyp > request > hawk > hoek:
+        patched: '2018-09-19T10:01:28.600Z'
+    - react-scripts > fsevents > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2018-09-19T10:01:28.600Z'
+    - react-scripts > fsevents > node-pre-gyp > request > hawk > boom > hoek:
+        patched: '2018-09-19T10:01:28.600Z'
+    - react-scripts > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
+        patched: '2018-09-19T10:01:28.600Z'
+    - react-scripts > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        patched: '2018-09-19T10:01:28.600Z'
