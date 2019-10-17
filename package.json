@@ -36,8 +36,8 @@
     "nconf": "^0.10.0",
     "node-schedule": "^1.3.0",
     "serve-favicon": "^2.5.0",
-    "uuid": "^3.3.0",
-    "uws": "^10.148.1"
+    "uws": "10.148.1",
+    "uuid": "^3.3.0"
   },
   "devDependencies": {
     "create-react-app": "^2.0.0-next.b2fd8db8",
