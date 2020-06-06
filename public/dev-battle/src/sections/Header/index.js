@@ -22,9 +22,6 @@ import { getRouteTitle } from 'utils';
 import { withAuth } from 'auth';
 import { withStore } from 'store';
 
-// config
-import { url } from 'config';
-
 import './index.scss';
 
 const styles = {
@@ -160,19 +157,6 @@ class TopBar extends PureComponent {
                   : 'Login'
               }
             </Button>
-            <Button
-              color="inherit"
-              component="a"
-              href={url.github_repo}
-              target="_black"
-            >
-              <img
-                src="images/octocat.png"
-                className="header__octocat-logo"
-                alt="octocat logo"
-              />
-            </Button>
-
           </Toolbar>
         </AppBar>
 
